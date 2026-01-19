@@ -676,7 +676,8 @@ const hourItemStyle = {
 
 const dayNameStyle = {
   fontWeight: '500',
-  textTransform: 'capitalize'
+  textTransform: 'capitalize',
+  color: '#1a1a1a'
 }
 
 const hoursStyle = {
