@@ -439,7 +439,8 @@ const ratingStarsStyle = {
 
 const ratingTextStyle = {
   fontSize: '16px',
-  fontWeight: '600'
+  fontWeight: '600',
+  color: '#1a1a1a'
 }
 
 const experienceDisplayStyle = {
