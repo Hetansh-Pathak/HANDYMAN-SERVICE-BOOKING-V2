@@ -631,7 +631,8 @@ const reviewHeaderStyle = {
 }
 
 const reviewerNameStyle = {
-  fontSize: '16px'
+  fontSize: '16px',
+  color: '#1a1a1a'
 }
 
 const verifiedBadgeStyle = {
