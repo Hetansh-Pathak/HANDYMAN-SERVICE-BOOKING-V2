@@ -598,27 +598,39 @@ body {
   }
 }
 
+/* High Contrast Mode */
+.high-contrast {
+  color: #000000 !important;
+}
+
+.high-contrast .card,
+.high-contrast .form-input {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
 /* Dark Mode Support */
 @media (prefers-color-scheme: dark) {
   body {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    color: #e0e0e0;
+    color: #ffffff;
   }
-  
+
   .card {
-    background: rgba(30, 30, 30, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #e0e0e0;
+    background: #2d2d44;
+    border-color: #404050;
+    color: #ffffff;
   }
-  
+
   .form-input {
-    background: rgba(40, 40, 40, 0.9);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #e0e0e0;
+    background: #3a3a4d;
+    border-color: #505060;
+    color: #ffffff;
   }
-  
+
   .form-label {
-    color: #b0b0b0;
+    color: #e0e0e0;
   }
 }
 
