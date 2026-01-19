@@ -555,7 +555,7 @@ const sectionTitleStyle = {
 
 const bioTextStyle = {
   lineHeight: '1.6',
-  color: '#555'
+  color: '#1a1a1a'
 }
 
 const specialtiesGridStyle = {
