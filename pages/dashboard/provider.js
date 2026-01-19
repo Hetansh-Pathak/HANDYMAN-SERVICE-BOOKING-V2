@@ -442,7 +442,7 @@ const profileNameStyle = {
   margin: '0',
   fontSize: '16px',
   fontWeight: '600',
-  color: '#2c3e50'
+  color: '#1a1a1a'
 }
 
 const profileServiceStyle = {
