@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import Link from 'next/link'
 import { useUser } from '../../context/UserContext'
-import { authAPI, emailService } from '../../lib/auth'
+import { authAPI, emailService } from '../../lib/auth-enhanced'
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -45,18 +45,18 @@ export default function Register() {
     try {
       const result = await authAPI.register(formData)
 
-      // Send welcome email
-      await emailService.sendWelcomeEmail(formData.email, result.user)
-
       if (formData.userType === 'provider') {
         setSuccess(result.message + ' You will be notified once approved.')
-        // Don't auto-login providers as they need approval
+        // Redirect after delay
+        setTimeout(() => {
+          router.push(result.redirectUrl || '/dashboard/provider/pending')
+        }, 2000)
       } else {
         await login(result.user)
         setSuccess('Registration successful! Redirecting to dashboard...')
         setTimeout(() => {
-          router.push('/dashboard/user')
-        }, 2000)
+          router.push(result.redirectUrl || '/dashboard/user')
+        }, 1500)
       }
     } catch (err) {
       setError(err.message || 'Registration failed')
@@ -331,7 +331,8 @@ const radioLabelStyle = {
   cursor: 'pointer',
   fontSize: '16px',
   fontWeight: '500',
-  padding: '8px'
+  padding: '8px',
+  color: '#2c3e50'
 }
 
 const radioStyle = {
@@ -345,7 +346,8 @@ const checkboxLabelStyle = {
   gap: '8px',
   cursor: 'pointer',
   fontSize: '14px',
-  lineHeight: '1.5'
+  lineHeight: '1.5',
+  color: '#495057'
 }
 
 const checkboxStyle = {
@@ -415,7 +417,9 @@ const providerInfoStyle = {
   borderRadius: '16px',
   padding: '32px',
   color: 'white',
-  marginTop: '20px'
+  marginTop: '20px',
+  backdropFilter: 'blur(10px)',
+  border: '1px solid rgba(255,255,255,0.2)'
 }
 
 const infoHeadingStyle = {
@@ -444,7 +448,8 @@ const noteStyle = {
   padding: '16px',
   background: 'rgba(255,255,255,0.1)',
   borderRadius: '8px',
-  lineHeight: '1.5'
+  lineHeight: '1.5',
+  borderLeft: '3px solid rgba(255,255,255,0.3)'
 }
 
 const errorStyle = {

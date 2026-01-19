@@ -676,16 +676,26 @@ const footerBottomStyle = {
   color: '#bdc3c7'
 }
 
-// Add CSS animations
-const animations = `
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.8; }
-  }
-`
+// Add CSS animations (client-side only)
+if (typeof document !== 'undefined' && typeof window !== 'undefined') {
+  const animations = `
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+    }
+  `
 
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style')
-  style.textContent = animations
-  document.head.appendChild(style)
+  try {
+    // Only add animation styles if not already present
+    if (!document.querySelector('style[data-pulse-animation]')) {
+      const style = document.createElement('style')
+      style.setAttribute('data-pulse-animation', 'true')
+      style.textContent = animations
+      if (document.head) {
+        document.head.appendChild(style)
+      }
+    }
+  } catch (error) {
+    console.warn('Animation style injection error:', error)
+  }
 }

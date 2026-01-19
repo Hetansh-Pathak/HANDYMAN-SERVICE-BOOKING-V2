@@ -1,409 +1,411 @@
-import { useState } from 'react'
-import CustomerLayout from '../../components/layouts/CustomerLayout'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Layout from '../../components/Layout'
 import { useUser } from '../../context/UserContext'
+import { useRouter } from 'next/router'
 
-export default function UserDashboard() {
-  const { user } = useUser()
-  const [activeTab, setActiveTab] = useState('bookings')
+export default function CustomerDashboard() {
+  const { user, loading, logout } = useUser()
+  const router = useRouter()
+  const [activeTab, setActiveTab] = useState('overview')
+  const [bookings, setBookings] = useState([])
+  const [savedProviders, setSavedProviders] = useState([])
 
-  // Mock user data
-  const user = {
-    name: 'Priya Sharma',
-    email: 'priya.sharma@email.com',
-    phone: '+91 98765 43210',
-    city: 'Mumbai',
-    address: 'Flat 302, Sunflower Apartments, Andheri West, Mumbai - 400058',
-    joinedDate: '2023-08-15',
-    totalBookings: 12,
-    completedBookings: 10,
-    totalSpent: 8500
-  }
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/login')
+    }
+  }, [user, loading, router])
 
   // Mock bookings data
-  const bookings = [
+  const mockBookings = [
     {
-      id: 'BK001',
-      providerName: 'Rajesh Kumar',
+      id: 'HF123456',
       service: 'Plumbing',
-      date: '2024-01-20',
-      time: '2:00 PM',
-      status: 'Completed',
-      amount: 750,
-      rating: 5,
-      hasReview: true,
-      description: 'Kitchen pipe leak repair'
-    },
-    {
-      id: 'BK002',
-      providerName: 'Amit Sharma',
-      service: 'Electrical',
-      date: '2024-01-25',
+      provider: 'Rajesh Kumar',
+      status: 'completed',
+      date: '2024-01-15',
       time: '10:00 AM',
-      status: 'Confirmed',
-      amount: 500,
-      rating: null,
-      hasReview: false,
-      description: 'Ceiling fan installation'
+      amount: '₹500',
+      rating: 5,
+      review: 'Excellent service!'
     },
     {
-      id: 'BK003',
-      providerName: 'Sneha Patel',
-      service: 'Cleaning',
-      date: '2024-01-28',
-      time: '9:00 AM',
-      status: 'Pending',
-      amount: 400,
+      id: 'HF123457',
+      service: 'Electrical',
+      provider: 'Amit Sharma',
+      status: 'pending',
+      date: '2024-01-20',
+      time: '02:00 PM',
+      amount: '₹600',
       rating: null,
-      hasReview: false,
-      description: 'Deep cleaning service'
+      review: null
     }
   ]
 
-  const getStatusStyle = (status) => {
-    const baseStyle = {
-      padding: '4px 12px',
-      borderRadius: '20px',
-      fontSize: '12px',
-      fontWeight: '600'
+  const mockSavedProviders = [
+    {
+      id: 1,
+      name: 'Rajesh Kumar',
+      service: 'Plumbing',
+      rating: 4.8,
+      jobs: 245,
+      image: '👨‍🔧'
+    },
+    {
+      id: 2,
+      name: 'Priya Singh',
+      service: 'Cleaning',
+      rating: 4.7,
+      jobs: 189,
+      image: '👩‍💼'
     }
-    
-    switch(status) {
-      case 'Completed':
-        return { ...baseStyle, background: '#d4edda', color: '#155724' }
-      case 'Confirmed':
-        return { ...baseStyle, background: '#d1ecf1', color: '#0c5460' }
-      case 'Pending':
-        return { ...baseStyle, background: '#fff3cd', color: '#856404' }
-      case 'Cancelled':
-        return { ...baseStyle, background: '#f8d7da', color: '#721c24' }
-      default:
-        return baseStyle
-    }
+  ]
+
+  useEffect(() => {
+    setBookings(mockBookings)
+    setSavedProviders(mockSavedProviders)
+  }, [])
+
+  const handleLogout = async () => {
+    await logout()
+    router.push('/auth/login')
   }
 
-  const renderStars = (rating) => {
-    if (!rating) return null
-    return '⭐'.repeat(rating)
+  if (loading || !user) {
+    return (
+      <Layout title="Dashboard">
+        <div style={{ textAlign: 'center', padding: '100px 20px' }}>
+          <p>Loading dashboard...</p>
+        </div>
+      </Layout>
+    )
   }
-
-  const renderBookings = () => (
-    <div>
-      <div style={sectionHeaderStyle}>
-        <h2>My Bookings</h2>
-        <Link href="/services" className="btn btn-primary">
-          Book New Service
-        </Link>
-      </div>
-      
-      <div style={bookingsListStyle}>
-        {bookings.map(booking => (
-          <div key={booking.id} className="card" style={bookingCardStyle}>
-            <div style={bookingHeaderStyle}>
-              <div style={bookingInfoStyle}>
-                <h3 style={providerNameStyle}>{booking.providerName}</h3>
-                <p style={serviceTypeStyle}>{booking.service}</p>
-                <p style={bookingIdStyle}>Booking ID: {booking.id}</p>
-              </div>
-              <div style={bookingStatusStyle}>
-                <span style={getStatusStyle(booking.status)}>
-                  {booking.status}
-                </span>
-              </div>
-            </div>
-
-            <div style={bookingDetailsStyle}>
-              <div style={detailRowStyle}>
-                <span style={labelStyle}>Description:</span>
-                <span>{booking.description}</span>
-              </div>
-              <div style={detailRowStyle}>
-                <span style={labelStyle}>Date & Time:</span>
-                <span>{booking.date} at {booking.time}</span>
-              </div>
-              <div style={detailRowStyle}>
-                <span style={labelStyle}>Amount:</span>
-                <span style={amountStyle}>₹{booking.amount}</span>
-              </div>
-              {booking.rating && (
-                <div style={detailRowStyle}>
-                  <span style={labelStyle}>Your Rating:</span>
-                  <span>{renderStars(booking.rating)}</span>
-                </div>
-              )}
-            </div>
-
-            <div style={bookingActionsStyle}>
-              {booking.status === 'Pending' && (
-                <button className="btn btn-secondary" style={actionBtnStyle}>
-                  Cancel Booking
-                </button>
-              )}
-              {booking.status === 'Confirmed' && (
-                <button className="btn btn-outline" style={actionBtnStyle}>
-                  Contact Provider
-                </button>
-              )}
-              {booking.status === 'Completed' && !booking.hasReview && (
-                <button className="btn btn-primary" style={actionBtnStyle}>
-                  Leave Review
-                </button>
-              )}
-              <button className="btn btn-outline" style={actionBtnStyle}>
-                View Details
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-
-  const renderProfile = () => (
-    <div>
-      <h2 style={sectionTitleStyle}>Profile Information</h2>
-      
-      <div className="card" style={profileCardStyle}>
-        <div style={profileHeaderStyle}>
-          <div style={avatarStyle}>
-            {user.name.charAt(0)}
-          </div>
-          <div style={profileInfoStyle}>
-            <h3 style={profileNameStyle}>{user.name}</h3>
-            <p style={profileJoinedStyle}>Member since {new Date(user.joinedDate).toLocaleDateString()}</p>
-          </div>
-          <button className="btn btn-outline">
-            Edit Profile
-          </button>
-        </div>
-
-        <div style={profileDetailsStyle}>
-          <div className="grid grid-2">
-            <div className="form-group">
-              <label className="form-label">Full Name</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                value={user.name} 
-                readOnly 
-              />
-            </div>
-            
-            <div className="form-group">
-              <label className="form-label">Email Address</label>
-              <input 
-                type="email" 
-                className="form-input" 
-                value={user.email} 
-                readOnly 
-              />
-            </div>
-            
-            <div className="form-group">
-              <label className="form-label">Phone Number</label>
-              <input 
-                type="tel" 
-                className="form-input" 
-                value={user.phone} 
-                readOnly 
-              />
-            </div>
-            
-            <div className="form-group">
-              <label className="form-label">City</label>
-              <input 
-                type="text" 
-                className="form-input" 
-                value={user.city} 
-                readOnly 
-              />
-            </div>
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Address</label>
-            <textarea 
-              className="form-input" 
-              value={user.address} 
-              readOnly 
-              rows="3"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="card" style={statsCardStyle}>
-        <h3 style={statsHeadingStyle}>Account Statistics</h3>
-        <div className="grid grid-3">
-          <div style={statItemStyle}>
-            <div style={statNumberStyle}>{user.totalBookings}</div>
-            <div style={statLabelStyle}>Total Bookings</div>
-          </div>
-          <div style={statItemStyle}>
-            <div style={statNumberStyle}>{user.completedBookings}</div>
-            <div style={statLabelStyle}>Completed Services</div>
-          </div>
-          <div style={statItemStyle}>
-            <div style={statNumberStyle}>₹{user.totalSpent.toLocaleString()}</div>
-            <div style={statLabelStyle}>Total Spent</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderSettings = () => (
-    <div>
-      <h2 style={sectionTitleStyle}>Settings</h2>
-      
-      <div className="card" style={settingsCardStyle}>
-        <h3 style={settingsHeadingStyle}>Notification Preferences</h3>
-        <div style={settingsListStyle}>
-          <div style={settingItemStyle}>
-            <div>
-              <div style={settingTitleStyle}>Email Notifications</div>
-              <div style={settingDescStyle}>Receive booking confirmations and updates via email</div>
-            </div>
-            <label style={switchStyle}>
-              <input type="checkbox" defaultChecked />
-              <span style={sliderStyle}></span>
-            </label>
-          </div>
-          
-          <div style={settingItemStyle}>
-            <div>
-              <div style={settingTitleStyle}>SMS Notifications</div>
-              <div style={settingDescStyle}>Get SMS alerts for important updates</div>
-            </div>
-            <label style={switchStyle}>
-              <input type="checkbox" defaultChecked />
-              <span style={sliderStyle}></span>
-            </label>
-          </div>
-          
-          <div style={settingItemStyle}>
-            <div>
-              <div style={settingTitleStyle}>Marketing Communications</div>
-              <div style={settingDescStyle}>Receive promotional offers and service recommendations</div>
-            </div>
-            <label style={switchStyle}>
-              <input type="checkbox" />
-              <span style={sliderStyle}></span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div className="card" style={settingsCardStyle}>
-        <h3 style={settingsHeadingStyle}>Privacy & Security</h3>
-        <div style={actionsListStyle}>
-          <button className="btn btn-outline" style={settingActionStyle}>
-            Change Password
-          </button>
-          <button className="btn btn-outline" style={settingActionStyle}>
-            Download My Data
-          </button>
-          <button className="btn btn-outline" style={settingActionStyle}>
-            Privacy Settings
-          </button>
-          <button className="btn btn-secondary" style={settingActionStyle}>
-            Delete Account
-          </button>
-        </div>
-      </div>
-    </div>
-  )
 
   return (
-    <CustomerLayout title="My Dashboard - HandyFix">
+    <Layout title="Customer Dashboard - HandyFix">
       <div style={dashboardContainerStyle}>
-        <div className="container">
-          <div style={dashboardHeaderStyle}>
-            <h1 style={dashboardTitleStyle}>Welcome back, {user.name.split(' ')[0]}!</h1>
-            <p style={dashboardSubtitleStyle}>Manage your bookings and profile</p>
-          </div>
-
-          <div style={dashboardContentStyle}>
-            <div style={sidebarStyle}>
-              <nav style={navStyle}>
-                <button 
-                  style={{
-                    ...navItemStyle,
-                    ...(activeTab === 'bookings' ? activeNavItemStyle : {})
-                  }}
-                  onClick={() => setActiveTab('bookings')}
-                >
-                  📋 My Bookings
-                </button>
-                <button 
-                  style={{
-                    ...navItemStyle,
-                    ...(activeTab === 'profile' ? activeNavItemStyle : {})
-                  }}
-                  onClick={() => setActiveTab('profile')}
-                >
-                  👤 Profile
-                </button>
-                <button 
-                  style={{
-                    ...navItemStyle,
-                    ...(activeTab === 'settings' ? activeNavItemStyle : {})
-                  }}
-                  onClick={() => setActiveTab('settings')}
-                >
-                  ⚙️ Settings
-                </button>
-              </nav>
+        {/* Sidebar */}
+        <div style={sidebarStyle}>
+          <div style={profileSectionStyle}>
+            <div style={profileAvatarStyle}>
+              👤
             </div>
-
-            <div style={mainContentStyle}>
-              {activeTab === 'bookings' && renderBookings()}
-              {activeTab === 'profile' && renderProfile()}
-              {activeTab === 'settings' && renderSettings()}
+            <div>
+              <h3 style={profileNameStyle}>{user.name}</h3>
+              <p style={profileEmailStyle}>{user.email}</p>
+              <span style={profileBadgeStyle}>Customer</span>
             </div>
           </div>
+
+          <nav style={navStyle}>
+            {[
+              { id: 'overview', icon: '📊', label: 'Overview' },
+              { id: 'bookings', icon: '📅', label: 'My Bookings' },
+              { id: 'saved', icon: '❤️', label: 'Saved Providers' },
+              { id: 'profile', icon: '⚙️', label: 'Profile Settings' },
+              { id: 'payments', icon: '💳', label: 'Payment Methods' },
+              { id: 'support', icon: '💬', label: 'Support' }
+            ].map(item => (
+              <button
+                key={item.id}
+                style={{
+                  ...navItemStyle,
+                  ...(activeTab === item.id ? activeNavItemStyle : {})
+                }}
+                onClick={() => setActiveTab(item.id)}
+              >
+                <span style={navIconStyle}>{item.icon}</span>
+                {item.label}
+              </button>
+            ))}
+
+            <button
+              style={logoutBtnStyle}
+              onClick={handleLogout}
+            >
+              <span style={navIconStyle}>🚪</span>
+              Logout
+            </button>
+          </nav>
+        </div>
+
+        {/* Main Content */}
+        <div style={mainContentStyle}>
+          {/* Overview Tab */}
+          {activeTab === 'overview' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>Welcome back, {user.name.split(' ')[0]}! 👋</h1>
+                <p style={subtitleStyle}>Here's your dashboard overview</p>
+              </div>
+
+              <div className="grid grid-3" style={{ marginTop: '40px' }}>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>📅</div>
+                  <h3 style={statLabelStyle}>Total Bookings</h3>
+                  <p style={statValueStyle}>12</p>
+                </div>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>✅</div>
+                  <h3 style={statLabelStyle}>Completed</h3>
+                  <p style={statValueStyle}>10</p>
+                </div>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>💰</div>
+                  <h3 style={statLabelStyle}>Total Spent</h3>
+                  <p style={statValueStyle}>₹8,500</p>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '60px' }}>
+                <h2 style={sectionTitleStyle}>Recent Bookings</h2>
+                {bookings.slice(0, 3).map(booking => (
+                  <div key={booking.id} style={bookingCardStyle}>
+                    <div style={bookingHeaderStyle}>
+                      <div>
+                        <h3 style={bookingServiceStyle}>{booking.service}</h3>
+                        <p style={bookingProviderStyle}>Provider: {booking.provider}</p>
+                      </div>
+                      <span style={{
+                        ...statusBadgeStyle,
+                        ...(booking.status === 'completed' ? completedStatusStyle : pendingStatusStyle)
+                      }}>
+                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                      </span>
+                    </div>
+                    <div style={bookingDetailsStyle}>
+                      <span>📅 {booking.date}</span>
+                      <span>🕐 {booking.time}</span>
+                      <span>💰 {booking.amount}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Bookings Tab */}
+          {activeTab === 'bookings' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>My Bookings</h1>
+                <Link href="/services" className="btn btn-primary">
+                  + New Booking
+                </Link>
+              </div>
+
+              <div style={{ marginTop: '40px' }}>
+                {bookings.map(booking => (
+                  <div key={booking.id} style={bookingDetailCardStyle}>
+                    <div style={bookingDetailHeaderStyle}>
+                      <div>
+                        <h3 style={bookingServiceStyle}>{booking.service}</h3>
+                        <p style={bookingBookingIdStyle}>Booking ID: {booking.id}</p>
+                      </div>
+                      <span style={{
+                        ...statusBadgeStyle,
+                        ...(booking.status === 'completed' ? completedStatusStyle : pendingStatusStyle)
+                      }}>
+                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                      </span>
+                    </div>
+
+                    <div style={bookingInfoGridStyle}>
+                      <div>
+                        <p style={bookingInfoLabelStyle}>Provider</p>
+                        <p style={bookingInfoValueStyle}>{booking.provider}</p>
+                      </div>
+                      <div>
+                        <p style={bookingInfoLabelStyle}>Date & Time</p>
+                        <p style={bookingInfoValueStyle}>{booking.date} at {booking.time}</p>
+                      </div>
+                      <div>
+                        <p style={bookingInfoLabelStyle}>Amount</p>
+                        <p style={bookingInfoValueStyle}>{booking.amount}</p>
+                      </div>
+                    </div>
+
+                    {booking.status === 'completed' && (
+                      <div style={reviewSectionStyle}>
+                        <p style={reviewLabelStyle}>Rating: {booking.rating}/5 ⭐</p>
+                        <p style={reviewTextStyle}>"{booking.review}"</p>
+                      </div>
+                    )}
+
+                    <div style={actionButtonsStyle}>
+                      <button style={primaryActionStyle}>View Details</button>
+                      {booking.status === 'pending' && (
+                        <>
+                          <button style={secondaryActionStyle}>Reschedule</button>
+                          <button style={cancelActionStyle}>Cancel</button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Saved Providers Tab */}
+          {activeTab === 'saved' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>Saved Providers</h1>
+              </div>
+
+              <div className="grid grid-2" style={{ marginTop: '40px' }}>
+                {savedProviders.map(provider => (
+                  <div key={provider.id} style={providerCardStyle}>
+                    <div style={providerHeaderStyle}>
+                      <div style={providerImageStyle}>
+                        {provider.image}
+                      </div>
+                      <div>
+                        <h3 style={providerNameStyle}>{provider.name}</h3>
+                        <p style={providerServiceStyle}>{provider.service}</p>
+                      </div>
+                    </div>
+                    <div style={providerStatsStyle}>
+                      <span>⭐ {provider.rating}</span>
+                      <span>🎯 {provider.jobs} jobs</span>
+                    </div>
+                    <div style={providerActionsStyle}>
+                      <button style={primaryActionStyle}>Book Now</button>
+                      <button style={secondaryActionStyle}>View Profile</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Profile Settings Tab */}
+          {activeTab === 'profile' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>Profile Settings</h1>
+              </div>
+
+              <div style={formCardStyle}>
+                <div className="grid grid-2">
+                  <div className="form-group">
+                    <label className="form-label">Full Name</label>
+                    <input type="text" className="form-input" defaultValue={user.name} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Email</label>
+                    <input type="email" className="form-input" defaultValue={user.email} disabled />
+                  </div>
+                </div>
+
+                <div className="grid grid-2">
+                  <div className="form-group">
+                    <label className="form-label">Phone</label>
+                    <input type="tel" className="form-input" defaultValue={user.phone} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">City</label>
+                    <input type="text" className="form-input" defaultValue={user.city} />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Address</label>
+                  <textarea className="form-input" rows="3" defaultValue={user.address}></textarea>
+                </div>
+
+                <div style={preferencesStyle}>
+                  <h3 style={preferencesLabelStyle}>Notification Preferences</h3>
+                  <label style={checkboxLabelStyle}>
+                    <input type="checkbox" defaultChecked />
+                    Email Notifications
+                  </label>
+                  <label style={checkboxLabelStyle}>
+                    <input type="checkbox" defaultChecked />
+                    SMS Notifications
+                  </label>
+                  <label style={checkboxLabelStyle}>
+                    <input type="checkbox" defaultChecked />
+                    Push Notifications
+                  </label>
+                </div>
+
+                <button className="btn btn-primary" style={{ marginTop: '24px' }}>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-    </CustomerLayout>
+    </Layout>
   )
 }
 
 // Styles
 const dashboardContainerStyle = {
-  minHeight: '80vh',
-  background: '#f8f9fa',
-  padding: '40px 0'
-}
-
-const dashboardHeaderStyle = {
-  textAlign: 'center',
-  marginBottom: '40px'
-}
-
-const dashboardTitleStyle = {
-  fontSize: '32px',
-  fontWeight: '700',
-  marginBottom: '8px',
-  color: '#2c3e50'
-}
-
-const dashboardSubtitleStyle = {
-  fontSize: '18px',
-  color: '#7f8c8d'
-}
-
-const dashboardContentStyle = {
   display: 'grid',
-  gridTemplateColumns: '280px 1fr',
-  gap: '40px'
+  gridTemplateColumns: '250px 1fr',
+  minHeight: 'calc(100vh - 60px)',
+  background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
 }
 
 const sidebarStyle = {
   background: 'white',
-  borderRadius: '12px',
+  borderRight: '1px solid #e0e0e0',
   padding: '24px',
-  height: 'fit-content',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+  height: '100vh',
+  overflowY: 'auto',
+  position: 'sticky',
+  top: '60px',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+}
+
+const profileSectionStyle = {
+  display: 'flex',
+  gap: '16px',
+  marginBottom: '32px',
+  padding: '16px',
+  background: 'linear-gradient(135deg, #f0f4ff 0%, #e8eef9 100%)',
+  borderRadius: '12px'
+}
+
+const profileAvatarStyle = {
+  width: '48px',
+  height: '48px',
+  borderRadius: '50%',
+  background: 'linear-gradient(135deg, #007bff, #0056b3)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '24px',
+  color: 'white'
+}
+
+const profileNameStyle = {
+  margin: '0',
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#1a1a1a'
+}
+
+const profileEmailStyle = {
+  margin: '0',
+  fontSize: '12px',
+  color: '#7f8c8d'
+}
+
+const profileBadgeStyle = {
+  display: 'inline-block',
+  padding: '4px 12px',
+  background: '#e8f4fd',
+  color: '#0056b3',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  marginTop: '4px'
 }
 
 const navStyle = {
@@ -413,50 +415,108 @@ const navStyle = {
 }
 
 const navItemStyle = {
-  padding: '16px 20px',
+  width: '100%',
+  padding: '12px 16px',
   background: 'transparent',
   border: 'none',
   borderRadius: '8px',
   textAlign: 'left',
   cursor: 'pointer',
-  fontSize: '16px',
+  fontSize: '14px',
   fontWeight: '500',
-  color: '#555',
-  transition: 'all 0.3s ease'
+  color: '#495057',
+  transition: 'all 0.3s ease',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px'
 }
 
 const activeNavItemStyle = {
-  background: '#007bff',
+  background: 'linear-gradient(135deg, #007bff, #0056b3)',
   color: 'white'
 }
 
-const mainContentStyle = {
-  display: 'flex',
-  flexDirection: 'column'
+const navIconStyle = {
+  fontSize: '16px'
 }
 
-const sectionHeaderStyle = {
+const logoutBtnStyle = {
+  ...navItemStyle,
+  marginTop: '24px',
+  borderTop: '1px solid #e0e0e0',
+  paddingTop: '20px',
+  color: '#dc3545'
+}
+
+const mainContentStyle = {
+  padding: '40px',
+  overflowY: 'auto',
+  height: '100vh'
+}
+
+const headerStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginBottom: '24px'
+  marginBottom: '40px'
+}
+
+const titleStyle = {
+  fontSize: '32px',
+  fontWeight: '700',
+  color: '#1a1a1a',
+  margin: '0'
+}
+
+const subtitleStyle = {
+  color: '#7f8c8d',
+  fontSize: '14px',
+  margin: '0'
+}
+
+const statCardStyle = {
+  background: 'white',
+  padding: '24px',
+  borderRadius: '12px',
+  textAlign: 'center',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  border: '1px solid #e0e0e0'
+}
+
+const statIconStyle = {
+  fontSize: '32px',
+  marginBottom: '12px',
+  display: 'block'
+}
+
+const statLabelStyle = {
+  margin: '0',
+  fontSize: '14px',
+  color: '#7f8c8d',
+  fontWeight: '500'
+}
+
+const statValueStyle = {
+  margin: '8px 0 0',
+  fontSize: '28px',
+  fontWeight: '700',
+  color: '#007bff'
 }
 
 const sectionTitleStyle = {
-  fontSize: '28px',
+  fontSize: '24px',
   fontWeight: '600',
-  color: '#2c3e50',
-  marginBottom: '24px'
-}
-
-const bookingsListStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px'
+  color: '#1a1a1a',
+  marginBottom: '20px'
 }
 
 const bookingCardStyle = {
-  marginBottom: '0'
+  background: 'white',
+  padding: '20px',
+  borderRadius: '12px',
+  marginBottom: '16px',
+  border: '1px solid #e0e0e0',
+  transition: 'all 0.3s ease'
 }
 
 const bookingHeaderStyle = {
@@ -466,200 +526,233 @@ const bookingHeaderStyle = {
   marginBottom: '16px'
 }
 
-const bookingInfoStyle = {
-  flex: '1'
-}
-
-const providerNameStyle = {
-  fontSize: '20px',
+const bookingServiceStyle = {
+  margin: '0',
+  fontSize: '18px',
   fontWeight: '600',
-  marginBottom: '4px',
-  color: '#2c3e50'
+  color: '#1a1a1a'
 }
 
-const serviceTypeStyle = {
-  color: '#007bff',
-  fontWeight: '500',
-  marginBottom: '4px'
-}
-
-const bookingIdStyle = {
+const bookingProviderStyle = {
+  margin: '4px 0 0',
   fontSize: '14px',
   color: '#7f8c8d'
 }
 
-const bookingStatusStyle = {}
+const statusBadgeStyle = {
+  padding: '6px 12px',
+  borderRadius: '20px',
+  fontSize: '12px',
+  fontWeight: '600',
+  textTransform: 'capitalize'
+}
+
+const completedStatusStyle = {
+  background: '#d4edda',
+  color: '#155724'
+}
+
+const pendingStatusStyle = {
+  background: '#fff3cd',
+  color: '#856404'
+}
 
 const bookingDetailsStyle = {
   display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  marginBottom: '16px'
+  gap: '24px',
+  fontSize: '14px',
+  color: '#495057'
 }
 
-const detailRowStyle = {
+const bookingDetailCardStyle = {
+  background: 'white',
+  padding: '24px',
+  borderRadius: '12px',
+  marginBottom: '20px',
+  border: '1px solid #e0e0e0'
+}
+
+const bookingDetailHeaderStyle = {
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  marginBottom: '24px',
+  paddingBottom: '20px',
+  borderBottom: '1px solid #e0e0e0'
 }
 
-const labelStyle = {
-  fontWeight: '500',
-  color: '#555'
+const bookingBookingIdStyle = {
+  margin: '4px 0 0',
+  fontSize: '12px',
+  color: '#7f8c8d'
 }
 
-const amountStyle = {
+const bookingInfoGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '24px',
+  marginBottom: '24px'
+}
+
+const bookingInfoLabelStyle = {
+  margin: '0',
+  fontSize: '12px',
+  color: '#7f8c8d',
+  textTransform: 'uppercase'
+}
+
+const bookingInfoValueStyle = {
+  margin: '4px 0 0',
+  fontSize: '16px',
   fontWeight: '600',
-  color: '#007bff'
+  color: '#2c3e50'
 }
 
-const bookingActionsStyle = {
+const reviewSectionStyle = {
+  background: '#f0f8ff',
+  padding: '16px',
+  borderRadius: '8px',
+  marginBottom: '24px',
+  borderLeft: '4px solid #007bff'
+}
+
+const reviewLabelStyle = {
+  margin: '0',
+  fontSize: '14px',
+  fontWeight: '600',
+  color: '#2c3e50'
+}
+
+const reviewTextStyle = {
+  margin: '8px 0 0',
+  fontSize: '14px',
+  color: '#495057',
+  fontStyle: 'italic'
+}
+
+const actionButtonsStyle = {
   display: 'flex',
   gap: '12px',
-  paddingTop: '16px',
-  borderTop: '1px solid #eee',
   flexWrap: 'wrap'
 }
 
-const actionBtnStyle = {
-  padding: '8px 16px',
-  fontSize: '14px'
-}
-
-const profileCardStyle = {
-  marginBottom: '24px'
-}
-
-const profileHeaderStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '20px',
-  marginBottom: '24px',
-  paddingBottom: '20px',
-  borderBottom: '1px solid #eee'
-}
-
-const avatarStyle = {
-  width: '80px',
-  height: '80px',
-  borderRadius: '50%',
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+const primaryActionStyle = {
+  padding: '10px 20px',
+  background: 'linear-gradient(135deg, #007bff, #0056b3)',
   color: 'white',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
+  transition: 'all 0.3s ease'
+}
+
+const secondaryActionStyle = {
+  padding: '10px 20px',
+  background: '#e8f4fd',
+  color: '#007bff',
+  border: '1px solid #007bff',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
+  transition: 'all 0.3s ease'
+}
+
+const cancelActionStyle = {
+  padding: '10px 20px',
+  background: '#ffe0e0',
+  color: '#dc3545',
+  border: '1px solid #dc3545',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
+  transition: 'all 0.3s ease'
+}
+
+const providerCardStyle = {
+  background: 'white',
+  padding: '20px',
+  borderRadius: '12px',
+  border: '1px solid #e0e0e0',
+  transition: 'all 0.3s ease'
+}
+
+const providerHeaderStyle = {
+  display: 'flex',
+  gap: '16px',
+  marginBottom: '16px',
+  alignItems: 'center'
+}
+
+const providerImageStyle = {
+  width: '50px',
+  height: '50px',
+  borderRadius: '50%',
+  background: 'linear-gradient(135deg, #f0f4ff, #e8eef9)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '32px',
-  fontWeight: '700'
+  fontSize: '24px'
 }
 
-const profileInfoStyle = {
-  flex: '1'
-}
-
-const profileNameStyle = {
-  fontSize: '24px',
-  fontWeight: '600',
-  marginBottom: '4px',
-  color: '#2c3e50'
-}
-
-const profileJoinedStyle = {
-  color: '#7f8c8d'
-}
-
-const profileDetailsStyle = {}
-
-const statsCardStyle = {
-  marginBottom: '0'
-}
-
-const statsHeadingStyle = {
-  fontSize: '20px',
-  fontWeight: '600',
-  marginBottom: '20px',
-  color: '#2c3e50'
-}
-
-const statItemStyle = {
-  textAlign: 'center',
-  padding: '20px',
-  background: '#f8f9fa',
-  borderRadius: '8px'
-}
-
-const statNumberStyle = {
-  fontSize: '28px',
-  fontWeight: '700',
-  color: '#007bff',
-  marginBottom: '8px'
-}
-
-const statLabelStyle = {
-  fontSize: '14px',
-  color: '#7f8c8d',
-  fontWeight: '500'
-}
-
-const settingsCardStyle = {
-  marginBottom: '24px'
-}
-
-const settingsHeadingStyle = {
-  fontSize: '20px',
-  fontWeight: '600',
-  marginBottom: '20px',
-  color: '#2c3e50'
-}
-
-const settingsListStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px'
-}
-
-const settingItemStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '16px 0',
-  borderBottom: '1px solid #eee'
-}
-
-const settingTitleStyle = {
+const providerNameStyle = {
+  margin: '0',
   fontSize: '16px',
-  fontWeight: '500',
-  marginBottom: '4px'
+  fontWeight: '600',
+  color: '#2c3e50'
 }
 
-const settingDescStyle = {
-  fontSize: '14px',
-  color: '#7f8c8d'
+const providerServiceStyle = {
+  margin: '4px 0 0',
+  fontSize: '12px',
+  color: '#007bff'
 }
 
-const switchStyle = {
-  position: 'relative',
-  display: 'inline-block',
-  width: '60px',
-  height: '34px'
-}
-
-const sliderStyle = {
-  position: 'absolute',
-  cursor: 'pointer',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: '#ccc',
-  transition: '0.4s',
-  borderRadius: '34px'
-}
-
-const actionsListStyle = {
+const providerStatsStyle = {
   display: 'flex',
-  flexDirection: 'column',
+  gap: '16px',
+  marginBottom: '16px',
+  padding: '12px 0',
+  borderTop: '1px solid #e0e0e0',
+  borderBottom: '1px solid #e0e0e0',
+  fontSize: '14px',
+  color: '#495057'
+}
+
+const providerActionsStyle = {
+  display: 'flex',
   gap: '12px'
 }
 
-const settingActionStyle = {
-  width: 'fit-content'
+const formCardStyle = {
+  background: 'white',
+  padding: '32px',
+  borderRadius: '12px',
+  border: '1px solid #e0e0e0',
+  maxWidth: '600px'
+}
+
+const preferencesStyle = {
+  marginTop: '24px',
+  paddingTop: '24px',
+  borderTop: '1px solid #e0e0e0'
+}
+
+const preferencesLabelStyle = {
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#2c3e50',
+  marginBottom: '16px'
+}
+
+const checkboxLabelStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  marginBottom: '12px',
+  cursor: 'pointer',
+  color: '#495057'
 }

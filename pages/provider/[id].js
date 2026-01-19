@@ -439,7 +439,8 @@ const ratingStarsStyle = {
 
 const ratingTextStyle = {
   fontSize: '16px',
-  fontWeight: '600'
+  fontWeight: '600',
+  color: '#1a1a1a'
 }
 
 const experienceDisplayStyle = {
@@ -555,7 +556,7 @@ const sectionTitleStyle = {
 
 const bioTextStyle = {
   lineHeight: '1.6',
-  color: '#555'
+  color: '#1a1a1a'
 }
 
 const specialtiesGridStyle = {
@@ -575,7 +576,7 @@ const specialtyTagStyle = {
 
 const serviceAreaTextStyle = {
   lineHeight: '1.6',
-  color: '#555'
+  color: '#1a1a1a'
 }
 
 const pricingListStyle = {
@@ -594,7 +595,8 @@ const pricingItemStyle = {
 }
 
 const serviceNameStyle = {
-  fontWeight: '500'
+  fontWeight: '500',
+  color: '#1a1a1a'
 }
 
 const servicePriceStyle = {
@@ -629,7 +631,8 @@ const reviewHeaderStyle = {
 }
 
 const reviewerNameStyle = {
-  fontSize: '16px'
+  fontSize: '16px',
+  color: '#1a1a1a'
 }
 
 const verifiedBadgeStyle = {
@@ -645,7 +648,8 @@ const reviewRatingStyle = {
 
 const reviewCommentStyle = {
   marginBottom: '8px',
-  lineHeight: '1.5'
+  lineHeight: '1.5',
+  color: '#1a1a1a'
 }
 
 const reviewDateStyle = {
@@ -673,7 +677,8 @@ const hourItemStyle = {
 
 const dayNameStyle = {
   fontWeight: '500',
-  textTransform: 'capitalize'
+  textTransform: 'capitalize',
+  color: '#1a1a1a'
 }
 
 const hoursStyle = {

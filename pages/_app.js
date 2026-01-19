@@ -4,9 +4,13 @@ import { useEffect } from 'react'
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
-    // Request notification permission on app load
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission()
+    // Request notification permission on app load (client-side only)
+    try {
+      if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission()
+      }
+    } catch (error) {
+      console.warn('Notification permission request error:', error)
     }
   }, [])
 

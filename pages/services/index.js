@@ -1,684 +1,502 @@
 import { useState, useEffect } from 'react'
-import Layout from '../../components/Layout'
 import Link from 'next/link'
+import Layout from '../../components/Layout'
+import { useRouter } from 'next/router'
 
-export default function Services() {
-  const [selectedCity, setSelectedCity] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [sortBy, setSortBy] = useState('rating')
-  const [priceRange, setPriceRange] = useState('all')
-  const [selectedService, setSelectedService] = useState('')
-  const [favorites, setFavorites] = useState([])
-  const [viewMode, setViewMode] = useState('grid') // grid or list
+export default function ServicesPage() {
+  const router = useRouter()
+  const { search } = router.query
+  const [filters, setFilters] = useState({
+    searchTerm: search || '',
+    service: '',
+    minPrice: 0,
+    maxPrice: 5000,
+    rating: 0,
+    sortBy: 'rating'
+  })
+  const [providers, setProviders] = useState([])
+  const [filteredProviders, setFilteredProviders] = useState([])
 
-  // Mock data - replace with API calls
-  const providers = [
+  // Mock providers data
+  const mockProviders = [
     {
       id: 1,
       name: 'Rajesh Kumar',
       service: 'Plumbing',
-      city: 'Mumbai',
       rating: 4.8,
-      reviews: 152,
-      experience: 8,
-      basePrice: 500,
-      available: true,
+      reviews: 156,
+      jobs: 245,
+      price: 500,
       image: '👨‍🔧',
-      specialties: ['Pipe Repair', 'Installation', 'Emergency Fixes'],
-      responseTime: '15 min',
-      completedJobs: 245,
       verified: true,
-      emergencyAvailable: true
+      available: true,
+      experience: 8,
+      responseTime: '15 min',
+      description: 'Expert plumber with 8 years of experience'
     },
     {
       id: 2,
       name: 'Amit Sharma',
       service: 'Electrical',
-      city: 'Delhi',
       rating: 4.9,
-      reviews: 203,
-      experience: 12,
-      basePrice: 400,
-      available: true,
-      image: '👨‍💼',
-      specialties: ['Wiring', 'Appliance Setup', 'Circuit Repair'],
-      responseTime: '20 min',
-      completedJobs: 312,
+      reviews: 312,
+      jobs: 312,
+      price: 600,
+      image: '👨‍🔬',
       verified: true,
-      emergencyAvailable: true
+      available: true,
+      experience: 12,
+      responseTime: '20 min',
+      description: 'Certified electrical expert'
     },
     {
       id: 3,
       name: 'Priya Singh',
       service: 'Cleaning',
-      city: 'Bangalore',
       rating: 4.7,
-      reviews: 89,
-      experience: 5,
-      basePrice: 300,
-      available: false,
+      reviews: 189,
+      jobs: 189,
+      price: 300,
       image: '👩‍💼',
-      specialties: ['Deep Cleaning', 'Regular Maintenance', 'Carpet Cleaning'],
-      responseTime: '30 min',
-      completedJobs: 189,
       verified: true,
-      emergencyAvailable: false
+      available: false,
+      experience: 5,
+      responseTime: '25 min',
+      description: 'Professional cleaning services'
     },
     {
       id: 4,
-      name: 'Mohammed Ali',
+      name: 'Vikram Patel',
       service: 'Carpentry',
-      city: 'Mumbai',
       rating: 4.6,
-      reviews: 134,
-      experience: 10,
-      basePrice: 600,
-      available: true,
+      reviews: 142,
+      jobs: 198,
+      price: 800,
       image: '👨‍🔧',
-      specialties: ['Furniture Repair', 'Custom Work', 'Installation'],
-      responseTime: '25 min',
-      completedJobs: 178,
       verified: true,
-      emergencyAvailable: false
+      available: true,
+      experience: 10,
+      responseTime: '30 min',
+      description: 'Skilled carpenter for all projects'
     },
     {
       id: 5,
-      name: 'Sneha Patel',
+      name: 'Neha Gupta',
       service: 'AC Repair',
-      city: 'Ahmedabad',
-      rating: 4.8,
-      reviews: 76,
-      experience: 6,
-      basePrice: 450,
-      available: true,
+      rating: 4.9,
+      reviews: 267,
+      jobs: 298,
+      price: 700,
       image: '👩‍💼',
-      specialties: ['AC Servicing', 'Installation', 'Gas Refill'],
-      responseTime: '18 min',
-      completedJobs: 156,
       verified: true,
-      emergencyAvailable: true
+      available: true,
+      experience: 11,
+      responseTime: '15 min',
+      description: 'AC maintenance and repair expert'
+    },
+    {
+      id: 6,
+      name: 'Arjun Singh',
+      service: 'Painting',
+      rating: 4.5,
+      reviews: 98,
+      jobs: 145,
+      price: 400,
+      image: '👨‍🎨',
+      verified: false,
+      available: true,
+      experience: 6,
+      responseTime: '40 min',
+      description: 'Interior and exterior painting'
     }
   ]
 
-  const cities = ['All Cities', 'Mumbai', 'Delhi', 'Bangalore', 'Ahmedabad', 'Chennai', 'Kolkata']
-  const services = ['All Services', 'Plumbing', 'Electrical', 'Carpentry', 'AC Repair', 'Cleaning', 'Painting']
+  useEffect(() => {
+    setProviders(mockProviders)
+  }, [])
 
-  const filteredProviders = providers
-    .filter(provider => {
-      const matchesSearch = provider.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           provider.service.toLowerCase().includes(searchTerm.toLowerCase())
-      const matchesCity = !selectedCity || selectedCity === 'All Cities' || provider.city === selectedCity
-      const matchesService = !selectedService || selectedService === 'All Services' || provider.service === selectedService
-      const matchesPrice = priceRange === 'all' ||
-                          (priceRange === 'low' && provider.basePrice <= 400) ||
-                          (priceRange === 'medium' && provider.basePrice > 400 && provider.basePrice <= 600) ||
-                          (priceRange === 'high' && provider.basePrice > 600)
-      
-      return matchesSearch && matchesCity && matchesService && matchesPrice
+  // Apply filters
+  useEffect(() => {
+    let filtered = providers.filter(provider => {
+      // Search filter
+      if (filters.searchTerm && !provider.service.toLowerCase().includes(filters.searchTerm.toLowerCase()) &&
+          !provider.name.toLowerCase().includes(filters.searchTerm.toLowerCase())) {
+        return false
+      }
+
+      // Service filter
+      if (filters.service && provider.service !== filters.service) {
+        return false
+      }
+
+      // Price filter
+      if (provider.price < filters.minPrice || provider.price > filters.maxPrice) {
+        return false
+      }
+
+      // Rating filter
+      if (provider.rating < filters.rating) {
+        return false
+      }
+
+      return true
     })
-    .sort((a, b) => {
-      if (sortBy === 'rating') return b.rating - a.rating
-      if (sortBy === 'price') return a.basePrice - b.basePrice
-      if (sortBy === 'experience') return b.experience - a.experience
-      if (sortBy === 'responseTime') return parseInt(a.responseTime) - parseInt(b.responseTime)
-      return 0
-    })
 
-  const toggleFavorite = (providerId) => {
-    setFavorites(prev => 
-      prev.includes(providerId) 
-        ? prev.filter(id => id !== providerId)
-        : [...prev, providerId]
-    )
-  }
-
-  const getServiceColor = (service) => {
-    const colors = {
-      'Plumbing': '#007bff',
-      'Electrical': '#ffc107',
-      'Carpentry': '#28a745',
-      'AC Repair': '#17a2b8',
-      'Cleaning': '#6f42c1',
-      'Painting': '#e83e8c'
+    // Sort
+    if (filters.sortBy === 'rating') {
+      filtered.sort((a, b) => b.rating - a.rating)
+    } else if (filters.sortBy === 'price-low') {
+      filtered.sort((a, b) => a.price - b.price)
+    } else if (filters.sortBy === 'price-high') {
+      filtered.sort((a, b) => b.price - a.price)
+    } else if (filters.sortBy === 'experience') {
+      filtered.sort((a, b) => b.experience - a.experience)
     }
-    return colors[service] || '#6c757d'
-  }
+
+    setFilteredProviders(filtered)
+  }, [filters, providers])
+
+  const services = [...new Set(mockProviders.map(p => p.service))]
 
   return (
     <Layout title="Find Service Providers - HandyFix">
-      {/* Enhanced Hero Section */}
-      <section style={heroStyle}>
-        <div className="container">
-          <div style={heroContentStyle}>
-            <h1 style={heroTitleStyle}>Find Service Providers</h1>
-            <p style={heroSubtitleStyle}>Connect with verified professionals in your area</p>
-            
-            <div style={searchBarStyle}>
+      <div style={pageStyle}>
+        <div style={headerStyle}>
+          <h1 style={titleStyle}>Find Service Providers</h1>
+          <p style={subtitleStyle}>Choose from verified professionals near you</p>
+        </div>
+
+        <div className="container" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '40px', marginTop: '40px' }}>
+          {/* Filters Sidebar */}
+          <div style={sidebarStyle}>
+            <h3 style={filterTitleStyle}>Filters</h3>
+
+            {/* Search */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Search</label>
               <input
                 type="text"
-                placeholder="Search by name or service..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={searchInputStyle}
+                className="form-input"
+                placeholder="Provider name or service"
+                value={filters.searchTerm}
+                onChange={(e) => setFilters({ ...filters, searchTerm: e.target.value })}
               />
+            </div>
+
+            {/* Service Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Service Type</label>
               <select
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                style={selectStyle}
+                className="form-input"
+                value={filters.service}
+                onChange={(e) => setFilters({ ...filters, service: e.target.value })}
               >
-                {cities.map(city => (
-                  <option key={city} value={city}>{city}</option>
+                <option value="">All Services</option>
+                {services.map(service => (
+                  <option key={service} value={service}>{service}</option>
                 ))}
               </select>
-              <button className="btn btn-primary" style={searchBtnStyle}>
-                🔍 Search
-              </button>
             </div>
 
-            <div style={quickFiltersStyle}>
-              {services.slice(1, 5).map(service => (
-                <button
-                  key={service}
-                  style={{
-                    ...quickFilterBtnStyle,
-                    ...(selectedService === service ? activeQuickFilterStyle : {})
-                  }}
-                  onClick={() => setSelectedService(selectedService === service ? '' : service)}
-                >
-                  {service === 'Plumbing' && '🔧'}
-                  {service === 'Electrical' && '⚡'}
-                  {service === 'Carpentry' && '🔨'}
-                  {service === 'AC Repair' && '❄️'}
-                  {service}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Enhanced Filters & Results */}
-      <section style={sectionStyle}>
-        <div className="container">
-          <div style={filtersStyle}>
-            <div style={leftFiltersStyle}>
-              <div style={filterGroupStyle}>
-                <label style={filterLabelStyle}>Service:</label>
-                <select
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                  style={filterSelectStyle}
-                >
-                  {services.map(service => (
-                    <option key={service} value={service}>{service}</option>
-                  ))}
-                </select>
+            {/* Price Range */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Price Range</label>
+              <div style={priceInputsStyle}>
+                <input
+                  type="number"
+                  className="form-input"
+                  placeholder="Min"
+                  value={filters.minPrice}
+                  onChange={(e) => setFilters({ ...filters, minPrice: Number(e.target.value) })}
+                />
+                <input
+                  type="number"
+                  className="form-input"
+                  placeholder="Max"
+                  value={filters.maxPrice}
+                  onChange={(e) => setFilters({ ...filters, maxPrice: Number(e.target.value) })}
+                />
               </div>
-
-              <div style={filterGroupStyle}>
-                <label style={filterLabelStyle}>Sort by:</label>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  style={filterSelectStyle}
-                >
-                  <option value="rating">Highest Rated</option>
-                  <option value="price">Lowest Price</option>
-                  <option value="experience">Most Experienced</option>
-                  <option value="responseTime">Fastest Response</option>
-                </select>
-              </div>
-
-              <div style={filterGroupStyle}>
-                <label style={filterLabelStyle}>Price Range:</label>
-                <select
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                  style={filterSelectStyle}
-                >
-                  <option value="all">All Prices</option>
-                  <option value="low">Under ₹400</option>
-                  <option value="medium">₹400 - ₹600</option>
-                  <option value="high">Above ₹600</option>
-                </select>
-              </div>
+              <p style={priceDisplayStyle}>₹{filters.minPrice} - ₹{filters.maxPrice}</p>
             </div>
 
-            <div style={rightFiltersStyle}>
-              <div style={viewToggleStyle}>
-                <button
-                  style={{
-                    ...viewToggleBtnStyle,
-                    ...(viewMode === 'grid' ? activeViewBtnStyle : {})
-                  }}
-                  onClick={() => setViewMode('grid')}
-                  title="Grid View"
-                >
-                  ⊞
-                </button>
-                <button
-                  style={{
-                    ...viewToggleBtnStyle,
-                    ...(viewMode === 'list' ? activeViewBtnStyle : {})
-                  }}
-                  onClick={() => setViewMode('list')}
-                  title="List View"
-                >
-                  ☰
-                </button>
-              </div>
-
-              <div style={resultsCountStyle}>
-                <strong>{filteredProviders.length}</strong> provider{filteredProviders.length !== 1 ? 's' : ''} found
-              </div>
-            </div>
-          </div>
-
-          <div style={viewMode === 'grid' ? resultsGridStyle : resultsListStyle}>
-            {filteredProviders.map(provider => (
-              <div key={provider.id} className="card" style={viewMode === 'grid' ? providerCardStyle : listProviderCardStyle}>
-                {/* Enhanced Card Header */}
-                <div style={cardHeaderStyle}>
-                  <div style={providerImageStyle}>
-                    {provider.image}
-                    {provider.verified && (
-                      <div style={verifiedBadgeStyle}>✓</div>
-                    )}
-                  </div>
-                  <div style={providerInfoStyle}>
-                    <div style={nameRowStyle}>
-                      <h3 style={providerNameStyle}>{provider.name}</h3>
-                      <button
-                        style={{
-                          ...favoriteButtonStyle,
-                          color: favorites.includes(provider.id) ? '#dc3545' : '#6c757d'
-                        }}
-                        onClick={() => toggleFavorite(provider.id)}
-                        title={favorites.includes(provider.id) ? 'Remove from favorites' : 'Add to favorites'}
-                      >
-                        {favorites.includes(provider.id) ? '❤️' : '🤍'}
-                      </button>
-                    </div>
-                    <div style={serviceRowStyle}>
-                      <span style={{
-                        ...serviceTypeStyle,
-                        color: getServiceColor(provider.service)
-                      }}>
-                        {provider.service} Specialist
-                      </span>
-                      {provider.emergencyAvailable && (
-                        <span style={emergencyBadgeStyle}>⚡ Emergency</span>
-                      )}
-                    </div>
-                    <p style={locationStyle}>📍 {provider.city}</p>
-                  </div>
-                  <div style={availabilityStyle}>
-                    <span style={{
-                      ...statusBadgeStyle,
-                      ...(provider.available ? availableBadgeStyle : unavailableBadgeStyle)
-                    }}>
-                      {provider.available ? 'Available' : 'Busy'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Enhanced Stats Row */}
-                <div style={statsRowStyle}>
-                  <div style={statStyle}>
-                    <div style={ratingContainerStyle}>
-                      <span style={ratingStyle}>⭐ {provider.rating}</span>
-                      <span style={reviewsStyle}>({provider.reviews} reviews)</span>
-                    </div>
-                    <div style={metricStyle}>
-                      <span style={metricIconStyle}>🎯</span>
-                      <span>{provider.completedJobs} jobs completed</span>
-                    </div>
-                  </div>
-                  <div style={responseInfoStyle}>
-                    <div style={experienceStyle}>
-                      {provider.experience} years exp.
-                    </div>
-                    <div style={responseTimeStyle}>
-                      ⏱️ Responds in {provider.responseTime}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Enhanced Specialties */}
-                <div style={specialtiesStyle}>
-                  <strong style={specialtiesLabelStyle}>Specialties:</strong>
-                  <div style={tagsStyle}>
-                    {provider.specialties.map(specialty => (
-                      <span key={specialty} style={{
-                        ...tagStyle,
-                        borderColor: getServiceColor(provider.service) + '40',
-                        color: getServiceColor(provider.service)
-                      }}>
-                        {specialty}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Enhanced Footer */}
-                <div style={cardFooterStyle}>
-                  <div style={priceStyle}>
-                    Starting from <strong style={priceValueStyle}>₹{provider.basePrice}</strong>
-                    <span style={priceNoteStyle}>per visit</span>
-                  </div>
-                  <div style={actionsStyle}>
-                    <Link href={`/provider/${provider.id}`} className="btn btn-outline" style={viewBtnStyle}>
-                      👁️ Profile
-                    </Link>
-                    <Link href={`/book/${provider.id}`} className="btn btn-primary" style={bookBtnStyle}>
-                      📅 Book Now
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {filteredProviders.length === 0 && (
-            <div style={noResultsStyle}>
-              <div style={noResultsIconStyle}>🔍</div>
-              <h3 style={noResultsTitleStyle}>No providers found</h3>
-              <p style={noResultsTextStyle}>Try adjusting your search criteria or check back later.</p>
-              <button 
-                style={clearFiltersStyle}
-                onClick={() => {
-                  setSearchTerm('')
-                  setSelectedCity('')
-                  setSelectedService('')
-                  setPriceRange('all')
-                }}
+            {/* Rating Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Minimum Rating</label>
+              <select
+                className="form-input"
+                value={filters.rating}
+                onChange={(e) => setFilters({ ...filters, rating: Number(e.target.value) })}
               >
-                Clear All Filters
-              </button>
+                <option value={0}>All Ratings</option>
+                <option value={4.5}>4.5+ ⭐</option>
+                <option value={4}>4+ ⭐</option>
+                <option value={3.5}>3.5+ ⭐</option>
+              </select>
             </div>
-          )}
-        </div>
-      </section>
 
-      {/* Enhanced Service Categories */}
-      <section style={{...sectionStyle, background: 'white'}}>
-        <div className="container">
-          <h2 style={sectionTitleStyle}>Browse by Service Category</h2>
-          <p style={sectionSubtitleStyle}>Find the right professional for your needs</p>
-          <div className="grid grid-4" style={{marginTop: '40px'}}>
-            {services.slice(1).map(service => {
-              const providerCount = providers.filter(p => p.service === service).length
-              return (
-                <Link key={service} href={`/services/${service.toLowerCase().replace(' ', '-')}`} style={{textDecoration: 'none'}}>
-                  <div className="card" style={{
-                    ...categoryCardStyle,
-                    borderTop: `4px solid ${getServiceColor(service)}`
-                  }}>
-                    <div style={{
-                      ...categoryIconStyle,
-                      color: getServiceColor(service)
-                    }}>
-                      {service === 'Plumbing' && '🔧'}
-                      {service === 'Electrical' && '⚡'}
-                      {service === 'Carpentry' && '🔨'}
-                      {service === 'AC Repair' && '❄️'}
-                      {service === 'Cleaning' && '🧽'}
-                      {service === 'Painting' && '🎨'}
+            {/* Sort By */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Sort By</label>
+              <select
+                className="form-input"
+                value={filters.sortBy}
+                onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
+              >
+                <option value="rating">Highest Rated</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="experience">Most Experienced</option>
+              </select>
+            </div>
+
+            {/* Reset Filters */}
+            <button
+              style={resetBtnStyle}
+              onClick={() => setFilters({
+                searchTerm: '',
+                service: '',
+                minPrice: 0,
+                maxPrice: 5000,
+                rating: 0,
+                sortBy: 'rating'
+              })}
+            >
+              Reset Filters
+            </button>
+          </div>
+
+          {/* Results */}
+          <div>
+            <div style={resultHeaderStyle}>
+              <h2 style={resultTitleStyle}>
+                {filteredProviders.length} {filteredProviders.length === 1 ? 'Provider' : 'Providers'} Found
+              </h2>
+            </div>
+
+            <div style={providersGridStyle}>
+              {filteredProviders.length > 0 ? (
+                filteredProviders.map(provider => (
+                  <div key={provider.id} style={providerCardStyle}>
+                    <div style={cardHeaderStyle}>
+                      <div style={profileImageStyle}>
+                        {provider.image}
+                        {provider.verified && <span style={verifiedBadgeStyle}>✓</span>}
+                      </div>
+                      <div style={providerInfoStyle}>
+                        <h3 style={providerNameStyle}>{provider.name}</h3>
+                        <p style={serviceStyle}>{provider.service}</p>
+                        <div style={ratingStyle}>
+                          <span style={starsStyle}>{'⭐'.repeat(Math.floor(provider.rating))}</span>
+                          <span style={ratingValueStyle}>{provider.rating} ({provider.reviews})</span>
+                        </div>
+                      </div>
                     </div>
-                    <h3 style={categoryNameStyle}>{service}</h3>
-                    <p style={categoryCountStyle}>
-                      {providerCount} provider{providerCount !== 1 ? 's' : ''} available
-                    </p>
-                    <div style={categoryFooterStyle}>
-                      <span style={viewCategoryStyle}>View All →</span>
+
+                    <div style={descriptionStyle}>
+                      {provider.description}
+                    </div>
+
+                    <div style={statsGridStyle}>
+                      <div style={statStyle}>
+                        <span style={statIconStyle}>🎯</span>
+                        <div>
+                          <p style={statLabelStyle}>{provider.jobs} Jobs</p>
+                        </div>
+                      </div>
+                      <div style={statStyle}>
+                        <span style={statIconStyle}>⏱️</span>
+                        <div>
+                          <p style={statLabelStyle}>{provider.responseTime}</p>
+                        </div>
+                      </div>
+                      <div style={statStyle}>
+                        <span style={statIconStyle}>👤</span>
+                        <div>
+                          <p style={statLabelStyle}>{provider.experience}y exp</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={priceAndActionStyle}>
+                      <div>
+                        <p style={priceLabel}>Starting from</p>
+                        <p style={priceValueStyle}>₹{provider.price}</p>
+                      </div>
+                      <div style={actionButtonsStyle}>
+                        <Link href={`/provider/${provider.id}`} style={viewProfileBtn}>
+                          View Profile
+                        </Link>
+                        {provider.available ? (
+                          <button style={bookNowBtn}>Book Now</button>
+                        ) : (
+                          <button style={unavailableBtn} disabled>Unavailable</button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </Link>
-              )
-            })}
+                ))
+              ) : (
+                <div style={noResultsStyle}>
+                  <p style={noResultsTextStyle}>No providers found matching your filters.</p>
+                  <button
+                    style={resetBtnStyle}
+                    onClick={() => setFilters({
+                      searchTerm: '',
+                      service: '',
+                      minPrice: 0,
+                      maxPrice: 5000,
+                      rating: 0,
+                      sortBy: 'rating'
+                    })}
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </Layout>
   )
 }
 
-// Enhanced Styles with Better Visibility
-const heroStyle = {
+// Styles
+const pageStyle = {
+  background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+  minHeight: '100vh',
+  padding: '60px 0'
+}
+
+const headerStyle = {
+  textAlign: 'center',
+  marginBottom: '40px',
   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   color: 'white',
-  padding: '80px 0',
-  textAlign: 'center',
-  position: 'relative',
-  overflow: 'hidden'
+  padding: '60px 20px'
 }
 
-const heroContentStyle = {
-  position: 'relative',
-  zIndex: 1
-}
-
-const heroTitleStyle = {
-  fontSize: '48px',
-  fontWeight: '800',
-  marginBottom: '20px',
-  textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+const titleStyle = {
+  fontSize: '42px',
+  fontWeight: '700',
+  margin: '0 0 16px',
   background: 'linear-gradient(135deg, #ffffff, #f0f8ff)',
   WebkitBackgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
   backgroundClip: 'text'
 }
 
-const heroSubtitleStyle = {
-  fontSize: '20px',
-  marginBottom: '40px',
-  opacity: '0.95',
-  textShadow: '1px 1px 2px rgba(0,0,0,0.2)'
+const subtitleStyle = {
+  fontSize: '18px',
+  opacity: '0.9',
+  margin: '0'
 }
 
-const searchBarStyle = {
-  display: 'flex',
-  gap: '0',
-  maxWidth: '700px',
-  margin: '0 auto 30px',
-  background: 'rgba(255, 255, 255, 0.95)',
-  backdropFilter: 'blur(10px)',
-  padding: '8px',
-  borderRadius: '16px',
-  boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
-  border: '1px solid rgba(255, 255, 255, 0.2)'
-}
-
-const searchInputStyle = {
-  flex: '2',
-  padding: '16px 20px',
-  border: 'none',
-  borderRadius: '12px',
-  fontSize: '16px',
-  background: 'transparent',
-  color: '#333'
-}
-
-const selectStyle = {
-  flex: '1',
-  padding: '16px 20px',
-  border: 'none',
-  borderRadius: '12px',
-  fontSize: '16px',
-  background: 'rgba(248, 249, 250, 0.8)',
-  color: '#333'
-}
-
-const searchBtnStyle = {
-  whiteSpace: 'nowrap',
-  borderRadius: '12px',
-  padding: '16px 24px'
-}
-
-const quickFiltersStyle = {
-  display: 'flex',
-  gap: '12px',
-  justifyContent: 'center',
-  flexWrap: 'wrap'
-}
-
-const quickFilterBtnStyle = {
-  background: 'rgba(255, 255, 255, 0.2)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.3)',
-  color: 'white',
-  padding: '8px 16px',
-  borderRadius: '25px',
-  cursor: 'pointer',
-  fontSize: '14px',
-  fontWeight: '500',
-  transition: 'all 0.3s ease',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px'
-}
-
-const activeQuickFilterStyle = {
-  background: 'rgba(255, 255, 255, 0.3)',
-  borderColor: 'rgba(255, 255, 255, 0.5)'
-}
-
-const sectionStyle = {
-  padding: '60px 0',
-  background: '#f8f9fa'
-}
-
-const filtersStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: '32px',
-  padding: '24px',
+const sidebarStyle = {
   background: 'white',
-  borderRadius: '16px',
-  boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-  flexWrap: 'wrap',
-  gap: '20px'
+  padding: '24px',
+  borderRadius: '12px',
+  height: 'fit-content',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  border: '1px solid #e0e0e0'
 }
 
-const leftFiltersStyle = {
-  display: 'flex',
-  gap: '24px',
-  flexWrap: 'wrap'
-}
-
-const rightFiltersStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '20px'
+const filterTitleStyle = {
+  fontSize: '18px',
+  fontWeight: '700',
+  color: '#2c3e50',
+  marginBottom: '24px'
 }
 
 const filterGroupStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px'
+  marginBottom: '24px',
+  paddingBottom: '24px',
+  borderBottom: '1px solid #e0e0e0'
+}
+
+const filterGroupStyle_last = {
+  marginBottom: '24px'
 }
 
 const filterLabelStyle = {
-  fontWeight: '700',
-  color: '#2c3e50',
-  fontSize: '14px',
-  textTransform: 'uppercase',
-  letterSpacing: '0.5px'
-}
-
-const filterSelectStyle = {
-  padding: '10px 16px',
-  border: '2px solid #e9ecef',
-  borderRadius: '8px',
-  fontSize: '14px',
-  fontWeight: '500',
-  color: '#2c3e50',
-  background: 'white'
-}
-
-const viewToggleStyle = {
-  display: 'flex',
-  background: '#e9ecef',
-  borderRadius: '8px',
-  padding: '2px'
-}
-
-const viewToggleBtnStyle = {
-  background: 'none',
-  border: 'none',
-  padding: '8px 12px',
-  borderRadius: '6px',
-  cursor: 'pointer',
-  fontSize: '16px',
-  color: '#6c757d',
-  transition: 'all 0.3s ease'
-}
-
-const activeViewBtnStyle = {
-  background: 'white',
-  color: '#007bff',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-}
-
-const resultsCountStyle = {
-  color: '#2c3e50',
+  display: 'block',
+  marginBottom: '8px',
   fontWeight: '600',
-  fontSize: '16px'
+  color: '#2c3e50',
+  fontSize: '14px'
 }
 
-const resultsGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
-  gap: '24px'
-}
-
-const resultsListStyle = {
+const priceInputsStyle = {
   display: 'flex',
-  flexDirection: 'column',
-  gap: '16px'
+  gap: '8px'
+}
+
+const priceDisplayStyle = {
+  fontSize: '12px',
+  color: '#7f8c8d',
+  marginTop: '8px'
+}
+
+const resetBtnStyle = {
+  width: '100%',
+  padding: '10px 16px',
+  background: '#dc3545',
+  color: 'white',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px'
+}
+
+const resultHeaderStyle = {
+  marginBottom: '24px'
+}
+
+const resultTitleStyle = {
+  fontSize: '24px',
+  fontWeight: '600',
+  color: '#2c3e50',
+  margin: '0'
+}
+
+const providersGridStyle = {
+  display: 'grid',
+  gap: '20px'
 }
 
 const providerCardStyle = {
-  height: 'fit-content',
-  transition: 'all 0.3s ease',
-  border: '2px solid transparent',
-  background: 'rgba(255, 255, 255, 0.95)',
-  backdropFilter: 'blur(10px)'
-}
-
-const listProviderCardStyle = {
-  ...providerCardStyle,
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center'
+  background: 'white',
+  borderRadius: '12px',
+  padding: '24px',
+  border: '1px solid #e0e0e0',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  transition: 'all 0.3s ease'
 }
 
 const cardHeaderStyle = {
   display: 'flex',
-  alignItems: 'flex-start',
   gap: '16px',
-  marginBottom: '20px'
+  marginBottom: '16px'
 }
 
-const providerImageStyle = {
+const profileImageStyle = {
   position: 'relative',
-  width: '70px',
-  height: '70px',
+  width: '60px',
+  height: '60px',
   borderRadius: '50%',
-  background: 'linear-gradient(135deg, #e9ecef, #dee2e6)',
+  background: 'linear-gradient(135deg, #f0f4ff, #e8eef9)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '28px',
-  flexShrink: 0,
-  border: '3px solid #fff',
-  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+  flexShrink: 0
 }
 
 const verifiedBadgeStyle = {
   position: 'absolute',
-  top: '-4px',
+  bottom: '-4px',
   right: '-4px',
   width: '24px',
   height: '24px',
@@ -689,340 +507,146 @@ const verifiedBadgeStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '12px',
-  fontWeight: '700',
-  border: '2px solid white'
+  fontWeight: '700'
 }
 
 const providerInfoStyle = {
-  flex: '1'
-}
-
-const nameRowStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginBottom: '6px'
+  flex: 1
 }
 
 const providerNameStyle = {
-  fontSize: '22px',
-  fontWeight: '800',
-  marginBottom: '0',
-  color: '#000000',
-  textShadow: 'none',
-  letterSpacing: '-0.3px',
-  background: 'rgba(255, 255, 255, 0.9)',
-  padding: '2px 8px',
-  borderRadius: '4px',
-  display: 'inline-block'
+  margin: '0',
+  fontSize: '18px',
+  fontWeight: '600',
+  color: '#2c3e50'
 }
 
-const favoriteButtonStyle = {
-  background: 'none',
-  border: 'none',
-  fontSize: '20px',
-  cursor: 'pointer',
-  padding: '4px',
-  borderRadius: '50%',
-  transition: 'all 0.3s ease'
+const serviceStyle = {
+  margin: '4px 0 0',
+  fontSize: '14px',
+  color: '#007bff',
+  fontWeight: '500'
 }
 
-const serviceRowStyle = {
+const ratingStyle = {
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
-  marginBottom: '6px'
+  gap: '8px',
+  marginTop: '4px'
 }
 
-const serviceTypeStyle = {
-  fontWeight: '700',
-  fontSize: '16px',
-  textTransform: 'uppercase',
-  letterSpacing: '0.5px',
-  textShadow: 'none',
-  background: 'rgba(255, 255, 255, 0.9)',
-  padding: '2px 8px',
-  borderRadius: '4px',
-  display: 'inline-block'
+const starsStyle = {
+  fontSize: '12px'
 }
 
-const emergencyBadgeStyle = {
-  background: 'linear-gradient(135deg, #dc3545, #c82333)',
-  color: 'white',
-  padding: '2px 8px',
-  borderRadius: '12px',
-  fontSize: '10px',
-  fontWeight: '700',
-  textTransform: 'uppercase',
-  letterSpacing: '0.5px',
-  animation: 'pulse 2s infinite'
-}
-
-const locationStyle = {
-  color: '#000000',
-  fontSize: '14px',
-  fontWeight: '600',
-  background: 'rgba(255, 255, 255, 0.8)',
-  padding: '2px 6px',
-  borderRadius: '3px',
-  display: 'inline-block'
-}
-
-const availabilityStyle = {
-  flexShrink: 0
-}
-
-const statusBadgeStyle = {
-  padding: '6px 12px',
-  borderRadius: '20px',
+const ratingValueStyle = {
   fontSize: '12px',
-  fontWeight: '700',
-  textTransform: 'uppercase',
-  letterSpacing: '0.5px'
+  color: '#7f8c8d'
 }
 
-const availableBadgeStyle = {
-  background: 'linear-gradient(135deg, #28a745, #20c997)',
-  color: 'white',
-  boxShadow: '0 2px 8px rgba(40, 167, 69, 0.3)'
+const descriptionStyle = {
+  fontSize: '14px',
+  color: '#495057',
+  marginBottom: '16px',
+  lineHeight: '1.5'
 }
 
-const unavailableBadgeStyle = {
-  background: 'linear-gradient(135deg, #dc3545, #c82333)',
-  color: 'white',
-  boxShadow: '0 2px 8px rgba(220, 53, 69, 0.3)'
-}
-
-const statsRowStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
+const statsGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '16px',
   marginBottom: '20px',
-  padding: '16px',
-  background: 'rgba(248, 249, 250, 0.7)',
-  borderRadius: '12px'
+  paddingBottom: '20px',
+  borderBottom: '1px solid #e0e0e0'
 }
 
 const statStyle = {
   display: 'flex',
-  flexDirection: 'column',
-  gap: '8px'
-}
-
-const ratingContainerStyle = {
-  display: 'flex',
   alignItems: 'center',
   gap: '8px'
 }
 
-const ratingStyle = {
-  fontSize: '16px',
-  fontWeight: '700',
-  color: '#ffc107'
+const statIconStyle = {
+  fontSize: '16px'
 }
 
-const reviewsStyle = {
-  fontSize: '14px',
-  color: '#6c757d',
-  fontWeight: '500'
-}
-
-const metricStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
-  fontSize: '13px',
-  color: '#495057',
-  fontWeight: '500'
-}
-
-const metricIconStyle = {
-  fontSize: '14px'
-}
-
-const responseInfoStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-end',
-  gap: '4px'
-}
-
-const experienceStyle = {
-  fontSize: '14px',
-  color: '#007bff',
-  fontWeight: '700'
-}
-
-const responseTimeStyle = {
+const statLabelStyle = {
+  margin: '0',
   fontSize: '12px',
-  color: '#28a745',
-  fontWeight: '600'
+  color: '#7f8c8d'
 }
 
-const specialtiesStyle = {
-  marginBottom: '20px'
-}
-
-const specialtiesLabelStyle = {
-  color: '#2c3e50',
-  fontSize: '14px',
-  fontWeight: '700',
-  textTransform: 'uppercase',
-  letterSpacing: '0.5px'
-}
-
-const tagsStyle = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '8px',
-  marginTop: '8px'
-}
-
-const tagStyle = {
-  padding: '6px 12px',
-  background: 'rgba(255, 255, 255, 0.8)',
-  border: '2px solid',
-  borderRadius: '20px',
-  fontSize: '12px',
-  fontWeight: '600',
-  textTransform: 'uppercase',
-  letterSpacing: '0.3px'
-}
-
-const cardFooterStyle = {
+const priceAndActionStyle = {
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingTop: '20px',
-  borderTop: '2px solid #f1f3f4'
+  alignItems: 'flex-end'
 }
 
-const priceStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px'
+const priceLabel = {
+  margin: '0',
+  fontSize: '12px',
+  color: '#7f8c8d'
 }
 
 const priceValueStyle = {
-  color: '#007bff',
+  margin: '4px 0 0',
   fontSize: '20px',
-  fontWeight: '800'
+  fontWeight: '700',
+  color: '#28a745'
 }
 
-const priceNoteStyle = {
-  color: '#6c757d',
-  fontSize: '12px',
-  fontWeight: '500'
-}
-
-const actionsStyle = {
+const actionButtonsStyle = {
   display: 'flex',
   gap: '12px'
 }
 
-const viewBtnStyle = {
+const viewProfileBtn = {
   padding: '10px 16px',
+  background: '#e8f4fd',
+  color: '#007bff',
+  border: '1px solid #007bff',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  textDecoration: 'none',
+  fontWeight: '600',
   fontSize: '14px',
-  fontWeight: '600'
+  textAlign: 'center',
+  transition: 'all 0.3s ease'
 }
 
-const bookBtnStyle = {
+const bookNowBtn = {
   padding: '10px 20px',
+  background: 'linear-gradient(135deg, #28a745, #20c997)',
+  color: 'white',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
   fontSize: '14px',
-  fontWeight: '700'
+  transition: 'all 0.3s ease'
+}
+
+const unavailableBtn = {
+  padding: '10px 20px',
+  background: '#e0e0e0',
+  color: '#666',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'not-allowed',
+  fontWeight: '600',
+  fontSize: '14px'
 }
 
 const noResultsStyle = {
   textAlign: 'center',
-  padding: '80px 20px',
-  color: '#6c757d'
-}
-
-const noResultsIconStyle = {
-  fontSize: '64px',
-  marginBottom: '20px',
-  opacity: '0.5'
-}
-
-const noResultsTitleStyle = {
-  fontSize: '24px',
-  fontWeight: '700',
-  color: '#2c3e50',
-  marginBottom: '12px'
+  padding: '60px 20px',
+  background: 'white',
+  borderRadius: '12px',
+  border: '1px solid #e0e0e0'
 }
 
 const noResultsTextStyle = {
   fontSize: '16px',
-  marginBottom: '24px'
-}
-
-const clearFiltersStyle = {
-  background: '#007bff',
-  color: 'white',
-  border: 'none',
-  padding: '12px 24px',
-  borderRadius: '8px',
-  fontSize: '14px',
-  fontWeight: '600',
-  cursor: 'pointer',
-  transition: 'all 0.3s ease'
-}
-
-const sectionTitleStyle = {
-  fontSize: '36px',
-  fontWeight: '800',
-  textAlign: 'center',
-  color: '#000000',
-  marginBottom: '12px',
-  textShadow: 'none'
-}
-
-const sectionSubtitleStyle = {
-  fontSize: '18px',
-  textAlign: 'center',
-  color: '#6c757d',
-  marginBottom: '32px'
-}
-
-const categoryCardStyle = {
-  textAlign: 'center',
-  cursor: 'pointer',
-  transition: 'all 0.3s ease',
-  border: '2px solid transparent'
-}
-
-const categoryIconStyle = {
-  fontSize: '48px',
-  marginBottom: '16px',
-  display: 'block'
-}
-
-const categoryNameStyle = {
-  fontSize: '20px',
-  fontWeight: '700',
-  marginBottom: '8px',
-  color: '#000000',
-  textShadow: 'none',
-  background: 'rgba(255, 255, 255, 0.9)',
-  padding: '4px 8px',
-  borderRadius: '4px',
-  display: 'inline-block'
-}
-
-const categoryCountStyle = {
-  color: '#6c757d',
-  fontSize: '14px',
-  fontWeight: '500',
-  marginBottom: '12px'
-}
-
-const categoryFooterStyle = {
-  paddingTop: '12px',
-  borderTop: '1px solid #f1f3f4'
-}
-
-const viewCategoryStyle = {
-  color: '#007bff',
-  fontSize: '14px',
-  fontWeight: '600'
+  color: '#7f8c8d',
+  margin: '0 0 20px'
 }

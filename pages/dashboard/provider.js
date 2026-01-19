@@ -1,518 +1,465 @@
-import { useState } from 'react'
-import ProviderLayout from '../../components/layouts/ProviderLayout'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Layout from '../../components/Layout'
 import { useUser } from '../../context/UserContext'
+import { useRouter } from 'next/router'
 
 export default function ProviderDashboard() {
+  const { user, loading, logout } = useUser()
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
-  const [isOnline, setIsOnline] = useState(true)
-  const { user } = useUser()
+  const [bookings, setBookings] = useState([])
 
-  // Mock provider data
-  const provider = {
-    name: 'Rajesh Kumar',
-    service: 'Plumbing',
-    city: 'Mumbai',
-    rating: 4.8,
-    totalReviews: 152,
-    completedJobs: 89,
-    totalEarnings: 125000,
-    thisMonthEarnings: 15000,
-    joinedDate: '2023-06-10',
-    verified: true,
-    profileCompletion: 90
-  }
+  useEffect(() => {
+    if (!loading && (!user || user.userType !== 'provider')) {
+      router.push('/auth/login')
+    }
+  }, [user, loading, router])
 
   // Mock bookings data
-  const bookings = [
+  const mockBookings = [
     {
-      id: 'BK001',
-      customerName: 'Priya Sharma',
-      service: 'Kitchen pipe leak repair',
-      date: '2024-01-25',
-      time: '2:00 PM',
-      status: 'Pending',
-      amount: 750,
-      address: 'Andheri West, Mumbai',
-      phone: '+91 98765 43210'
-    },
-    {
-      id: 'BK002',
-      customerName: 'Amit Patel',
-      service: 'Bathroom tap installation',
-      date: '2024-01-24',
+      id: 'HF123456',
+      customer: 'Sarah Johnson',
+      service: 'Plumbing',
+      status: 'completed',
+      date: '2024-01-15',
       time: '10:00 AM',
-      status: 'Confirmed',
-      amount: 500,
-      address: 'Bandra East, Mumbai',
-      phone: '+91 98765 43211'
+      amount: '₹500',
+      rating: 5,
+      review: 'Excellent work!'
     },
     {
-      id: 'BK003',
-      customerName: 'Sunita Singh',
-      service: 'Water heater repair',
-      date: '2024-01-23',
-      time: '3:00 PM',
-      status: 'Completed',
-      amount: 800,
-      address: 'Juhu, Mumbai',
-      phone: '+91 98765 43212',
-      rating: 5,
-      review: 'Excellent work! Very professional and quick.'
+      id: 'HF123457',
+      customer: 'Michael Chen',
+      service: 'Plumbing',
+      status: 'pending',
+      date: '2024-01-20',
+      time: '02:00 PM',
+      amount: '₹600',
+      rating: null,
+      review: null
     }
   ]
 
-  const monthlyStats = [
-    { month: 'Jan', earnings: 15000, jobs: 12 },
-    { month: 'Dec', earnings: 12000, jobs: 10 },
-    { month: 'Nov', earnings: 18000, jobs: 15 },
-    { month: 'Oct', earnings: 14000, jobs: 11 }
-  ]
+  useEffect(() => {
+    setBookings(mockBookings)
+  }, [])
 
-  const getStatusStyle = (status) => {
-    const baseStyle = {
-      padding: '4px 12px',
-      borderRadius: '20px',
-      fontSize: '12px',
-      fontWeight: '600'
-    }
-    
-    switch(status) {
-      case 'Completed':
-        return { ...baseStyle, background: '#d4edda', color: '#155724' }
-      case 'Confirmed':
-        return { ...baseStyle, background: '#d1ecf1', color: '#0c5460' }
-      case 'Pending':
-        return { ...baseStyle, background: '#fff3cd', color: '#856404' }
-      case 'Cancelled':
-        return { ...baseStyle, background: '#f8d7da', color: '#721c24' }
-      default:
-        return baseStyle
-    }
+  const handleLogout = async () => {
+    await logout()
+    router.push('/auth/login')
   }
 
-  const renderStars = (rating) => {
-    if (!rating) return null
-    return '⭐'.repeat(rating)
+  if (loading || !user) {
+    return (
+      <Layout title="Dashboard">
+        <div style={{ textAlign: 'center', padding: '100px 20px' }}>
+          <p>Loading dashboard...</p>
+        </div>
+      </Layout>
+    )
   }
-
-  const renderOverview = () => (
-    <div>
-      <div style={overviewHeaderStyle}>
-        <div style={statusCardStyle}>
-          <div style={statusInfoStyle}>
-            <h3>Account Status</h3>
-            <div style={statusItemStyle}>
-              <span>Online Status:</span>
-              <label style={switchStyle}>
-                <input 
-                  type="checkbox" 
-                  checked={isOnline}
-                  onChange={(e) => setIsOnline(e.target.checked)}
-                />
-                <span style={sliderStyle}></span>
-              </label>
-              <span style={isOnline ? onlineTextStyle : offlineTextStyle}>
-                {isOnline ? 'Available' : 'Offline'}
-              </span>
-            </div>
-            <div style={statusItemStyle}>
-              <span>Verification:</span>
-              <span style={verifiedStyle}>✓ Verified</span>
-            </div>
-            <div style={statusItemStyle}>
-              <span>Profile Completion:</span>
-              <span style={completionStyle}>{provider.profileCompletion}%</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-3" style={statsGridStyle}>
-          <div className="card" style={statCardStyle}>
-            <div style={statIconStyle}>💰</div>
-            <div style={statValueStyle}>₹{provider.thisMonthEarnings.toLocaleString()}</div>
-            <div style={statLabelStyle}>This Month</div>
-          </div>
-          
-          <div className="card" style={statCardStyle}>
-            <div style={statIconStyle}>⭐</div>
-            <div style={statValueStyle}>{provider.rating}</div>
-            <div style={statLabelStyle}>Average Rating</div>
-          </div>
-          
-          <div className="card" style={statCardStyle}>
-            <div style={statIconStyle}>��</div>
-            <div style={statValueStyle}>{provider.completedJobs}</div>
-            <div style={statLabelStyle}>Completed Jobs</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-2" style={chartsGridStyle}>
-        <div className="card">
-          <h3 style={chartTitleStyle}>Monthly Performance</h3>
-          <div style={chartStyle}>
-            {monthlyStats.map(stat => (
-              <div key={stat.month} style={chartBarStyle}>
-                <div style={barStyle} data-height={stat.earnings / 200}></div>
-                <div style={barLabelStyle}>{stat.month}</div>
-                <div style={barValueStyle}>₹{stat.earnings / 1000}k</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="card">
-          <h3 style={chartTitleStyle}>Recent Activity</h3>
-          <div style={activityListStyle}>
-            <div style={activityItemStyle}>
-              <div style={activityIconStyle}>✅</div>
-              <div>
-                <div style={activityTitleStyle}>Job Completed</div>
-                <div style={activityDescStyle}>Water heater repair for Sunita Singh</div>
-                <div style={activityTimeStyle}>2 hours ago</div>
-              </div>
-            </div>
-            <div style={activityItemStyle}>
-              <div style={activityIconStyle}>⭐</div>
-              <div>
-                <div style={activityTitleStyle}>New Review</div>
-                <div style={activityDescStyle}>5-star rating from Amit Patel</div>
-                <div style={activityTimeStyle}>1 day ago</div>
-              </div>
-            </div>
-            <div style={activityItemStyle}>
-              <div style={activityIconStyle}>💰</div>
-              <div>
-                <div style={activityTitleStyle}>Payment Received</div>
-                <div style={activityDescStyle}>₹750 for plumbing service</div>
-                <div style={activityTimeStyle}>2 days ago</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderBookings = () => (
-    <div>
-      <div style={sectionHeaderStyle}>
-        <h2>Booking Requests</h2>
-        <div style={bookingFiltersStyle}>
-          <select style={filterSelectStyle}>
-            <option>All Status</option>
-            <option>Pending</option>
-            <option>Confirmed</option>
-            <option>Completed</option>
-          </select>
-        </div>
-      </div>
-      
-      <div style={bookingsListStyle}>
-        {bookings.map(booking => (
-          <div key={booking.id} className="card" style={bookingCardStyle}>
-            <div style={bookingHeaderStyle}>
-              <div style={bookingInfoStyle}>
-                <h3 style={customerNameStyle}>{booking.customerName}</h3>
-                <p style={serviceDescStyle}>{booking.service}</p>
-                <p style={bookingIdStyle}>ID: {booking.id}</p>
-              </div>
-              <div style={bookingStatusStyle}>
-                <span style={getStatusStyle(booking.status)}>
-                  {booking.status}
-                </span>
-                <div style={amountDisplayStyle}>₹{booking.amount}</div>
-              </div>
-            </div>
-
-            <div style={bookingDetailsStyle}>
-              <div style={detailRowStyle}>
-                <span style={labelStyle}>📅 Date & Time:</span>
-                <span>{booking.date} at {booking.time}</span>
-              </div>
-              <div style={detailRowStyle}>
-                <span style={labelStyle}>📍 Address:</span>
-                <span>{booking.address}</span>
-              </div>
-              <div style={detailRowStyle}>
-                <span style={labelStyle}>📞 Contact:</span>
-                <a href={`tel:${booking.phone}`} style={phoneStyle}>{booking.phone}</a>
-              </div>
-              {booking.rating && (
-                <div style={detailRowStyle}>
-                  <span style={labelStyle}>⭐ Rating:</span>
-                  <span>{renderStars(booking.rating)}</span>
-                </div>
-              )}
-              {booking.review && (
-                <div style={reviewStyle}>
-                  <span style={labelStyle}>💬 Review:</span>
-                  <span>"{booking.review}"</span>
-                </div>
-              )}
-            </div>
-
-            <div style={bookingActionsStyle}>
-              {booking.status === 'Pending' && (
-                <>
-                  <button className="btn btn-primary" style={actionBtnStyle}>
-                    Accept
-                  </button>
-                  <button className="btn btn-secondary" style={actionBtnStyle}>
-                    Decline
-                  </button>
-                </>
-              )}
-              {booking.status === 'Confirmed' && (
-                <>
-                  <button className="btn btn-primary" style={actionBtnStyle}>
-                    Mark Complete
-                  </button>
-                  <button className="btn btn-outline" style={actionBtnStyle}>
-                    Contact Customer
-                  </button>
-                </>
-              )}
-              <button className="btn btn-outline" style={actionBtnStyle}>
-                View Details
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-
-  const renderEarnings = () => (
-    <div>
-      <h2 style={sectionTitleStyle}>Earnings Overview</h2>
-      
-      <div className="grid grid-3" style={earningsStatsStyle}>
-        <div className="card text-center">
-          <div style={earningsIconStyle}>💰</div>
-          <div style={earningsValueStyle}>₹{provider.totalEarnings.toLocaleString()}</div>
-          <div style={earningsLabelStyle}>Total Earnings</div>
-        </div>
-        
-        <div className="card text-center">
-          <div style={earningsIconStyle}>📅</div>
-          <div style={earningsValueStyle}>₹{provider.thisMonthEarnings.toLocaleString()}</div>
-          <div style={earningsLabelStyle}>This Month</div>
-        </div>
-        
-        <div className="card text-center">
-          <div style={earningsIconStyle}>📊</div>
-          <div style={earningsValueStyle}>₹{Math.round(provider.totalEarnings / provider.completedJobs).toLocaleString()}</div>
-          <div style={earningsLabelStyle}>Average per Job</div>
-        </div>
-      </div>
-
-      <div className="card" style={earningsHistoryStyle}>
-        <h3 style={historyTitleStyle}>Payment History</h3>
-        <div style={historyTableStyle}>
-          <div style={tableHeaderStyle}>
-            <span>Date</span>
-            <span>Customer</span>
-            <span>Service</span>
-            <span>Amount</span>
-            <span>Status</span>
-          </div>
-          {bookings.filter(b => b.status === 'Completed').map(booking => (
-            <div key={booking.id} style={tableRowStyle}>
-              <span>{booking.date}</span>
-              <span>{booking.customerName}</span>
-              <span>{booking.service}</span>
-              <span style={amountCellStyle}>₹{booking.amount}</span>
-              <span style={paidStatusStyle}>✅ Paid</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-
-  const renderProfile = () => (
-    <div>
-      <h2 style={sectionTitleStyle}>Profile Management</h2>
-      
-      <div className="card" style={profileCardStyle}>
-        <div style={profileHeaderStyle}>
-          <div style={avatarStyle}>
-            {provider.name.charAt(0)}
-          </div>
-          <div style={profileInfoStyle}>
-            <h3 style={profileNameStyle}>{provider.name}</h3>
-            <p style={profileServiceStyle}>{provider.service} Specialist</p>
-            <p style={profileLocationStyle}>📍 {provider.city}</p>
-          </div>
-          <button className="btn btn-primary">
-            Edit Profile
-          </button>
-        </div>
-
-        <div style={profileStatsStyle}>
-          <div style={profileStatStyle}>
-            <span style={statNumberStyle}>{provider.rating}</span>
-            <span style={statTextStyle}>Rating</span>
-          </div>
-          <div style={profileStatStyle}>
-            <span style={statNumberStyle}>{provider.totalReviews}</span>
-            <span style={statTextStyle}>Reviews</span>
-          </div>
-          <div style={profileStatStyle}>
-            <span style={statNumberStyle}>{provider.completedJobs}</span>
-            <span style={statTextStyle}>Jobs Done</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-2">
-        <div className="card">
-          <h3>Services & Pricing</h3>
-          <div style={serviceListStyle}>
-            <div style={serviceItemStyle}>
-              <span>Basic Pipe Repair</span>
-              <span>₹500</span>
-            </div>
-            <div style={serviceItemStyle}>
-              <span>Tap Installation</span>
-              <span>₹300</span>
-            </div>
-            <div style={serviceItemStyle}>
-              <span>Emergency Call-out</span>
-              <span>₹1000</span>
-            </div>
-          </div>
-          <button className="btn btn-outline" style={{marginTop: '16px'}}>
-            Update Pricing
-          </button>
-        </div>
-
-        <div className="card">
-          <h3>Availability</h3>
-          <div style={availabilityStyle}>
-            <div style={dayItemStyle}>
-              <span>Monday - Friday</span>
-              <span>9:00 AM - 6:00 PM</span>
-            </div>
-            <div style={dayItemStyle}>
-              <span>Saturday</span>
-              <span>9:00 AM - 6:00 PM</span>
-            </div>
-            <div style={dayItemStyle}>
-              <span>Sunday</span>
-              <span>Closed</span>
-            </div>
-          </div>
-          <button className="btn btn-outline" style={{marginTop: '16px'}}>
-            Update Schedule
-          </button>
-        </div>
-      </div>
-    </div>
-  )
 
   return (
-    <ProviderLayout title="Provider Dashboard - HandyFix">
+    <Layout title="Provider Dashboard - HandyFix">
       <div style={dashboardContainerStyle}>
-        <div className="container">
-          <div style={dashboardHeaderStyle}>
-            <h1 style={dashboardTitleStyle}>Provider Dashboard</h1>
-            <p style={dashboardSubtitleStyle}>Manage your services and bookings</p>
-          </div>
-
-          <div style={dashboardContentStyle}>
-            <div style={sidebarStyle}>
-              <nav style={navStyle}>
-                <button 
-                  style={{
-                    ...navItemStyle,
-                    ...(activeTab === 'overview' ? activeNavItemStyle : {})
-                  }}
-                  onClick={() => setActiveTab('overview')}
-                >
-                  📊 Overview
-                </button>
-                <button 
-                  style={{
-                    ...navItemStyle,
-                    ...(activeTab === 'bookings' ? activeNavItemStyle : {})
-                  }}
-                  onClick={() => setActiveTab('bookings')}
-                >
-                  📋 Bookings
-                </button>
-                <button 
-                  style={{
-                    ...navItemStyle,
-                    ...(activeTab === 'earnings' ? activeNavItemStyle : {})
-                  }}
-                  onClick={() => setActiveTab('earnings')}
-                >
-                  💰 Earnings
-                </button>
-                <button 
-                  style={{
-                    ...navItemStyle,
-                    ...(activeTab === 'profile' ? activeNavItemStyle : {})
-                  }}
-                  onClick={() => setActiveTab('profile')}
-                >
-                  👤 Profile
-                </button>
-              </nav>
+        {/* Sidebar */}
+        <div style={sidebarStyle}>
+          <div style={profileSectionStyle}>
+            <div style={profileAvatarStyle}>
+              👨‍🔧
             </div>
-
-            <div style={mainContentStyle}>
-              {activeTab === 'overview' && renderOverview()}
-              {activeTab === 'bookings' && renderBookings()}
-              {activeTab === 'earnings' && renderEarnings()}
-              {activeTab === 'profile' && renderProfile()}
+            <div>
+              <h3 style={profileNameStyle}>{user.name}</h3>
+              <p style={profileServiceStyle}>{user.service} Expert</p>
+              {user.approved && <span style={approvedBadgeStyle}>✓ Verified</span>}
             </div>
           </div>
+
+          <nav style={navStyle}>
+            {[
+              { id: 'overview', icon: '📊', label: 'Overview' },
+              { id: 'bookings', icon: '📅', label: 'Bookings' },
+              { id: 'earnings', icon: '💰', label: 'Earnings' },
+              { id: 'profile', icon: '⚙️', label: 'Profile' },
+              { id: 'services', icon: '🔧', label: 'Services' },
+              { id: 'reviews', icon: '⭐', label: 'Reviews' }
+            ].map(item => (
+              <button
+                key={item.id}
+                style={{
+                  ...navItemStyle,
+                  ...(activeTab === item.id ? activeNavItemStyle : {})
+                }}
+                onClick={() => setActiveTab(item.id)}
+              >
+                <span style={navIconStyle}>{item.icon}</span>
+                {item.label}
+              </button>
+            ))}
+
+            <button
+              style={logoutBtnStyle}
+              onClick={handleLogout}
+            >
+              <span style={navIconStyle}>🚪</span>
+              Logout
+            </button>
+          </nav>
+        </div>
+
+        {/* Main Content */}
+        <div style={mainContentStyle}>
+          {/* Overview Tab */}
+          {activeTab === 'overview' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>Welcome back, {user.name.split(' ')[0]}! 👋</h1>
+                <p style={subtitleStyle}>Here's your dashboard overview</p>
+              </div>
+
+              <div className="grid grid-4" style={{ marginTop: '40px' }}>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>📅</div>
+                  <h3 style={statLabelStyle}>Total Bookings</h3>
+                  <p style={statValueStyle}>{user.completedJobs + 12}</p>
+                </div>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>✅</div>
+                  <h3 style={statLabelStyle}>Completed</h3>
+                  <p style={statValueStyle}>{user.completedJobs}</p>
+                </div>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>💰</div>
+                  <h3 style={statLabelStyle}>Total Earnings</h3>
+                  <p style={statValueStyle}>₹{user.totalEarnings.toLocaleString()}</p>
+                </div>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>⭐</div>
+                  <h3 style={statLabelStyle}>Rating</h3>
+                  <p style={statValueStyle}>{user.rating}/5</p>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '60px' }}>
+                <h2 style={sectionTitleStyle}>Recent Bookings</h2>
+                {bookings.slice(0, 3).map(booking => (
+                  <div key={booking.id} style={bookingCardStyle}>
+                    <div style={bookingHeaderStyle}>
+                      <div>
+                        <h3 style={bookingCustomerStyle}>{booking.customer}</h3>
+                        <p style={bookingServiceStyle}>{booking.service}</p>
+                      </div>
+                      <span style={{
+                        ...statusBadgeStyle,
+                        ...(booking.status === 'completed' ? completedStatusStyle : pendingStatusStyle)
+                      }}>
+                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                      </span>
+                    </div>
+                    <div style={bookingDetailsStyle}>
+                      <span>📅 {booking.date}</span>
+                      <span>🕐 {booking.time}</span>
+                      <span>💰 {booking.amount}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Bookings Tab */}
+          {activeTab === 'bookings' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>My Bookings</h1>
+              </div>
+
+              <div style={{ marginTop: '40px' }}>
+                {bookings.map(booking => (
+                  <div key={booking.id} style={bookingDetailCardStyle}>
+                    <div style={bookingDetailHeaderStyle}>
+                      <div>
+                        <h3 style={bookingCustomerStyle}>{booking.customer}</h3>
+                        <p style={bookingBookingIdStyle}>Booking ID: {booking.id}</p>
+                      </div>
+                      <span style={{
+                        ...statusBadgeStyle,
+                        ...(booking.status === 'completed' ? completedStatusStyle : pendingStatusStyle)
+                      }}>
+                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                      </span>
+                    </div>
+
+                    <div style={bookingInfoGridStyle}>
+                      <div>
+                        <p style={bookingInfoLabelStyle}>Service</p>
+                        <p style={bookingInfoValueStyle}>{booking.service}</p>
+                      </div>
+                      <div>
+                        <p style={bookingInfoLabelStyle}>Date & Time</p>
+                        <p style={bookingInfoValueStyle}>{booking.date} at {booking.time}</p>
+                      </div>
+                      <div>
+                        <p style={bookingInfoLabelStyle}>Amount</p>
+                        <p style={bookingInfoValueStyle}>{booking.amount}</p>
+                      </div>
+                    </div>
+
+                    {booking.status === 'completed' && (
+                      <div style={reviewSectionStyle}>
+                        <p style={reviewLabelStyle}>Rating: {booking.rating}/5 ⭐</p>
+                        <p style={reviewTextStyle}>"{booking.review}"</p>
+                      </div>
+                    )}
+
+                    <div style={actionButtonsStyle}>
+                      {booking.status === 'pending' && (
+                        <>
+                          <button style={primaryActionStyle}>Accept</button>
+                          <button style={cancelActionStyle}>Decline</button>
+                        </>
+                      )}
+                      {booking.status === 'completed' && (
+                        <button style={secondaryActionStyle}>View Invoice</button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Earnings Tab */}
+          {activeTab === 'earnings' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>Earnings</h1>
+              </div>
+
+              <div className="grid grid-3" style={{ marginTop: '40px' }}>
+                <div style={earningsCardStyle}>
+                  <p style={earningsLabelStyle}>Total Earnings</p>
+                  <p style={earningsValueStyle}>₹{user.totalEarnings.toLocaleString()}</p>
+                </div>
+                <div style={earningsCardStyle}>
+                  <p style={earningsLabelStyle}>This Month</p>
+                  <p style={earningsValueStyle}>₹5,200</p>
+                </div>
+                <div style={earningsCardStyle}>
+                  <p style={earningsLabelStyle}>Pending</p>
+                  <p style={earningsValueStyle}>₹1,500</p>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '60px' }}>
+                <h2 style={sectionTitleStyle}>Earnings History</h2>
+                <div style={tableStyle}>
+                  <div style={tableHeaderStyle}>
+                    <div style={tableColumnStyle}>Date</div>
+                    <div style={tableColumnStyle}>Customer</div>
+                    <div style={tableColumnStyle}>Service</div>
+                    <div style={tableColumnStyle}>Amount</div>
+                    <div style={tableColumnStyle}>Status</div>
+                  </div>
+                  {bookings.filter(b => b.status === 'completed').map(booking => (
+                    <div key={booking.id} style={tableRowStyle}>
+                      <div style={tableColumnStyle}>{booking.date}</div>
+                      <div style={tableColumnStyle}>{booking.customer}</div>
+                      <div style={tableColumnStyle}>{booking.service}</div>
+                      <div style={tableColumnStyle}>{booking.amount}</div>
+                      <div style={tableColumnStyle}>
+                        <span style={paidStatusStyle}>Paid</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Profile Tab */}
+          {activeTab === 'profile' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>Profile Settings</h1>
+              </div>
+
+              <div style={formCardStyle}>
+                <h3 style={formSectionTitleStyle}>Personal Information</h3>
+                <div className="grid grid-2">
+                  <div className="form-group">
+                    <label className="form-label">Full Name</label>
+                    <input type="text" className="form-input" defaultValue={user.name} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Email</label>
+                    <input type="email" className="form-input" defaultValue={user.email} disabled />
+                  </div>
+                </div>
+
+                <div className="grid grid-2">
+                  <div className="form-group">
+                    <label className="form-label">Phone</label>
+                    <input type="tel" className="form-input" defaultValue={user.phone} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">City</label>
+                    <input type="text" className="form-input" defaultValue={user.city} />
+                  </div>
+                </div>
+
+                <h3 style={{...formSectionTitleStyle, marginTop: '32px'}}>Professional Information</h3>
+                <div className="grid grid-2">
+                  <div className="form-group">
+                    <label className="form-label">Service Type</label>
+                    <input type="text" className="form-input" defaultValue={user.service} />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Base Price (₹)</label>
+                    <input type="number" className="form-input" defaultValue={user.basePrice} />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Bio</label>
+                  <textarea className="form-input" rows="3" placeholder="Tell customers about your experience"></textarea>
+                </div>
+
+                <button className="btn btn-primary" style={{ marginTop: '24px' }}>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Services Tab */}
+          {activeTab === 'services' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>My Services</h1>
+                <button className="btn btn-primary">+ Add Service</button>
+              </div>
+
+              <div style={{ marginTop: '40px' }}>
+                {(user.services || ['Plumbing', 'Pipe Repair']).map((service, idx) => (
+                  <div key={idx} style={serviceCardStyle}>
+                    <div style={serviceHeaderStyle}>
+                      <h3 style={serviceNameStyle}>{service}</h3>
+                      <div>
+                        <button style={editBtnStyle}>Edit</button>
+                        <button style={deleteBtnStyle}>Delete</button>
+                      </div>
+                    </div>
+                    <p style={serviceDescStyle}>Professional {service} services with guaranteed quality</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Reviews Tab */}
+          {activeTab === 'reviews' && (
+            <div>
+              <div style={headerStyle}>
+                <h1 style={titleStyle}>Customer Reviews</h1>
+              </div>
+
+              <div style={{ marginTop: '40px' }}>
+                <div style={reviewsStatStyle}>
+                  <div style={ratingBoxStyle}>
+                    <p style={ratingNumberStyle}>{user.rating}</p>
+                    <p style={starsStyle}>⭐⭐⭐⭐⭐</p>
+                    <p style={reviewCountStyle}>Based on {user.reviewCount} reviews</p>
+                  </div>
+                </div>
+
+                <h2 style={sectionTitleStyle} style={{ marginTop: '40px' }}>Latest Reviews</h2>
+                {[1, 2, 3].map(idx => (
+                  <div key={idx} style={customerReviewStyle}>
+                    <div style={reviewHeaderStyle}>
+                      <div>
+                        <p style={reviewerNameStyle}>Customer {idx}</p>
+                        <p style={reviewerServiceStyle}>Service: Plumbing</p>
+                      </div>
+                      <span style={reviewStarStyle}>⭐⭐⭐⭐⭐</span>
+                    </div>
+                    <p style={reviewCommentStyle}>Great service and very professional! Highly recommended.</p>
+                    <p style={reviewDateStyle}>2 days ago</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
-    </ProviderLayout>
+    </Layout>
   )
 }
 
-// Styles (continuing with unique styles for provider dashboard)
+// Styles
 const dashboardContainerStyle = {
-  minHeight: '80vh',
-  background: '#f8f9fa',
-  padding: '40px 0'
-}
-
-const dashboardHeaderStyle = {
-  textAlign: 'center',
-  marginBottom: '40px'
-}
-
-const dashboardTitleStyle = {
-  fontSize: '32px',
-  fontWeight: '700',
-  marginBottom: '8px',
-  color: '#2c3e50'
-}
-
-const dashboardSubtitleStyle = {
-  fontSize: '18px',
-  color: '#7f8c8d'
-}
-
-const dashboardContentStyle = {
   display: 'grid',
-  gridTemplateColumns: '280px 1fr',
-  gap: '40px'
+  gridTemplateColumns: '250px 1fr',
+  minHeight: 'calc(100vh - 60px)',
+  background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
 }
 
 const sidebarStyle = {
   background: 'white',
-  borderRadius: '12px',
+  borderRight: '1px solid #e0e0e0',
   padding: '24px',
-  height: 'fit-content',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+  height: '100vh',
+  overflowY: 'auto',
+  position: 'sticky',
+  top: '60px',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+}
+
+const profileSectionStyle = {
+  display: 'flex',
+  gap: '16px',
+  marginBottom: '32px',
+  padding: '16px',
+  background: 'linear-gradient(135deg, #f0f4ff 0%, #e8eef9 100%)',
+  borderRadius: '12px'
+}
+
+const profileAvatarStyle = {
+  width: '48px',
+  height: '48px',
+  borderRadius: '50%',
+  background: 'linear-gradient(135deg, #007bff, #0056b3)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '24px',
+  color: 'white'
+}
+
+const profileNameStyle = {
+  margin: '0',
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#1a1a1a'
+}
+
+const profileServiceStyle = {
+  margin: '0',
+  fontSize: '12px',
+  color: '#7f8c8d'
+}
+
+const approvedBadgeStyle = {
+  display: 'inline-block',
+  padding: '4px 12px',
+  background: '#d4edda',
+  color: '#155724',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  marginTop: '4px'
 }
 
 const navStyle = {
@@ -522,234 +469,107 @@ const navStyle = {
 }
 
 const navItemStyle = {
-  padding: '16px 20px',
+  width: '100%',
+  padding: '12px 16px',
   background: 'transparent',
   border: 'none',
   borderRadius: '8px',
   textAlign: 'left',
   cursor: 'pointer',
-  fontSize: '16px',
+  fontSize: '14px',
   fontWeight: '500',
-  color: '#555',
-  transition: 'all 0.3s ease'
+  color: '#495057',
+  transition: 'all 0.3s ease',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px'
 }
 
 const activeNavItemStyle = {
-  background: '#007bff',
+  background: 'linear-gradient(135deg, #28a745, #20c997)',
   color: 'white'
 }
 
+const navIconStyle = {
+  fontSize: '16px'
+}
+
+const logoutBtnStyle = {
+  ...navItemStyle,
+  marginTop: '24px',
+  borderTop: '1px solid #e0e0e0',
+  paddingTop: '20px',
+  color: '#dc3545'
+}
+
 const mainContentStyle = {
+  padding: '40px',
+  overflowY: 'auto',
+  height: '100vh'
+}
+
+const headerStyle = {
   display: 'flex',
-  flexDirection: 'column'
-}
-
-const overviewHeaderStyle = {
-  marginBottom: '32px'
-}
-
-const statusCardStyle = {
-  background: 'white',
-  padding: '24px',
-  borderRadius: '12px',
-  marginBottom: '24px',
-  boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-}
-
-const statusInfoStyle = {}
-
-const statusItemStyle = {
-  display: 'flex',
+  justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '16px',
-  marginBottom: '12px'
+  marginBottom: '40px'
 }
 
-const switchStyle = {
-  position: 'relative',
-  display: 'inline-block',
-  width: '50px',
-  height: '24px'
+const titleStyle = {
+  fontSize: '32px',
+  fontWeight: '700',
+  color: '#1a1a1a',
+  margin: '0'
 }
 
-const sliderStyle = {
-  position: 'absolute',
-  cursor: 'pointer',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: '#ccc',
-  transition: '0.4s',
-  borderRadius: '24px'
-}
-
-const onlineTextStyle = {
-  color: '#28a745',
-  fontWeight: '600'
-}
-
-const offlineTextStyle = {
-  color: '#dc3545',
-  fontWeight: '600'
-}
-
-const verifiedStyle = {
-  color: '#28a745',
-  fontWeight: '600'
-}
-
-const completionStyle = {
-  color: '#007bff',
-  fontWeight: '600'
-}
-
-const statsGridStyle = {
-  gap: '20px'
+const subtitleStyle = {
+  color: '#7f8c8d',
+  fontSize: '14px',
+  margin: '0'
 }
 
 const statCardStyle = {
+  background: 'white',
+  padding: '24px',
+  borderRadius: '12px',
   textAlign: 'center',
-  padding: '24px'
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  border: '1px solid #e0e0e0'
 }
 
 const statIconStyle = {
   fontSize: '32px',
-  marginBottom: '12px'
-}
-
-const statValueStyle = {
-  fontSize: '28px',
-  fontWeight: '700',
-  color: '#007bff',
-  marginBottom: '8px'
+  marginBottom: '12px',
+  display: 'block'
 }
 
 const statLabelStyle = {
+  margin: '0',
   fontSize: '14px',
   color: '#7f8c8d',
   fontWeight: '500'
 }
 
-const chartsGridStyle = {
-  gap: '24px'
-}
-
-const chartTitleStyle = {
-  fontSize: '18px',
-  fontWeight: '600',
-  marginBottom: '20px',
-  color: '#2c3e50'
-}
-
-const chartStyle = {
-  display: 'flex',
-  gap: '16px',
-  alignItems: 'end',
-  height: '200px',
-  padding: '20px 0'
-}
-
-const chartBarStyle = {
-  flex: '1',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  gap: '8px'
-}
-
-const barStyle = {
-  width: '40px',
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  borderRadius: '4px 4px 0 0',
-  minHeight: '20px'
-}
-
-const barLabelStyle = {
-  fontSize: '12px',
-  fontWeight: '600'
-}
-
-const barValueStyle = {
-  fontSize: '10px',
-  color: '#7f8c8d'
-}
-
-const activityListStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px'
-}
-
-const activityItemStyle = {
-  display: 'flex',
-  gap: '12px',
-  padding: '16px',
-  background: '#f8f9fa',
-  borderRadius: '8px'
-}
-
-const activityIconStyle = {
-  width: '40px',
-  height: '40px',
-  borderRadius: '50%',
-  background: '#e9ecef',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '16px'
-}
-
-const activityTitleStyle = {
-  fontWeight: '600',
-  marginBottom: '4px'
-}
-
-const activityDescStyle = {
-  fontSize: '14px',
-  color: '#7f8c8d',
-  marginBottom: '4px'
-}
-
-const activityTimeStyle = {
-  fontSize: '12px',
-  color: '#adb5bd'
-}
-
-const sectionHeaderStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: '24px'
+const statValueStyle = {
+  margin: '8px 0 0',
+  fontSize: '28px',
+  fontWeight: '700',
+  color: '#28a745'
 }
 
 const sectionTitleStyle = {
-  fontSize: '28px',
+  fontSize: '24px',
   fontWeight: '600',
-  color: '#2c3e50',
-  marginBottom: '24px'
-}
-
-const bookingFiltersStyle = {
-  display: 'flex',
-  gap: '12px'
-}
-
-const filterSelectStyle = {
-  padding: '8px 12px',
-  border: '1px solid #ddd',
-  borderRadius: '6px',
-  fontSize: '14px'
-}
-
-const bookingsListStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px'
+  color: '#1a1a1a',
+  marginBottom: '20px'
 }
 
 const bookingCardStyle = {
-  marginBottom: '0'
+  background: 'white',
+  padding: '20px',
+  borderRadius: '12px',
+  marginBottom: '16px',
+  border: '1px solid #e0e0e0'
 }
 
 const bookingHeaderStyle = {
@@ -759,245 +579,353 @@ const bookingHeaderStyle = {
   marginBottom: '16px'
 }
 
-const bookingInfoStyle = {
-  flex: '1'
-}
-
-const customerNameStyle = {
-  fontSize: '20px',
+const bookingCustomerStyle = {
+  margin: '0',
+  fontSize: '18px',
   fontWeight: '600',
-  marginBottom: '4px',
   color: '#2c3e50'
 }
 
-const serviceDescStyle = {
-  color: '#007bff',
-  fontWeight: '500',
-  marginBottom: '4px'
-}
-
-const bookingIdStyle = {
+const bookingServiceStyle = {
+  margin: '4px 0 0',
   fontSize: '14px',
   color: '#7f8c8d'
 }
 
-const bookingStatusStyle = {
-  textAlign: 'right'
+const statusBadgeStyle = {
+  padding: '6px 12px',
+  borderRadius: '20px',
+  fontSize: '12px',
+  fontWeight: '600',
+  textTransform: 'capitalize'
 }
 
-const amountDisplayStyle = {
-  fontSize: '18px',
-  fontWeight: '700',
-  color: '#007bff',
-  marginTop: '8px'
+const completedStatusStyle = {
+  background: '#d4edda',
+  color: '#155724'
+}
+
+const pendingStatusStyle = {
+  background: '#fff3cd',
+  color: '#856404'
 }
 
 const bookingDetailsStyle = {
   display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  marginBottom: '16px'
+  gap: '24px',
+  fontSize: '14px',
+  color: '#495057'
 }
 
-const detailRowStyle = {
+const bookingDetailCardStyle = {
+  background: 'white',
+  padding: '24px',
+  borderRadius: '12px',
+  marginBottom: '20px',
+  border: '1px solid #e0e0e0'
+}
+
+const bookingDetailHeaderStyle = {
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  marginBottom: '24px',
+  paddingBottom: '20px',
+  borderBottom: '1px solid #e0e0e0'
 }
 
-const labelStyle = {
-  fontWeight: '500',
-  color: '#555'
+const bookingBookingIdStyle = {
+  margin: '4px 0 0',
+  fontSize: '12px',
+  color: '#7f8c8d'
 }
 
-const phoneStyle = {
-  color: '#007bff',
-  textDecoration: 'none'
+const bookingInfoGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '24px',
+  marginBottom: '24px'
 }
 
-const reviewStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '4px'
+const bookingInfoLabelStyle = {
+  margin: '0',
+  fontSize: '12px',
+  color: '#7f8c8d',
+  textTransform: 'uppercase'
 }
 
-const bookingActionsStyle = {
+const bookingInfoValueStyle = {
+  margin: '4px 0 0',
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#2c3e50'
+}
+
+const reviewSectionStyle = {
+  background: '#f0f8ff',
+  padding: '16px',
+  borderRadius: '8px',
+  marginBottom: '24px',
+  borderLeft: '4px solid #007bff'
+}
+
+const reviewLabelStyle = {
+  margin: '0',
+  fontSize: '14px',
+  fontWeight: '600',
+  color: '#2c3e50'
+}
+
+const reviewTextStyle = {
+  margin: '8px 0 0',
+  fontSize: '14px',
+  color: '#495057',
+  fontStyle: 'italic'
+}
+
+const actionButtonsStyle = {
   display: 'flex',
   gap: '12px',
-  paddingTop: '16px',
-  borderTop: '1px solid #eee',
   flexWrap: 'wrap'
 }
 
-const actionBtnStyle = {
-  padding: '8px 16px',
-  fontSize: '14px'
+const primaryActionStyle = {
+  padding: '10px 20px',
+  background: 'linear-gradient(135deg, #28a745, #20c997)',
+  color: 'white',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
+  transition: 'all 0.3s ease'
 }
 
-const earningsStatsStyle = {
-  marginBottom: '32px'
-}
-
-const earningsIconStyle = {
-  fontSize: '48px',
-  marginBottom: '16px'
-}
-
-const earningsValueStyle = {
-  fontSize: '32px',
-  fontWeight: '700',
+const secondaryActionStyle = {
+  padding: '10px 20px',
+  background: '#e8f4fd',
   color: '#007bff',
-  marginBottom: '8px'
+  border: '1px solid #007bff',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
+  transition: 'all 0.3s ease'
+}
+
+const cancelActionStyle = {
+  padding: '10px 20px',
+  background: '#ffe0e0',
+  color: '#dc3545',
+  border: '1px solid #dc3545',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontWeight: '600',
+  fontSize: '14px',
+  transition: 'all 0.3s ease'
+}
+
+const earningsCardStyle = {
+  background: 'white',
+  padding: '24px',
+  borderRadius: '12px',
+  textAlign: 'center',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+  border: '1px solid #e0e0e0'
 }
 
 const earningsLabelStyle = {
-  fontSize: '16px',
+  margin: '0',
+  fontSize: '14px',
   color: '#7f8c8d',
   fontWeight: '500'
 }
 
-const earningsHistoryStyle = {
-  marginTop: '24px'
+const earningsValueStyle = {
+  margin: '8px 0 0',
+  fontSize: '28px',
+  fontWeight: '700',
+  color: '#28a745'
 }
 
-const historyTitleStyle = {
-  fontSize: '20px',
-  fontWeight: '600',
-  marginBottom: '20px',
-  color: '#2c3e50'
-}
-
-const historyTableStyle = {
-  display: 'flex',
-  flexDirection: 'column'
+const tableStyle = {
+  background: 'white',
+  borderRadius: '12px',
+  overflow: 'hidden',
+  border: '1px solid #e0e0e0'
 }
 
 const tableHeaderStyle = {
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 2fr 1fr 1fr',
-  gap: '16px',
+  gridTemplateColumns: 'repeat(5, 1fr)',
   padding: '16px',
   background: '#f8f9fa',
-  borderRadius: '8px 8px 0 0',
+  borderBottom: '1px solid #e0e0e0',
   fontWeight: '600',
-  fontSize: '14px',
-  color: '#555'
+  color: '#495057'
 }
 
 const tableRowStyle = {
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 2fr 1fr 1fr',
-  gap: '16px',
+  gridTemplateColumns: 'repeat(5, 1fr)',
   padding: '16px',
-  borderBottom: '1px solid #eee',
-  fontSize: '14px'
-}
-
-const amountCellStyle = {
-  fontWeight: '600',
-  color: '#007bff'
-}
-
-const paidStatusStyle = {
-  color: '#28a745',
-  fontWeight: '600'
-}
-
-const profileCardStyle = {
-  marginBottom: '24px'
-}
-
-const profileHeaderStyle = {
-  display: 'flex',
+  borderBottom: '1px solid #e0e0e0',
   alignItems: 'center',
-  gap: '20px',
-  marginBottom: '24px',
-  paddingBottom: '20px',
-  borderBottom: '1px solid #eee'
-}
-
-const avatarStyle = {
-  width: '80px',
-  height: '80px',
-  borderRadius: '50%',
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  color: 'white',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '32px',
-  fontWeight: '700'
-}
-
-const profileInfoStyle = {
-  flex: '1'
-}
-
-const profileNameStyle = {
-  fontSize: '24px',
-  fontWeight: '600',
-  marginBottom: '4px',
   color: '#2c3e50'
 }
 
-const profileServiceStyle = {
-  color: '#007bff',
-  fontWeight: '500',
-  marginBottom: '4px'
+const tableColumnStyle = {
+  fontSize: '14px'
 }
 
-const profileLocationStyle = {
+const paidStatusStyle = {
+  display: 'inline-block',
+  padding: '4px 12px',
+  background: '#d4edda',
+  color: '#155724',
+  borderRadius: '12px',
+  fontSize: '12px',
+  fontWeight: '600'
+}
+
+const formCardStyle = {
+  background: 'white',
+  padding: '32px',
+  borderRadius: '12px',
+  border: '1px solid #e0e0e0',
+  maxWidth: '800px'
+}
+
+const formSectionTitleStyle = {
+  fontSize: '18px',
+  fontWeight: '600',
+  color: '#2c3e50',
+  marginBottom: '20px'
+}
+
+const serviceCardStyle = {
+  background: 'white',
+  padding: '20px',
+  borderRadius: '12px',
+  marginBottom: '16px',
+  border: '1px solid #e0e0e0'
+}
+
+const serviceHeaderStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: '12px'
+}
+
+const serviceNameStyle = {
+  margin: '0',
+  fontSize: '18px',
+  fontWeight: '600',
+  color: '#2c3e50'
+}
+
+const serviceDescStyle = {
+  margin: '0',
+  fontSize: '14px',
   color: '#7f8c8d'
 }
 
-const profileStatsStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: '24px',
-  padding: '20px',
-  background: '#f8f9fa',
-  borderRadius: '8px'
+const editBtnStyle = {
+  padding: '6px 12px',
+  marginRight: '8px',
+  background: '#007bff',
+  color: 'white',
+  border: 'none',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  fontSize: '12px',
+  fontWeight: '600'
 }
 
-const profileStatStyle = {
-  textAlign: 'center'
+const deleteBtnStyle = {
+  padding: '6px 12px',
+  background: '#dc3545',
+  color: 'white',
+  border: 'none',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  fontSize: '12px',
+  fontWeight: '600'
 }
 
-const statNumberStyle = {
-  display: 'block',
-  fontSize: '24px',
+const reviewsStatStyle = {
+  display: 'flex',
+  gap: '24px'
+}
+
+const ratingBoxStyle = {
+  background: 'white',
+  padding: '32px',
+  borderRadius: '12px',
+  textAlign: 'center',
+  border: '1px solid #e0e0e0'
+}
+
+const ratingNumberStyle = {
+  margin: '0',
+  fontSize: '48px',
   fontWeight: '700',
-  color: '#007bff'
+  color: '#28a745'
 }
 
-const statTextStyle = {
+const starsStyle = {
+  fontSize: '24px',
+  margin: '12px 0'
+}
+
+const reviewCountStyle = {
+  margin: '12px 0 0',
   fontSize: '14px',
-  color: '#7f8c8d',
-  fontWeight: '500'
+  color: '#7f8c8d'
 }
 
-const serviceListStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  marginBottom: '16px'
+const customerReviewStyle = {
+  background: 'white',
+  padding: '20px',
+  borderRadius: '12px',
+  marginBottom: '16px',
+  border: '1px solid #e0e0e0'
 }
 
-const serviceItemStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  padding: '12px 16px',
-  background: '#f8f9fa',
-  borderRadius: '6px'
-}
-
-const availabilityStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px'
-}
-
-const dayItemStyle = {
+const reviewHeaderStyle = {
   display: 'flex',
   justifyContent: 'space-between',
-  padding: '8px 0'
+  alignItems: 'center',
+  marginBottom: '12px'
+}
+
+const reviewerNameStyle = {
+  margin: '0',
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#2c3e50'
+}
+
+const reviewerServiceStyle = {
+  margin: '4px 0 0',
+  fontSize: '12px',
+  color: '#7f8c8d'
+}
+
+const reviewStarStyle = {
+  fontSize: '14px',
+  color: '#ffc107'
+}
+
+const reviewCommentStyle = {
+  margin: '12px 0 0',
+  fontSize: '14px',
+  color: '#495057'
+}
+
+const reviewDateStyle = {
+  margin: '12px 0 0',
+  fontSize: '12px',
+  color: '#adb5bd'
 }
