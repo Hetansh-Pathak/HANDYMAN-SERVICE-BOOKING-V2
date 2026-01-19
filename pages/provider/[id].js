@@ -594,7 +594,8 @@ const pricingItemStyle = {
 }
 
 const serviceNameStyle = {
-  fontWeight: '500'
+  fontWeight: '500',
+  color: '#1a1a1a'
 }
 
 const servicePriceStyle = {
