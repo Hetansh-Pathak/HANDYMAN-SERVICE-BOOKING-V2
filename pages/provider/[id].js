@@ -646,7 +646,8 @@ const reviewRatingStyle = {
 
 const reviewCommentStyle = {
   marginBottom: '8px',
-  lineHeight: '1.5'
+  lineHeight: '1.5',
+  color: '#1a1a1a'
 }
 
 const reviewDateStyle = {
