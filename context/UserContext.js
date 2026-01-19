@@ -14,16 +14,26 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [notifications, setNotifications] = useState([])
+  const [isClient, setIsClient] = useState(false)
 
   // Mock data - replace with actual API calls
   useEffect(() => {
+    setIsClient(true)
+    
     // Check for stored user session
-    const storedUser = localStorage.getItem('handyfix_user')
-    if (storedUser) {
-      const userData = JSON.parse(storedUser)
-      setUser(userData)
-      loadNotifications(userData.id)
+    try {
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        const storedUser = localStorage.getItem('handyfix_user')
+        if (storedUser) {
+          const userData = JSON.parse(storedUser)
+          setUser(userData)
+          loadNotifications(userData.id)
+        }
+      }
+    } catch (error) {
+      console.warn('localStorage access error:', error)
     }
+    
     setLoading(false)
   }, [])
 
@@ -36,7 +46,15 @@ export const UserProvider = ({ children }) => {
     }
     
     setUser(userWithId)
-    localStorage.setItem('handyfix_user', JSON.stringify(userWithId))
+    
+    try {
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        localStorage.setItem('handyfix_user', JSON.stringify(userWithId))
+      }
+    } catch (error) {
+      console.warn('localStorage save error:', error)
+    }
+    
     await loadNotifications(userWithId.id)
     return userWithId
   }
@@ -44,14 +62,29 @@ export const UserProvider = ({ children }) => {
   const logout = () => {
     setUser(null)
     setNotifications([])
-    localStorage.removeItem('handyfix_user')
+    
+    try {
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        localStorage.removeItem('handyfix_user')
+      }
+    } catch (error) {
+      console.warn('localStorage remove error:', error)
+    }
   }
 
   const updateProfile = async (updatedData) => {
     // Mock update - replace with actual API call
     const updatedUser = { ...user, ...updatedData }
     setUser(updatedUser)
-    localStorage.setItem('handyfix_user', JSON.stringify(updatedUser))
+    
+    try {
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        localStorage.setItem('handyfix_user', JSON.stringify(updatedUser))
+      }
+    } catch (error) {
+      console.warn('localStorage update error:', error)
+    }
+    
     return updatedUser
   }
 
@@ -97,17 +130,25 @@ export const UserProvider = ({ children }) => {
     setNotifications(prev => [newNotification, ...prev])
     
     // Show browser notification if supported
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification(notification.title, {
-        body: notification.message,
-        icon: '/favicon.ico'
-      })
+    try {
+      if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+        new Notification(notification.title, {
+          body: notification.message,
+          icon: '/favicon.ico'
+        })
+      }
+    } catch (error) {
+      console.warn('Notification API error:', error)
     }
   }
 
   const requestNotificationPermission = () => {
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission()
+    try {
+      if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission()
+      }
+    } catch (error) {
+      console.warn('Notification permission error:', error)
     }
   }
 
