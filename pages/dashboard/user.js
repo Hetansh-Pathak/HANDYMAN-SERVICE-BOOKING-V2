@@ -506,7 +506,7 @@ const statValueStyle = {
 const sectionTitleStyle = {
   fontSize: '24px',
   fontWeight: '600',
-  color: '#2c3e50',
+  color: '#1a1a1a',
   marginBottom: '20px'
 }
 
