@@ -295,10 +295,14 @@ body {
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #444;
+  color: #2c3e50;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.form-label::after {
+  content: '';
 }
 
 .form-input {
