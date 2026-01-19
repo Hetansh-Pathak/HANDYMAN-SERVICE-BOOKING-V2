@@ -518,7 +518,7 @@ const headerStyle = {
 const titleStyle = {
   fontSize: '32px',
   fontWeight: '700',
-  color: '#2c3e50',
+  color: '#1a1a1a',
   margin: '0'
 }
 
