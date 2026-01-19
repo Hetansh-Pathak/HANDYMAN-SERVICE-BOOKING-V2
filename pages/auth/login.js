@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import Link from 'next/link'
 import { useUser } from '../../context/UserContext'
-import { authAPI } from '../../lib/auth'
+import { authAPI } from '../../lib/auth-enhanced'
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -27,15 +27,16 @@ export default function Login() {
       await login(result.user)
 
       // Redirect based on user type
-      const redirectPath = result.user.userType === 'provider'
+      const redirectPath = result.redirectUrl || (result.user.userType === 'provider'
         ? '/dashboard/provider'
         : result.user.userType === 'admin'
         ? '/admin/dashboard'
-        : '/dashboard/user'
+        : '/dashboard/user')
 
+      // Use replace to avoid back button issues
       router.push(redirectPath)
     } catch (err) {
-      setError(err.message || 'Login failed')
+      setError(err.message || 'Login failed. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -235,7 +236,8 @@ const radioLabelStyle = {
   gap: '8px',
   cursor: 'pointer',
   fontSize: '16px',
-  fontWeight: '500'
+  fontWeight: '500',
+  color: '#2c3e50'
 }
 
 const radioStyle = {
