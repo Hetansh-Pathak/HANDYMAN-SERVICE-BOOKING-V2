@@ -675,8 +675,133 @@ a[href="/"]:hover, a[href="/services"]:hover, a[href="/providers"]:hover, a[href
   min-height: 50px !important;
 }
 
+/* Service Card Styles */
+.service-card {
+  background: linear-gradient(135deg, rgba(44, 62, 80, 0.95) 0%, rgba(52, 73, 94, 0.95) 100%);
+  border: 1px solid rgba(0, 123, 255, 0.2);
+  border-radius: 16px;
+  padding: 28px;
+  color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #007bff, #00d4ff);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover::before {
+  transform: scaleX(1);
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 123, 255, 0.2);
+  border-color: rgba(0, 123, 255, 0.4);
+}
+
+.service-card-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.service-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.service-card-description {
+  font-size: 14px;
+  color: #bdc3c7;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.service-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.service-card-meta-item {
+  font-size: 13px;
+  color: #ecf0f1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.service-card-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00d4ff;
+}
+
+.service-card-providers {
+  font-size: 13px;
+  color: #bdc3c7;
+}
+
+.service-card-button {
+  width: 100%;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 12px;
+}
+
+.service-card-button:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+}
+
+.service-card-button.emergency {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  margin-bottom: 8px;
+}
+
+.service-card-button.emergency:hover {
+  background: linear-gradient(135deg, #c82333, #a71f26);
+}
+
 /* Service Cards Responsive */
 @media (max-width: 768px) {
+  .service-card {
+    padding: 20px;
+  }
+
+  .service-card-icon {
+    font-size: 40px;
+  }
+
+  .service-card-title {
+    font-size: 18px;
+  }
+
   .service-name,
   .step-title {
     white-space: normal !important;
