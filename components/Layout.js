@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
-export default function Layout({ children, title = 'Handyman Service Booking' }) {
+export default function Layout({ children, title = 'HandyFix - Find Trusted Service Providers' }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
@@ -14,16 +14,16 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
         id: 1,
         type: 'booking',
         title: 'New Booking Request',
-        message: 'Rajesh Kumar requested plumbing service',
+        message: 'You have a new service request',
         time: '2 min ago',
         read: false,
-        avatar: '👨‍🔧'
+        avatar: '📋'
       },
       {
         id: 2,
         type: 'payment',
         title: 'Payment Received',
-        message: 'Payment of ₹500 received from Priya Singh',
+        message: 'Payment processed successfully',
         time: '1 hour ago',
         read: false,
         avatar: '💰'
@@ -32,19 +32,10 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
         id: 3,
         type: 'review',
         title: 'New Review',
-        message: 'Amit Sharma left you a 5-star review',
+        message: 'You received a 5-star review',
         time: '3 hours ago',
         read: true,
         avatar: '⭐'
-      },
-      {
-        id: 4,
-        type: 'message',
-        title: 'New Message',
-        message: 'Customer inquiry about electrical work',
-        time: '5 hours ago',
-        read: true,
-        avatar: '💬'
       }
     ]
     setNotifications(mockNotifications)
@@ -62,16 +53,6 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
     setNotifications(prev => prev.map(n => ({ ...n, read: true })))
   }
 
-  const getNotificationIcon = (type) => {
-    switch (type) {
-      case 'booking': return '📋'
-      case 'payment': return '💰'
-      case 'review': return '⭐'
-      case 'message': return '💬'
-      default: return '🔔'
-    }
-  }
-
   return (
     <>
       <Head>
@@ -82,136 +63,121 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
       </Head>
 
       <header style={headerStyle}>
-        <nav style={navStyle}>
-          <div className="container" style={navContainerStyle}>
-            <Link href="/" style={logoStyle}>
-              🔧 HandyFix
-            </Link>
-            
-            <div style={desktopMenuStyle}>
-              <Link href="/" style={navLinkStyle}>Home</Link>
-              <Link href="/services" style={navLinkStyle}>Services</Link>
-              <Link href="/providers" style={navLinkStyle}>Find Providers</Link>
-              <Link href="/about" style={navLinkStyle}>About</Link>
-              <Link href="/contact" style={navLinkStyle}>Contact</Link>
-            </div>
-
-            <div style={rightSectionStyle}>
-              {/* Notification Tab */}
-              <div style={notificationContainerStyle}>
-                <button 
-                  style={notificationBtnStyle}
-                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-                >
-                  <span style={notificationIconStyle}>🔔</span>
-                  {unreadCount > 0 && (
-                    <span style={notificationBadgeStyle}>
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </span>
-                  )}
-                </button>
-
-                {isNotificationOpen && (
-                  <div style={notificationDropdownStyle}>
-                    <div style={notificationHeaderStyle}>
-                      <h3 style={notificationTitleStyle}>Notifications</h3>
-                      {unreadCount > 0 && (
-                        <button 
-                          style={markAllReadBtnStyle}
-                          onClick={markAllAsRead}
-                        >
-                          Mark all read
-                        </button>
-                      )}
-                    </div>
-
-                    <div style={notificationListStyle}>
-                      {notifications.length === 0 ? (
-                        <div style={emptyNotificationsStyle}>
-                          <span style={emptyIconStyle}>🔔</span>
-                          <p>No notifications yet</p>
-                        </div>
-                      ) : (
-                        notifications.map(notification => (
-                          <div 
-                            key={notification.id} 
-                            style={{
-                              ...notificationItemStyle,
-                              ...(notification.read ? readNotificationStyle : unreadNotificationStyle)
-                            }}
-                            onClick={() => markAsRead(notification.id)}
-                          >
-                            <div style={notificationAvatarStyle}>
-                              {getNotificationIcon(notification.type)}
-                            </div>
-                            <div style={notificationContentStyle}>
-                              <div style={notificationItemTitleStyle}>
-                                {notification.title}
-                              </div>
-                              <div style={notificationMessageStyle}>
-                                {notification.message}
-                              </div>
-                              <div style={notificationTimeStyle}>
-                                {notification.time}
-                              </div>
-                            </div>
-                            {!notification.read && (
-                              <div style={unreadDotStyle}></div>
-                            )}
-                          </div>
-                        ))
-                      )}
-                    </div>
-
-                    <div style={notificationFooterStyle}>
-                      <Link href="/notifications" style={viewAllLinkStyle}>
-                        View All Notifications
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Quick Actions */}
-              <div style={quickActionsStyle}>
-                <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Service">
-                  🚨
-                </Link>
-              </div>
-
-              {/* Auth Links */}
-              <div style={authLinksStyle}>
-                <Link href="/auth/login" className="btn btn-outline" style={loginBtnStyle}>Login</Link>
-                <Link href="/auth/register" className="btn btn-primary">Sign Up</Link>
-              </div>
-            </div>
-
-            <button 
-              style={mobileMenuBtnStyle}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              ☰
-            </button>
+        <nav style={navContainerStyle} className="container">
+          <Link href="/" style={logoStyle}>
+            🔧 HandyFix
+          </Link>
+          
+          <div style={desktopMenuStyle}>
+            <Link href="/" style={navLinkStyle}>Home</Link>
+            <Link href="/services" style={navLinkStyle}>Services</Link>
+            <Link href="/providers" style={navLinkStyle}>Providers</Link>
+            <Link href="/about" style={navLinkStyle}>About</Link>
+            <Link href="/contact" style={navLinkStyle}>Contact</Link>
           </div>
 
-          {isMenuOpen && (
-            <div style={mobileMenuStyle}>
-              <Link href="/" style={mobileNavLinkStyle}>Home</Link>
-              <Link href="/services" style={mobileNavLinkStyle}>Services</Link>
-              <Link href="/providers" style={mobileNavLinkStyle}>Find Providers</Link>
-              <Link href="/about" style={mobileNavLinkStyle}>About</Link>
-              <Link href="/contact" style={mobileNavLinkStyle}>Contact</Link>
-              <hr style={{margin: '16px 0', border: '1px solid #eee'}} />
-              <div style={mobileNotificationStyle}>
-                <span>🔔 Notifications ({unreadCount})</span>
-              </div>
-              <Link href="/emergency" style={mobileNavLinkStyle}>🚨 Emergency</Link>
-              <hr style={{margin: '16px 0', border: '1px solid #eee'}} />
-              <Link href="/auth/login" style={mobileNavLinkStyle}>Login</Link>
-              <Link href="/auth/register" style={mobileNavLinkStyle}>Sign Up</Link>
+          <div style={rightSectionStyle}>
+            {/* Notification Dropdown */}
+            <div style={notificationContainerStyle}>
+              <button 
+                style={notificationBtnStyle}
+                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                aria-label="Notifications"
+              >
+                🔔
+                {unreadCount > 0 && (
+                  <span style={notificationBadgeStyle}>{unreadCount > 9 ? '9+' : unreadCount}</span>
+                )}
+              </button>
+
+              {isNotificationOpen && (
+                <div style={notificationDropdownStyle}>
+                  <div style={notificationHeaderStyle}>
+                    <h3 style={notificationTitleStyle}>Notifications</h3>
+                    {unreadCount > 0 && (
+                      <button 
+                        style={markAllReadBtnStyle}
+                        onClick={markAllAsRead}
+                      >
+                        Mark all read
+                      </button>
+                    )}
+                  </div>
+
+                  <div style={notificationListStyle}>
+                    {notifications.length === 0 ? (
+                      <div style={emptyNotificationsStyle}>
+                        <span style={emptyIconStyle}>🔔</span>
+                        <p>No notifications</p>
+                      </div>
+                    ) : (
+                      notifications.map(notification => (
+                        <div 
+                          key={notification.id} 
+                          style={{
+                            ...notificationItemStyle,
+                            ...(notification.read ? {} : unreadNotificationStyle)
+                          }}
+                          onClick={() => markAsRead(notification.id)}
+                        >
+                          <div style={notificationAvatarStyle}>{notification.avatar}</div>
+                          <div style={notificationContentStyle}>
+                            <div style={notificationItemTitleStyle}>{notification.title}</div>
+                            <div style={notificationMessageStyle}>{notification.message}</div>
+                            <div style={notificationTimeStyle}>{notification.time}</div>
+                          </div>
+                          {!notification.read && <div style={unreadDotStyle}></div>}
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  <div style={notificationFooterStyle}>
+                    <Link href="/notifications" style={viewAllLinkStyle}>
+                      View All Notifications →
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Emergency Button */}
+            <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services">
+              🚨
+            </Link>
+
+            {/* Auth Links */}
+            <div style={authLinksStyle}>
+              <Link href="/auth/login" style={loginBtnStyle}>Log In</Link>
+              <Link href="/auth/register" style={signUpBtnStyle}>Sign Up</Link>
+            </div>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            style={mobileMenuBtnStyle}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            ☰
+          </button>
         </nav>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div style={mobileMenuStyle}>
+            <Link href="/" style={mobileNavLinkStyle}>Home</Link>
+            <Link href="/services" style={mobileNavLinkStyle}>Services</Link>
+            <Link href="/providers" style={mobileNavLinkStyle}>Providers</Link>
+            <Link href="/about" style={mobileNavLinkStyle}>About</Link>
+            <Link href="/contact" style={mobileNavLinkStyle}>Contact</Link>
+            <div style={mobileDividerStyle}></div>
+            <Link href="/emergency" style={mobileNavLinkStyle}>🚨 Emergency Services</Link>
+            <div style={mobileDividerStyle}></div>
+            <Link href="/auth/login" style={mobileNavLinkStyle}>Log In</Link>
+            <Link href="/auth/register" style={mobileSignUpStyle}>Sign Up</Link>
+          </div>
+        )}
       </header>
 
       <main style={mainStyle}>
@@ -222,13 +188,15 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
         <div className="container">
           <div style={footerContentStyle}>
             <div style={footerSectionStyle}>
-              <h4 style={footerHeadingStyle}>🔧 HandyFix</h4>
-              <p style={footerTextStyle}>Connect with trusted local service providers for all your home and office needs.</p>
+              <h3 style={footerHeadingStyle}>🔧 HandyFix</h3>
+              <p style={footerTextStyle}>
+                Connect with trusted, verified service providers for all your home and office needs.
+              </p>
               <div style={socialLinksStyle}>
-                <a href="#" style={socialLinkStyle}>📘</a>
-                <a href="#" style={socialLinkStyle}>📷</a>
-                <a href="#" style={socialLinkStyle}>🐦</a>
-                <a href="#" style={socialLinkStyle}>💼</a>
+                <a href="#" style={socialLinkStyle} title="Facebook">f</a>
+                <a href="#" style={socialLinkStyle} title="Instagram">📷</a>
+                <a href="#" style={socialLinkStyle} title="Twitter">𝕏</a>
+                <a href="#" style={socialLinkStyle} title="LinkedIn">in</a>
               </div>
             </div>
             
@@ -239,6 +207,7 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
                 <li><Link href="/services/electrical" style={footerLinkStyle}>Electrical</Link></li>
                 <li><Link href="/services/carpentry" style={footerLinkStyle}>Carpentry</Link></li>
                 <li><Link href="/services/ac-repair" style={footerLinkStyle}>AC Repair</Link></li>
+                <li><Link href="/services/cleaning" style={footerLinkStyle}>Cleaning</Link></li>
               </ul>
             </div>
             
@@ -256,15 +225,15 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
               <h4 style={footerHeadingStyle}>Support</h4>
               <ul style={footerListStyle}>
                 <li><Link href="/help" style={footerLinkStyle}>Help Center</Link></li>
-                <li><Link href="/contact" style={footerLinkStyle}>Customer Support</Link></li>
-                <li><a href="tel:+911234567890" style={footerLinkStyle}>📞 +91 12345 67890</a></li>
+                <li><Link href="/contact" style={footerLinkStyle}>Get Support</Link></li>
+                <li><a href="tel:+911234567890" style={footerLinkStyle}>📞 +91-1234-567890</a></li>
                 <li><a href="mailto:support@handyfix.com" style={footerLinkStyle}>✉️ support@handyfix.com</a></li>
               </ul>
             </div>
           </div>
           
           <div style={footerBottomStyle}>
-            <p>&copy; 2024 HandyFix. All rights reserved.</p>
+            <p>&copy; 2024 HandyFix. All rights reserved. | Trusted by thousands of Indians</p>
           </div>
         </div>
       </footer>
@@ -272,62 +241,49 @@ export default function Layout({ children, title = 'Handyman Service Booking' })
   )
 }
 
-// Enhanced Styles
+/* ==================== NAVBAR STYLES ==================== */
 const headerStyle = {
-  background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-  boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+  background: '#FFFFFF',
+  borderBottom: '1px solid #E8EAED',
   position: 'sticky',
   top: 0,
   zIndex: 1000,
-  borderBottom: '1px solid #e9ecef'
-}
-
-const navStyle = {
-  padding: '0'
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
 }
 
 const navContainerStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '8px 20px',
-  minHeight: '48px'
+  padding: '16px 0',
+  minHeight: '64px'
 }
 
 const logoStyle = {
-  fontSize: '28px',
-  fontWeight: '800',
+  fontSize: '24px',
+  fontWeight: '700',
+  color: '#0A66FF',
   textDecoration: 'none',
-  background: 'linear-gradient(135deg, #007bff, #0056b3)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text',
-  transition: 'all 0.3s ease',
-  padding: '8px 12px',
-  borderRadius: '8px'
+  padding: '8px 0',
+  transition: 'color 0.3s ease',
+  whiteSpace: 'nowrap'
 }
 
 const desktopMenuStyle = {
   display: 'flex',
-  gap: '12px',
-  '@media (maxWidth: 768px)': {
-    display: 'none'
-  }
+  gap: '0',
+  alignItems: 'center'
 }
 
 const navLinkStyle = {
+  color: '#555555',
   textDecoration: 'none',
-  color: '#495057',
-  fontWeight: '600',
-  fontSize: '16px',
-  padding: '6px 16px',
+  fontWeight: '500',
+  fontSize: '15px',
+  padding: '12px 20px',
   borderRadius: '8px',
   transition: 'all 0.3s ease',
-  position: 'relative',
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  whiteSpace: 'nowrap'
+  position: 'relative'
 }
 
 const rightSectionStyle = {
@@ -341,40 +297,29 @@ const notificationContainerStyle = {
 }
 
 const notificationBtnStyle = {
-  position: 'relative',
-  background: 'rgba(0, 123, 255, 0.1)',
-  border: '2px solid rgba(0, 123, 255, 0.2)',
-  borderRadius: '50%',
-  width: '44px',
-  height: '44px',
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  transition: 'all 0.3s ease'
-}
-
-const notificationIconStyle = {
+  background: 'transparent',
+  border: 'none',
   fontSize: '20px',
-  color: '#007bff'
+  cursor: 'pointer',
+  padding: '8px',
+  position: 'relative',
+  transition: 'transform 0.2s ease'
 }
 
 const notificationBadgeStyle = {
   position: 'absolute',
-  top: '-6px',
-  right: '-6px',
-  background: 'linear-gradient(135deg, #dc3545, #c82333)',
+  top: '0px',
+  right: '0px',
+  background: '#DC3545',
   color: 'white',
-  borderRadius: '12px',
-  padding: '2px 6px',
-  fontSize: '10px',
-  fontWeight: '700',
-  minWidth: '20px',
+  borderRadius: '50%',
+  width: '20px',
   height: '20px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  animation: 'pulse 2s infinite'
+  fontSize: '10px',
+  fontWeight: '700'
 }
 
 const notificationDropdownStyle = {
@@ -382,12 +327,12 @@ const notificationDropdownStyle = {
   top: '100%',
   right: '0',
   width: '360px',
-  maxHeight: '400px',
+  maxHeight: '420px',
   background: 'white',
-  borderRadius: '16px',
-  boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
-  border: '1px solid #e9ecef',
-  marginTop: '12px',
+  borderRadius: '12px',
+  border: '1px solid #E8EAED',
+  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
+  marginTop: '8px',
   overflow: 'hidden',
   zIndex: 1000
 }
@@ -396,27 +341,27 @@ const notificationHeaderStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '20px 24px 16px',
-  borderBottom: '1px solid #f1f3f4'
+  padding: '16px 20px',
+  borderBottom: '1px solid #E8EAED'
 }
 
 const notificationTitleStyle = {
   margin: 0,
-  fontSize: '18px',
+  fontSize: '16px',
   fontWeight: '700',
-  color: '#2c3e50'
+  color: '#111111'
 }
 
 const markAllReadBtnStyle = {
   background: 'none',
   border: 'none',
-  color: '#007bff',
-  fontSize: '14px',
+  color: '#0A66FF',
+  fontSize: '12px',
   fontWeight: '600',
   cursor: 'pointer',
   padding: '4px 8px',
   borderRadius: '4px',
-  transition: 'background 0.3s ease'
+  transition: 'background 0.2s ease'
 }
 
 const notificationListStyle = {
@@ -427,7 +372,7 @@ const notificationListStyle = {
 const emptyNotificationsStyle = {
   padding: '40px 20px',
   textAlign: 'center',
-  color: '#6c757d'
+  color: '#888888'
 }
 
 const emptyIconStyle = {
@@ -440,27 +385,22 @@ const emptyIconStyle = {
 const notificationItemStyle = {
   display: 'flex',
   gap: '12px',
-  padding: '16px 24px',
+  padding: '14px 16px',
   cursor: 'pointer',
-  transition: 'background 0.3s ease',
-  borderBottom: '1px solid #f8f9fa',
+  transition: 'background 0.2s ease',
+  borderBottom: '1px solid #F7F9FC',
   position: 'relative'
 }
 
-const readNotificationStyle = {
-  background: 'transparent'
-}
-
 const unreadNotificationStyle = {
-  background: 'rgba(0, 123, 255, 0.03)',
-  borderLeft: '4px solid #007bff'
+  background: '#E8F3FF'
 }
 
 const notificationAvatarStyle = {
   width: '40px',
   height: '40px',
   borderRadius: '50%',
-  background: 'linear-gradient(135deg, #f8f9fa, #e9ecef)',
+  background: '#F7F9FC',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -475,49 +415,45 @@ const notificationContentStyle = {
 
 const notificationItemTitleStyle = {
   fontWeight: '600',
-  fontSize: '14px',
-  color: '#2c3e50',
-  marginBottom: '4px'
+  fontSize: '13px',
+  color: '#111111',
+  marginBottom: '2px'
 }
 
 const notificationMessageStyle = {
-  fontSize: '13px',
-  color: '#6c757d',
+  fontSize: '12px',
+  color: '#555555',
   lineHeight: '1.4',
   marginBottom: '4px'
 }
 
 const notificationTimeStyle = {
   fontSize: '11px',
-  color: '#adb5bd'
+  color: '#888888'
 }
 
 const unreadDotStyle = {
   width: '8px',
   height: '8px',
   borderRadius: '50%',
-  background: '#007bff',
+  background: '#0A66FF',
   flexShrink: 0,
   marginTop: '6px'
 }
 
 const notificationFooterStyle = {
-  padding: '16px 24px',
-  borderTop: '1px solid #f1f3f4',
+  padding: '12px 16px',
+  borderTop: '1px solid #E8EAED',
   textAlign: 'center',
-  background: '#f8f9fa'
+  background: '#F7F9FC'
 }
 
 const viewAllLinkStyle = {
-  color: '#007bff',
+  color: '#0A66FF',
   textDecoration: 'none',
-  fontSize: '14px',
-  fontWeight: '600'
-}
-
-const quickActionsStyle = {
-  display: 'flex',
-  gap: '8px'
+  fontSize: '13px',
+  fontWeight: '600',
+  transition: 'color 0.2s ease'
 }
 
 const emergencyBtnStyle = {
@@ -527,43 +463,45 @@ const emergencyBtnStyle = {
   width: '40px',
   height: '40px',
   background: 'rgba(220, 53, 69, 0.1)',
-  border: '2px solid rgba(220, 53, 69, 0.2)',
+  border: 'none',
   borderRadius: '50%',
-  textDecoration: 'none',
   fontSize: '16px',
-  transition: 'all 0.3s ease',
-  animation: 'pulse 3s infinite'
-}
-
-const messagesBtnStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '40px',
-  height: '40px',
-  background: 'rgba(40, 167, 69, 0.1)',
-  border: '2px solid rgba(40, 167, 69, 0.2)',
-  borderRadius: '50%',
   textDecoration: 'none',
-  fontSize: '16px',
-  transition: 'all 0.3s ease'
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+  animation: 'pulse 2s infinite'
 }
 
 const authLinksStyle = {
   display: 'flex',
-  gap: '10px',
-  alignItems: 'center'
+  gap: '12px',
+  alignItems: 'center',
+  paddingLeft: '12px',
+  borderLeft: '1px solid #E8EAED'
 }
 
 const loginBtnStyle = {
+  color: '#0A66FF',
+  textDecoration: 'none',
+  fontWeight: '600',
   fontSize: '14px',
   padding: '8px 16px',
-  fontWeight: '600',
   borderRadius: '8px',
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(10px)',
-  border: '2px solid rgba(0, 123, 255, 0.3)',
-  transition: 'all 0.3s ease'
+  transition: 'all 0.2s ease',
+  whiteSpace: 'nowrap'
+}
+
+const signUpBtnStyle = {
+  background: '#0A66FF',
+  color: 'white',
+  textDecoration: 'none',
+  fontWeight: '600',
+  fontSize: '14px',
+  padding: '10px 20px',
+  borderRadius: '8px',
+  transition: 'all 0.2s ease',
+  display: 'inline-block',
+  whiteSpace: 'nowrap'
 }
 
 const mobileMenuBtnStyle = {
@@ -572,71 +510,82 @@ const mobileMenuBtnStyle = {
   border: 'none',
   fontSize: '24px',
   cursor: 'pointer',
-  color: '#495057',
-  '@media (maxWidth: 768px)': {
-    display: 'block'
-  }
+  color: '#555555',
+  padding: '8px',
+  transition: 'color 0.2s ease'
 }
 
 const mobileMenuStyle = {
-  display: 'flex',
+  display: 'none',
   flexDirection: 'column',
-  background: 'rgba(255, 255, 255, 0.98)',
-  backdropFilter: 'blur(20px)',
-  padding: '24px',
-  borderTop: '1px solid #e9ecef',
-  boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-  gap: '8px'
+  background: 'white',
+  padding: '16px 20px',
+  borderTop: '1px solid #E8EAED'
 }
 
 const mobileNavLinkStyle = {
-  padding: '14px 20px',
+  padding: '12px 0',
   textDecoration: 'none',
-  color: '#495057',
-  fontWeight: '600',
-  fontSize: '16px',
-  borderRadius: '12px',
-  transition: 'all 0.3s ease',
-  background: 'rgba(248, 249, 250, 0.5)',
-  border: '1px solid rgba(233, 236, 239, 0.3)'
+  color: '#555555',
+  fontWeight: '500',
+  fontSize: '15px',
+  transition: 'color 0.2s ease',
+  display: 'block'
 }
 
-const mobileNotificationStyle = {
+const mobileSignUpStyle = {
   padding: '12px 0',
-  color: '#007bff',
+  textDecoration: 'none',
+  color: '#0A66FF',
   fontWeight: '600',
-  fontSize: '16px'
+  fontSize: '15px',
+  transition: 'color 0.2s ease',
+  display: 'block'
+}
+
+const mobileDividerStyle = {
+  height: '1px',
+  background: '#E8EAED',
+  margin: '12px 0'
 }
 
 const mainStyle = {
-  minHeight: 'calc(100vh - 200px)'
+  minHeight: 'calc(100vh - 300px)'
 }
 
+/* ==================== FOOTER STYLES ==================== */
 const footerStyle = {
-  background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-  color: 'white',
-  marginTop: '80px'
+  background: '#FFFFFF',
+  borderTop: '1px solid #E8EAED',
+  marginTop: '80px',
+  color: '#555555'
 }
 
 const footerContentStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-  gap: '40px',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: '48px',
   padding: '60px 0 40px'
 }
 
-const footerSectionStyle = {}
+const footerSectionStyle = {
+  animation: 'fadeInUp 0.6s ease-out'
+}
 
 const footerHeadingStyle = {
-  marginBottom: '20px',
-  fontSize: '18px',
-  fontWeight: '600'
+  fontSize: '14px',
+  fontWeight: '700',
+  color: '#111111',
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px',
+  marginBottom: '16px'
 }
 
 const footerTextStyle = {
-  color: '#bdc3c7',
+  fontSize: '14px',
+  color: '#555555',
   lineHeight: '1.6',
-  marginBottom: '20px'
+  marginBottom: '16px'
 }
 
 const socialLinksStyle = {
@@ -645,16 +594,18 @@ const socialLinksStyle = {
 }
 
 const socialLinkStyle = {
-  display: 'inline-block',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   width: '36px',
   height: '36px',
-  background: 'rgba(255, 255, 255, 0.1)',
+  background: '#F7F9FC',
   borderRadius: '50%',
-  textAlign: 'center',
-  lineHeight: '36px',
   textDecoration: 'none',
-  fontSize: '18px',
-  transition: 'all 0.3s ease'
+  fontSize: '14px',
+  fontWeight: '600',
+  color: '#0A66FF',
+  transition: 'all 0.2s ease'
 }
 
 const footerListStyle = {
@@ -662,40 +613,31 @@ const footerListStyle = {
 }
 
 const footerLinkStyle = {
-  color: '#bdc3c7',
+  color: '#555555',
   textDecoration: 'none',
   lineHeight: '2',
-  transition: 'color 0.3s ease'
+  fontSize: '13px',
+  transition: 'color 0.2s ease',
+  display: 'block'
 }
 
 const footerBottomStyle = {
-  borderTop: '1px solid #34495e',
-  paddingTop: '30px',
-  paddingBottom: '30px',
+  borderTop: '1px solid #E8EAED',
+  paddingTop: '24px',
+  paddingBottom: '24px',
   textAlign: 'center',
-  color: '#bdc3c7'
+  color: '#888888',
+  fontSize: '13px'
 }
 
-// Add CSS animations (client-side only)
-if (typeof document !== 'undefined' && typeof window !== 'undefined') {
-  const animations = `
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.05); opacity: 0.8; }
-    }
-  `
-
-  try {
-    // Only add animation styles if not already present
-    if (!document.querySelector('style[data-pulse-animation]')) {
-      const style = document.createElement('style')
-      style.setAttribute('data-pulse-animation', 'true')
-      style.textContent = animations
-      if (document.head) {
-        document.head.appendChild(style)
+/* Mobile Menu Styles */
+if (typeof window !== 'undefined') {
+  const style = document.createElement('style')
+  style.textContent = `
+    @media (max-width: 768px) {
+      ${desktopMenuStyle}::style {
+        display: none !important;
       }
     }
-  } catch (error) {
-    console.warn('Animation style injection error:', error)
-  }
+  `
 }

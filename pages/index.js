@@ -7,22 +7,17 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedService, setSelectedService] = useState('')
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const [particles, setParticles] = useState([])
   const { user, isProvider, isCustomer } = useUser()
 
-  // Generate particles client-side only to avoid hydration mismatch
+  // Auto-rotate testimonials
   useEffect(() => {
-    const generatedParticles = [...Array(20)].map((_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      animationDelay: i * 0.2
-    }))
-    setParticles(generatedParticles)
+    const timer = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
+    }, 5000)
+    return () => clearInterval(timer)
   }, [])
 
-  // Intersection Observer for animations
+  // Intersection Observer for scroll animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -42,21 +37,12 @@ export default function Home() {
     return () => observer.disconnect()
   }, [])
 
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
-
   const services = [
     { 
       id: 1, 
       name: 'Plumbing', 
       icon: '🔧', 
       desc: 'Pipe repairs, leak fixes, installation',
-      color: '#007bff',
       providers: 45,
       avgPrice: '₹500',
       urgentAvailable: true
@@ -66,7 +52,6 @@ export default function Home() {
       name: 'Electrical', 
       icon: '⚡', 
       desc: 'Wiring, appliance installation, repairs',
-      color: '#ffc107',
       providers: 38,
       avgPrice: '₹600',
       urgentAvailable: true
@@ -76,7 +61,6 @@ export default function Home() {
       name: 'Carpentry', 
       icon: '🔨', 
       desc: 'Furniture repair, custom woodwork',
-      color: '#28a745',
       providers: 32,
       avgPrice: '₹800',
       urgentAvailable: false
@@ -86,7 +70,6 @@ export default function Home() {
       name: 'AC Repair', 
       icon: '❄️', 
       desc: 'AC servicing, installation, maintenance',
-      color: '#17a2b8',
       providers: 28,
       avgPrice: '₹700',
       urgentAvailable: true
@@ -96,7 +79,6 @@ export default function Home() {
       name: 'Painting', 
       icon: '🎨', 
       desc: 'Interior and exterior painting',
-      color: '#e83e8c',
       providers: 25,
       avgPrice: '₹400',
       urgentAvailable: false
@@ -106,7 +88,6 @@ export default function Home() {
       name: 'Cleaning', 
       icon: '🧽', 
       desc: 'Deep cleaning, regular maintenance',
-      color: '#6f42c1',
       providers: 42,
       avgPrice: '₹300',
       urgentAvailable: true
@@ -132,7 +113,7 @@ export default function Home() {
       service: 'Electrical', 
       rating: 4.9, 
       experience: 12, 
-      image: '👨‍��',
+      image: '👨‍💼',
       completedJobs: 312,
       responseTime: '20 min',
       verified: true,
@@ -198,74 +179,32 @@ export default function Home() {
 
   return (
     <RoleBasedLayout title="HandyFix - Find Trusted Local Service Providers">
-      {/* Enhanced Hero Section */}
+      {/* Hero Section */}
       <section style={heroStyle}>
-        <div style={heroBackgroundStyle}></div>
-        <div style={heroParticlesStyle}>
-          {particles.map((particle) => (
-            <div
-              key={particle.id}
-              style={{
-                position: 'absolute',
-                width: '4px',
-                height: '4px',
-                background: 'rgba(255, 255, 255, 0.3)',
-                borderRadius: '50%',
-                animation: 'floatParticle 15s linear infinite',
-                left: `${particle.left}%`,
-                top: `${particle.top}%`,
-                animationDelay: `${particle.animationDelay}s`
-              }}
-            />
-          ))}
-        </div>
-        
         <div className="container">
           <div style={heroContentStyle}>
-            <div style={heroTextSectionStyle}>
+            <div style={heroTextStyle}>
               <div style={heroTaglineStyle}>
-                <span style={heroTagIconStyle}>⭐</span>
-                #1 Trusted Home Service Platform
+                ✓ Trusted by thousands of Indians
               </div>
               
               <h1 style={heroTitleStyle}>
-                Find Trusted Plumbers
-                <br />
-                Carpenters & Electricians
-                <br />
-                in Your City
+                Find Trusted Service Providers Near You
               </h1>
               
               <p style={heroSubtitleStyle}>
-                Quick, reliable, and affordable home services at your doorstep. 
-                Book verified professionals in minutes with instant quotes and real-time tracking.
+                Book verified professionals for plumbing, electrical work, carpentry, and more. Quick booking, transparent pricing, and 24/7 support.
               </p>
               
-              {/* Enhanced Search Bar */}
-              <div style={searchContainerStyle}>
+              {/* Search Bar */}
+              <div style={searchBarContainerStyle}>
                 <div style={searchBarStyle}>
-                  <div style={serviceSelectStyle}>
-                    <span style={selectIconStyle}>🔧</span>
-                    <select 
-                      style={selectStyle}
-                      value={selectedService}
-                      onChange={(e) => setSelectedService(e.target.value)}
-                    >
-                      <option value="">Choose Service</option>
-                      {services.map(service => (
-                        <option key={service.id} value={service.name}>
-                          {service.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div style={locationInputStyle}>
-                    <span style={locationIconStyle}>📍</span>
+                  <div style={searchInputGroupStyle}>
+                    <span style={searchIconStyle}>🔍</span>
                     <input 
                       type="text" 
-                      placeholder="Enter city or pincode" 
-                      style={inputStyle}
+                      placeholder="What service do you need?" 
+                      style={searchInputStyle}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -277,14 +216,12 @@ export default function Home() {
                     style={searchBtnStyle}
                     onClick={handleSearch}
                   >
-                    <span style={searchBtnIconStyle}>🔍</span>
                     Find Services
                   </button>
                 </div>
                 
                 <div style={searchTagsStyle}>
-                  <span style={tagLabelStyle}>Popular:</span>
-                  {['Plumbing', 'AC Repair', 'Electrical', 'Cleaning'].map(tag => (
+                  {['Plumbing', 'Electrical', 'AC Repair', 'Cleaning'].map(tag => (
                     <button 
                       key={tag}
                       style={tagStyle}
@@ -301,29 +238,16 @@ export default function Home() {
 
               {/* Trust Indicators */}
               <div style={trustIndicatorsStyle}>
-                <div style={trustItemStyle}>
-                  <span style={trustIconStyle}>✅</span>
-                  <span>Verified Professionals</span>
-                </div>
-                <div style={trustItemStyle}>
-                  <span style={trustIconStyle}>⚡</span>
-                  <span>30-Sec Booking</span>
-                </div>
-                <div style={trustItemStyle}>
-                  <span style={trustIconStyle}>🛡️</span>
-                  <span>100% Secure</span>
-                </div>
-                <div style={trustItemStyle}>
-                  <span style={trustIconStyle}>📞</span>
-                  <span>24/7 Support</span>
-                </div>
+                <div style={trustItemStyle}>✓ 100% Verified Professionals</div>
+                <div style={trustItemStyle}>⚡ Same-day Service Available</div>
+                <div style={trustItemStyle}>🛡️ Safe & Secure</div>
               </div>
             </div>
 
             {/* Hero Stats */}
-            <div style={heroStatsStyle}>
+            <div style={heroStatsGridStyle}>
               {stats.map((stat, index) => (
-                <div key={index} style={statItemStyle} className="animate-on-scroll">
+                <div key={index} style={statCardStyle} className="animate-on-scroll">
                   <div style={statIconStyle}>{stat.icon}</div>
                   <div style={statValueStyle}>{stat.value}</div>
                   <div style={statLabelStyle}>{stat.label}</div>
@@ -342,45 +266,39 @@ export default function Home() {
             <p style={sectionSubtitleStyle}>Get your home services done in 3 simple steps</p>
           </div>
           
-          <div style={stepsContainerStyle}>
+          <div style={stepsGridStyle}>
             {[
               { 
                 step: '1', 
                 title: 'Choose Service', 
-                desc: 'Select from 50+ home services',
-                icon: '🔍',
-                color: '#007bff'
+                desc: 'Select from 50+ services',
+                icon: '🔍'
               },
               { 
                 step: '2', 
                 title: 'Book Instantly', 
-                desc: 'Get matched with verified professionals',
-                icon: '📱',
-                color: '#28a745'
+                desc: 'Get matched with professionals',
+                icon: '📱'
               },
               { 
                 step: '3', 
                 title: 'Get It Done', 
-                desc: 'Relax while experts handle the work',
-                icon: '✨',
-                color: '#ffc107'
+                desc: 'Relax while experts work',
+                icon: '✨'
               }
             ].map((item, index) => (
-              <div key={index} style={stepItemStyle} className="animate-on-scroll">
-                <div style={{...stepIconStyle, backgroundColor: item.color + '20', color: item.color}}>
-                  <span style={stepEmojiStyle}>{item.icon}</span>
-                  <div style={{...stepNumberStyle, backgroundColor: item.color}}>{item.step}</div>
-                </div>
+              <div key={index} style={stepCardStyle} className="animate-on-scroll">
+                <div style={stepNumberStyle}>{item.step}</div>
+                <div style={stepEmojiStyle}>{item.icon}</div>
                 <h3 style={stepTitleStyle}>{item.title}</h3>
                 <p style={stepDescStyle}>{item.desc}</p>
-                {index < 2 && <div style={stepConnectorStyle}>→</div>}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Enhanced Services Section */}
+      {/* Services Section */}
       <section style={servicesStyle}>
         <div className="container">
           <div style={sectionHeaderStyle} className="animate-on-scroll">
@@ -388,7 +306,7 @@ export default function Home() {
             <p style={sectionSubtitleStyle}>Professional help for all your home and office needs</p>
           </div>
           
-          <div className="grid grid-3" style={{marginTop: '60px'}}>
+          <div style={servicesGridStyle}>
             {services.map((service, index) => (
               <Link 
                 key={service.id} 
@@ -396,39 +314,26 @@ export default function Home() {
                 style={{textDecoration: 'none'}}
               >
                 <div 
-                  className="card animate-on-scroll hover-lift" 
                   style={{
                     ...serviceCardStyle,
-                    borderTop: `4px solid ${service.color}`,
-                    animationDelay: `${index * 0.1}s`
+                    animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                   }}
+                  className="animate-on-scroll"
                 >
-                  <div style={{...serviceIconStyle, color: service.color}}>
-                    {service.icon}
-                  </div>
+                  <div style={serviceIconStyle}>{service.icon}</div>
                   <h3 style={serviceNameStyle}>{service.name}</h3>
                   <p style={serviceDescStyle}>{service.desc}</p>
                   
                   <div style={serviceMetricsStyle}>
-                    <div style={metricStyle}>
-                      <span style={metricIconStyle}>👥</span>
-                      <span>{service.providers} providers</span>
-                    </div>
-                    <div style={metricStyle}>
-                      <span style={metricIconStyle}>💰</span>
-                      <span>From {service.avgPrice}</span>
-                    </div>
-                    {service.urgentAvailable && (
-                      <div style={urgentBadgeStyle}>
-                        <span>⚡ Emergency Available</span>
-                      </div>
-                    )}
+                    <div style={metricStyle}>👥 {service.providers} providers</div>
+                    <div style={metricStyle}>💰 From {service.avgPrice}</div>
                   </div>
                   
-                  <div style={viewMoreStyle}>
-                    <span>Book Now</span>
-                    <span style={arrowStyle}>→</span>
-                  </div>
+                  {service.urgentAvailable && (
+                    <div style={urgentBadgeStyle}>⚡ Emergency Available</div>
+                  )}
+                  
+                  <div style={bookNowStyle}>Book Now →</div>
                 </div>
               </Link>
             ))}
@@ -444,63 +349,52 @@ export default function Home() {
             <p style={sectionSubtitleStyle}>Top-rated professionals in your area</p>
           </div>
           
-          <div className="grid grid-3" style={{marginTop: '60px'}}>
+          <div style={providersGridStyle}>
             {featuredProviders.map((provider, index) => (
               <div 
                 key={provider.id} 
-                className="card animate-on-scroll hover-lift" 
                 style={{
                   ...providerCardStyle,
-                  animationDelay: `${index * 0.1}s`
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                 }}
+                className="animate-on-scroll"
               >
                 <div style={providerHeaderStyle}>
                   <div style={providerImageStyle}>
                     {provider.image}
-                    {provider.verified && (
-                      <div style={verifiedBadgeStyle}>✓</div>
-                    )}
+                    {provider.verified && <div style={verifiedBadgeStyle}>✓</div>}
                     <div style={{
                       ...statusDotStyle,
-                      backgroundColor: provider.available ? '#00ff00' : '#ff4444'
+                      background: provider.available ? '#00B894' : '#DC3545'
                     }}></div>
                   </div>
                   <div>
                     <h3 style={providerNameStyle}>{provider.name}</h3>
                     <p style={providerServiceStyle}>{provider.service} Specialist</p>
-                    <div style={providerLocationStyle}>📍 Mumbai</div>
                   </div>
                 </div>
                 
-                <div style={providerStatsStyle}>
-                  <div style={ratingStyle}>
-                    <div style={starsStyle}>
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} style={{
-                          color: i < Math.floor(provider.rating) ? '#ffc107' : '#e0e0e0'
-                        }}>⭐</span>
-                      ))}
-                    </div>
-                    <span style={ratingValueStyle}>{provider.rating}</span>
-                    <span style={ratingCountStyle}>({provider.completedJobs} jobs)</span>
+                <div style={providerRatingStyle}>
+                  <div style={starsStyle}>
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} style={{
+                        color: i < Math.floor(provider.rating) ? '#FFA500' : '#D2D3D5'
+                      }}>★</span>
+                    ))}
                   </div>
-                  
-                  <div style={providerMetricsStyle}>
-                    <div style={metricItemStyle}>
-                      <span style={metricIconStyle}>⏱️</span>
-                      <span>Responds in {provider.responseTime}</span>
-                    </div>
-                    <div style={metricItemStyle}>
-                      <span style={metricIconStyle}>🎯</span>
-                      <span>{provider.experience} years experience</span>
-                    </div>
-                  </div>
+                  <span style={ratingValueStyle}>{provider.rating}</span>
+                  <span style={ratingCountStyle}>({provider.completedJobs} jobs)</span>
+                </div>
+                
+                <div style={providerMetricsStyle}>
+                  <div style={metricItemStyle}>⏱️ {provider.responseTime} response</div>
+                  <div style={metricItemStyle}>🎯 {provider.experience}+ years</div>
                 </div>
 
                 <Link 
                   href={`/provider/${provider.id}`} 
                   className="btn btn-primary" 
-                  style={{width: '100%', marginTop: '20px'}}
+                  style={{width: '100%', marginTop: '20px', fontSize: '14px'}}
                 >
                   {provider.available ? 'Book Now' : 'View Profile'}
                 </Link>
@@ -524,25 +418,23 @@ export default function Home() {
                 key={testimonial.id}
                 style={{
                   ...testimonialCardStyle,
-                  ...(index === currentTestimonial ? activeTestimonialStyle : inactiveTestimonialStyle)
+                  opacity: index === currentTestimonial ? 1 : 0,
+                  transform: index === currentTestimonial ? 'scale(1)' : 'scale(0.95)',
+                  pointerEvents: index === currentTestimonial ? 'auto' : 'none'
                 }}
               >
-                <div style={testimonialContentStyle}>
-                  <div style={quoteIconStyle}>"</div>
-                  <p style={testimonialTextStyle}>{testimonial.text}</p>
-                  
-                  <div style={testimonialAuthorStyle}>
-                    <div style={authorImageStyle}>{testimonial.image}</div>
-                    <div>
-                      <div style={authorNameStyle}>{testimonial.name}</div>
-                      <div style={authorLocationStyle}>{testimonial.location}</div>
-                      <div style={authorServiceStyle}>Used: {testimonial.service}</div>
-                    </div>
-                    <div style={testimonialRatingStyle}>
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <span key={i} style={starStyle}>⭐</span>
-                      ))}
-                    </div>
+                <p style={testimonialTextStyle}>"{testimonial.text}"</p>
+                
+                <div style={testimonialAuthorStyle}>
+                  <div style={authorImageStyle}>{testimonial.image}</div>
+                  <div>
+                    <div style={authorNameStyle}>{testimonial.name}</div>
+                    <div style={authorLocationStyle}>{testimonial.location}</div>
+                  </div>
+                  <div style={testimonialRatingStyle}>
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <span key={i}>⭐</span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -555,9 +447,10 @@ export default function Home() {
                 key={index}
                 style={{
                   ...dotStyle,
-                  ...(index === currentTestimonial ? activeDotStyle : {})
+                  background: index === currentTestimonial ? '#0A66FF' : '#D2D3D5'
                 }}
                 onClick={() => setCurrentTestimonial(index)}
+                aria-label={`Testimonial ${index + 1}`}
               />
             ))}
           </div>
@@ -566,52 +459,44 @@ export default function Home() {
 
       {/* CTA Section */}
       <section style={ctaStyle}>
-        <div style={ctaBackgroundStyle}></div>
         <div className="container">
           <div style={ctaContentStyle} className="animate-on-scroll">
             <h2 style={ctaTitleStyle}>Ready to Get Started?</h2>
             <p style={ctaSubtitleStyle}>
-              Join thousands of satisfied customers who trust HandyFix for their home service needs
+              Join thousands of satisfied customers who trust HandyFix for quality, affordable home services.
             </p>
             
             <div style={ctaButtonsStyle}>
               {!user ? (
                 <>
                   <Link href="/services" className="btn btn-primary" style={ctaBtnStyle}>
-                    <span>🔍</span>
-                    Find Services Now
+                    🔍 Find Services Now
                   </Link>
-                  <Link href="/auth/provider-register" className="btn btn-glass" style={ctaBtnStyle}>
-                    <span>🔧</span>
-                    Become a Provider
+                  <Link href="/auth/provider-register" className="btn btn-secondary" style={ctaBtnStyle}>
+                    🔧 Become a Provider
                   </Link>
                 </>
               ) : isCustomer ? (
                 <>
                   <Link href="/services" className="btn btn-primary" style={ctaBtnStyle}>
-                    <span>🔍</span>
-                    Book a Service
+                    🔍 Book a Service
                   </Link>
-                  <Link href="/dashboard/user" className="btn btn-glass" style={ctaBtnStyle}>
-                    <span>📊</span>
-                    My Dashboard
+                  <Link href="/dashboard/user" className="btn btn-secondary" style={ctaBtnStyle}>
+                    📊 My Dashboard
                   </Link>
                 </>
               ) : isProvider ? (
                 <>
-                  <Link href="/dashboard/provider" className="btn btn-success" style={ctaBtnStyle}>
-                    <span>📊</span>
-                    Provider Dashboard
+                  <Link href="/dashboard/provider" className="btn btn-primary" style={ctaBtnStyle}>
+                    📊 Provider Dashboard
                   </Link>
-                  <Link href="/provider/profile" className="btn btn-glass" style={ctaBtnStyle}>
-                    <span>⚙️</span>
-                    Manage Profile
+                  <Link href="/provider/profile" className="btn btn-secondary" style={ctaBtnStyle}>
+                    ⚙️ Manage Profile
                   </Link>
                 </>
               ) : (
                 <Link href="/services" className="btn btn-primary" style={ctaBtnStyle}>
-                  <span>🔍</span>
-                  Explore Services
+                  🔍 Explore Services
                 </Link>
               )}
             </div>
@@ -622,12 +507,12 @@ export default function Home() {
                 <span style={ctaStatLabelStyle}>Average Rating</span>
               </div>
               <div style={ctaStatStyle}>
-                <span style={ctaStatValueStyle}>{'< 30 min'}</span>
-                <span style={ctaStatLabelStyle}>Response Time</span>
+                <span style={ctaStatValueStyle}>15 min</span>
+                <span style={ctaStatLabelStyle}>Avg Response</span>
               </div>
               <div style={ctaStatStyle}>
                 <span style={ctaStatValueStyle}>24/7</span>
-                <span style={ctaStatLabelStyle}>Support Available</span>
+                <span style={ctaStatLabelStyle}>Support</span>
               </div>
             </div>
           </div>
@@ -637,464 +522,344 @@ export default function Home() {
   )
 }
 
-// Enhanced Styles with Animations
+/* ==================== STYLES ==================== */
+
+// Hero Section
 const heroStyle = {
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%)',
-  color: 'white',
-  padding: '120px 0 80px',
-  minHeight: '90vh',
-  display: 'flex',
-  alignItems: 'center',
-  position: 'relative',
-  overflow: 'hidden'
+  background: '#FFFFFF',
+  padding: '80px 0 60px',
+  borderBottom: '1px solid #E8EAED'
 }
-
-const heroBackgroundStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: 'radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
-  animation: 'backgroundFloat 20s ease-in-out infinite'
-}
-
-const heroParticlesStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  overflow: 'hidden'
-}
-
 
 const heroContentStyle = {
   display: 'grid',
-  gridTemplateColumns: '2fr 1fr',
-  gap: '80px',
-  alignItems: 'center',
-  position: 'relative',
-  zIndex: 1
+  gridTemplateColumns: '1fr 1fr',
+  gap: '60px',
+  alignItems: 'center'
 }
 
-const heroTextSectionStyle = {
-  animation: 'fadeInLeft 1s ease-out'
+const heroTextStyle = {
+  animation: 'fadeInUp 0.6s ease-out'
 }
 
 const heroTaglineStyle = {
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '8px',
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(10px)',
+  display: 'inline-block',
+  background: '#E8F3FF',
+  color: '#0A66FF',
   padding: '8px 16px',
-  borderRadius: '25px',
-  fontSize: '14px',
+  borderRadius: '20px',
+  fontSize: '13px',
   fontWeight: '600',
-  marginBottom: '24px',
-  border: '1px solid rgba(255, 255, 255, 0.2)'
-}
-
-const heroTagIconStyle = {
-  fontSize: '16px',
-  animation: 'spin 3s linear infinite'
+  marginBottom: '24px'
 }
 
 const heroTitleStyle = {
-  fontSize: 'clamp(36px, 5vw, 64px)',
+  fontSize: '48px',
   fontWeight: '700',
-  fontFamily: 'Arial, sans-serif',
+  color: '#111111',
   marginBottom: '24px',
-  lineHeight: '1.2',
-  background: 'linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text'
+  lineHeight: '1.2'
 }
-
-
-
-
 
 const heroSubtitleStyle = {
-  fontSize: '20px',
+  fontSize: '18px',
+  color: '#555555',
   marginBottom: '40px',
-  opacity: '0.9',
   lineHeight: '1.6',
-  maxWidth: '600px'
+  maxWidth: '500px'
 }
 
-const searchContainerStyle = {
-  marginBottom: '40px'
+const searchBarContainerStyle = {
+  marginBottom: '32px'
 }
 
 const searchBarStyle = {
   display: 'flex',
-  gap: '0',
-  maxWidth: '700px',
-  background: 'rgba(255, 255, 255, 0.95)',
-  backdropFilter: 'blur(20px)',
-  padding: '8px',
-  borderRadius: '16px',
-  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
+  gap: '8px',
   marginBottom: '16px'
 }
 
-const serviceSelectStyle = {
-  position: 'relative',
-  flex: '1'
+const searchInputGroupStyle = {
+  flex: 1,
+  display: 'flex',
+  alignItems: 'center',
+  background: '#F7F9FC',
+  borderRadius: '10px',
+  border: '1px solid #E8EAED',
+  paddingLeft: '16px'
 }
 
-const selectIconStyle = {
-  position: 'absolute',
-  left: '16px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  fontSize: '16px',
-  color: '#666',
-  zIndex: 2
+const searchIconStyle = {
+  fontSize: '18px',
+  marginRight: '8px'
 }
 
-const selectStyle = {
-  flex: '1',
-  padding: '16px 16px 16px 48px',
+const searchInputStyle = {
+  flex: 1,
   border: 'none',
-  borderRadius: '12px',
-  fontSize: '16px',
   background: 'transparent',
-  color: '#333',
-  fontWeight: '500'
-}
-
-const locationInputStyle = {
-  position: 'relative',
-  flex: '2'
-}
-
-const locationIconStyle = {
-  position: 'absolute',
-  left: '16px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  fontSize: '16px',
-  color: '#666',
-  zIndex: 2
-}
-
-const inputStyle = {
-  width: '100%',
-  padding: '16px 16px 16px 48px',
-  border: 'none',
-  borderRadius: '12px',
-  fontSize: '16px',
-  background: 'transparent',
-  color: '#333'
+  padding: '12px 0',
+  fontSize: '15px',
+  color: '#111111',
+  outline: 'none'
 }
 
 const searchBtnStyle = {
-  whiteSpace: 'nowrap',
-  borderRadius: '12px',
-  padding: '16px 24px',
-  fontSize: '16px',
-  fontWeight: '600',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px'
-}
-
-const searchBtnIconStyle = {
-  fontSize: '16px'
+  padding: '12px 32px',
+  minWidth: '150px'
 }
 
 const searchTagsStyle = {
   display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  flexWrap: 'wrap',
-  overflow: 'visible'
-}
-
-const tagLabelStyle = {
-  color: 'rgba(255, 255, 255, 0.8)',
-  fontSize: '14px',
-  fontWeight: '500'
+  gap: '8px',
+  flexWrap: 'wrap'
 }
 
 const tagStyle = {
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  color: 'white',
+  background: '#F7F9FC',
+  border: '1px solid #D2D3D5',
+  color: '#555555',
   padding: '8px 16px',
   borderRadius: '20px',
-  fontSize: '14px',
+  fontSize: '13px',
   fontWeight: '500',
   cursor: 'pointer',
-  transition: 'all 0.3s ease',
-  whiteSpace: 'nowrap',
-  minWidth: 'fit-content'
+  transition: 'all 0.2s ease',
+  whiteSpace: 'nowrap'
 }
 
 const trustIndicatorsStyle = {
   display: 'flex',
-  gap: '32px',
-  flexWrap: 'wrap'
+  flexDirection: 'column',
+  gap: '12px'
 }
 
 const trustItemStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  color: 'rgba(255, 255, 255, 0.9)',
+  color: '#555555',
   fontSize: '14px',
   fontWeight: '500'
 }
 
-const trustIconStyle = {
-  fontSize: '16px'
-}
-
-const heroStatsStyle = {
+const heroStatsGridStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '24px',
-  animation: 'fadeInRight 1s ease-out 0.5s both'
+  gap: '20px',
+  animation: 'fadeInUp 0.6s ease-out 0.2s both'
 }
 
-const statItemStyle = {
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(10px)',
-  padding: '24px',
-  borderRadius: '16px',
+const statCardStyle = {
+  background: '#F7F9FC',
+  padding: '28px',
+  borderRadius: '14px',
+  border: '1px solid #E8EAED',
   textAlign: 'center',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  transition: 'all 0.3s ease',
-  opacity: '0',
+  opacity: 0,
   transform: 'translateY(20px)',
   animation: 'fadeInUp 0.6s ease-out forwards'
 }
 
 const statIconStyle = {
-  fontSize: '32px',
-  marginBottom: '12px',
-  display: 'block'
+  fontSize: '36px',
+  marginBottom: '12px'
 }
 
 const statValueStyle = {
   fontSize: '24px',
   fontWeight: '700',
-  color: '#ffd700',
+  color: '#0A66FF',
   display: 'block',
   marginBottom: '4px'
 }
 
 const statLabelStyle = {
-  fontSize: '12px',
-  opacity: '0.8',
+  fontSize: '13px',
+  color: '#888888',
   textTransform: 'uppercase',
   letterSpacing: '0.5px'
 }
 
+// How It Works Section
 const howItWorksStyle = {
-  padding: '100px 0',
-  background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
+  background: '#F7F9FC',
+  padding: '80px 0'
 }
 
 const sectionHeaderStyle = {
   textAlign: 'center',
   marginBottom: '60px',
-  opacity: '0',
-  transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards'
+  animation: 'fadeInUp 0.6s ease-out'
 }
 
 const sectionTitleStyle = {
-  fontSize: '42px',
+  fontSize: '40px',
   fontWeight: '700',
-  color: '#2c3e50',
-  marginBottom: '16px',
-  background: 'linear-gradient(135deg, #2c3e50, #3498db)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text'
+  color: '#111111',
+  marginBottom: '12px'
 }
 
 const sectionSubtitleStyle = {
-  fontSize: '18px',
-  color: '#7f8c8d',
+  fontSize: '16px',
+  color: '#555555',
   maxWidth: '600px',
-  margin: '0 auto',
-  lineHeight: '1.6'
+  margin: '0 auto'
 }
 
-const stepsContainerStyle = {
+const stepsGridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-  gap: '40px',
-  position: 'relative'
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '40px'
 }
 
-const stepItemStyle = {
+const stepCardStyle = {
+  background: 'white',
+  padding: '40px 28px',
+  borderRadius: '16px',
+  border: '1px solid #E8EAED',
   textAlign: 'center',
-  position: 'relative',
-  opacity: '0',
+  opacity: 0,
   transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards'
-}
-
-const stepIconStyle = {
-  width: '80px',
-  height: '80px',
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  margin: '0 auto 24px',
-  position: 'relative',
-  fontSize: '32px',
-  transition: 'all 0.3s ease'
-}
-
-const stepEmojiStyle = {
-  fontSize: '32px'
+  animation: 'fadeInUp 0.6s ease-out forwards',
+  position: 'relative'
 }
 
 const stepNumberStyle = {
   position: 'absolute',
-  top: '-8px',
-  right: '-8px',
-  width: '24px',
-  height: '24px',
-  borderRadius: '50%',
+  top: '-16px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  width: '32px',
+  height: '32px',
+  background: '#0A66FF',
   color: 'white',
+  borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '12px',
-  fontWeight: '700'
+  fontWeight: '700',
+  fontSize: '14px'
+}
+
+const stepEmojiStyle = {
+  fontSize: '40px',
+  marginBottom: '16px',
+  display: 'block'
 }
 
 const stepTitleStyle = {
-  fontSize: '22px',
-  fontWeight: '600',
-  color: '#2c3e50',
-  marginBottom: '12px',
-  whiteSpace: 'nowrap',
-  overflow: 'visible'
+  fontSize: '20px',
+  fontWeight: '700',
+  color: '#111111',
+  marginBottom: '12px'
 }
 
 const stepDescStyle = {
-  color: '#7f8c8d',
-  fontSize: '16px',
-  lineHeight: '1.5'
+  color: '#555555',
+  fontSize: '14px'
 }
 
-const stepConnectorStyle = {
-  position: 'absolute',
-  top: '40px',
-  right: '-20px',
-  fontSize: '24px',
-  color: '#ddd',
-  zIndex: -1
-}
-
+// Services Section
 const servicesStyle = {
-  padding: '100px 0',
-  background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)'
+  background: 'white',
+  padding: '80px 0'
+}
+
+const servicesGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+  gap: '24px'
 }
 
 const serviceCardStyle = {
+  background: 'white',
+  border: '1px solid #E8EAED',
+  borderRadius: '14px',
+  padding: '28px 20px',
   textAlign: 'center',
   cursor: 'pointer',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  transition: 'all 0.3s ease',
   position: 'relative',
   overflow: 'hidden',
   height: '100%',
-  opacity: '0',
-  transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards'
+  display: 'flex',
+  flexDirection: 'column',
+  opacity: 0,
+  transform: 'translateY(20px)'
 }
 
 const serviceIconStyle = {
-  fontSize: '56px',
-  marginBottom: '24px',
-  display: 'block',
-  transition: 'transform 0.3s ease'
+  fontSize: '48px',
+  marginBottom: '16px',
+  display: 'block'
 }
 
 const serviceNameStyle = {
-  fontSize: '22px',
-  fontWeight: '600',
-  marginBottom: '12px',
-  color: '#2c3e50',
-  whiteSpace: 'nowrap',
-  overflow: 'visible',
-  textAlign: 'center'
+  fontSize: '18px',
+  fontWeight: '700',
+  color: '#111111',
+  marginBottom: '8px'
 }
 
 const serviceDescStyle = {
-  color: '#7f8c8d',
-  marginBottom: '20px',
+  color: '#555555',
+  fontSize: '13px',
+  marginBottom: '16px',
   lineHeight: '1.5'
 }
 
 const serviceMetricsStyle = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '8px',
-  marginBottom: '20px'
+  gap: '6px',
+  marginBottom: '16px',
+  paddingBottom: '16px',
+  borderBottom: '1px solid #E8EAED'
 }
 
 const metricStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '6px',
-  fontSize: '14px',
-  color: '#666'
-}
-
-const metricIconStyle = {
-  fontSize: '14px'
+  fontSize: '12px',
+  color: '#555555'
 }
 
 const urgentBadgeStyle = {
-  background: 'linear-gradient(135deg, #dc3545, #c82333)',
-  color: 'white',
-  padding: '4px 12px',
+  background: '#FFF3CD',
+  color: '#856404',
+  padding: '6px 12px',
   borderRadius: '12px',
   fontSize: '11px',
   fontWeight: '600',
   display: 'inline-block',
-  animation: 'pulse 2s infinite'
+  marginBottom: '12px'
 }
 
-const viewMoreStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: '8px',
-  color: '#007bff',
+const bookNowStyle = {
+  color: '#0A66FF',
   fontWeight: '600',
+  fontSize: '14px',
   marginTop: 'auto'
 }
 
-const arrowStyle = {
-  transition: 'transform 0.3s ease'
+// Providers Section
+const providersStyle = {
+  background: '#F7F9FC',
+  padding: '80px 0'
 }
 
-const providersStyle = {
-  padding: '100px 0',
-  background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
+const providersGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+  gap: '24px'
 }
 
 const providerCardStyle = {
-  height: '100%',
-  opacity: '0',
+  background: 'white',
+  border: '1px solid #E8EAED',
+  borderRadius: '14px',
+  padding: '24px',
+  opacity: 0,
   transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards'
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column'
 }
 
 const providerHeaderStyle = {
@@ -1105,69 +870,59 @@ const providerHeaderStyle = {
 
 const providerImageStyle = {
   position: 'relative',
-  width: '70px',
-  height: '70px',
+  width: '60px',
+  height: '60px',
   borderRadius: '50%',
-  background: 'linear-gradient(135deg, #e9ecef, #dee2e6)',
+  background: '#F7F9FC',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '28px',
-  border: '3px solid #fff',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+  fontSize: '24px',
+  border: '2px solid white',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
 }
 
 const verifiedBadgeStyle = {
   position: 'absolute',
   top: '-4px',
   right: '-4px',
-  width: '24px',
-  height: '24px',
-  background: '#28a745',
+  width: '20px',
+  height: '20px',
+  background: '#00B894',
   color: 'white',
   borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '12px',
-  fontWeight: '600',
+  fontSize: '11px',
+  fontWeight: '700',
   border: '2px solid white'
 }
 
 const statusDotStyle = {
   position: 'absolute',
-  bottom: '2px',
-  right: '2px',
-  width: '16px',
-  height: '16px',
+  bottom: '0px',
+  right: '0px',
+  width: '14px',
+  height: '14px',
   borderRadius: '50%',
-  border: '3px solid white',
-  animation: 'pulse 2s infinite'
+  border: '2px solid white'
 }
 
 const providerNameStyle = {
-  fontSize: '20px',
-  fontWeight: '600',
-  marginBottom: '4px',
-  color: '#2c3e50'
-}
-
-const providerServiceStyle = {
-  color: '#007bff',
-  fontWeight: '500',
+  fontSize: '16px',
+  fontWeight: '700',
+  color: '#111111',
   marginBottom: '4px'
 }
 
-const providerLocationStyle = {
-  fontSize: '12px',
-  color: '#666'
+const providerServiceStyle = {
+  color: '#0A66FF',
+  fontWeight: '600',
+  fontSize: '12px'
 }
 
-const providerStatsStyle = {
-  marginBottom: '20px'
-}
-
-const ratingStyle = {
+const providerRatingStyle = {
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
@@ -1181,39 +936,38 @@ const starsStyle = {
 
 const ratingValueStyle = {
   fontWeight: '600',
-  color: '#2c3e50'
+  color: '#111111',
+  fontSize: '13px'
 }
 
 const ratingCountStyle = {
   fontSize: '12px',
-  color: '#666'
+  color: '#888888'
 }
 
 const providerMetricsStyle = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '6px'
+  gap: '6px',
+  marginBottom: '20px',
+  paddingBottom: '16px',
+  borderBottom: '1px solid #E8EAED'
 }
 
 const metricItemStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
-  fontSize: '13px',
-  color: '#666'
+  fontSize: '12px',
+  color: '#555555'
 }
 
+// Testimonials Section
 const testimonialsStyle = {
-  padding: '100px 0',
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  color: 'white',
-  position: 'relative',
-  overflow: 'hidden'
+  background: 'white',
+  padding: '80px 0'
 }
 
 const testimonialCarouselStyle = {
   position: 'relative',
-  height: '300px',
+  height: '280px',
   margin: '60px 0 40px'
 }
 
@@ -1223,41 +977,17 @@ const testimonialCardStyle = {
   left: '50%',
   transform: 'translateX(-50%)',
   width: '100%',
-  maxWidth: '600px',
+  maxWidth: '650px',
   transition: 'all 0.5s ease'
-}
-
-const activeTestimonialStyle = {
-  opacity: '1',
-  transform: 'translateX(-50%) scale(1)'
-}
-
-const inactiveTestimonialStyle = {
-  opacity: '0',
-  transform: 'translateX(-50%) scale(0.8)',
-  pointerEvents: 'none'
-}
-
-const testimonialContentStyle = {
-  background: 'rgba(255, 255, 255, 0.1)',
-  backdropFilter: 'blur(20px)',
-  padding: '40px',
-  borderRadius: '20px',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  textAlign: 'center'
-}
-
-const quoteIconStyle = {
-  fontSize: '48px',
-  color: 'rgba(255, 255, 255, 0.3)',
-  marginBottom: '20px'
 }
 
 const testimonialTextStyle = {
   fontSize: '18px',
-  lineHeight: '1.6',
+  color: '#555555',
   marginBottom: '30px',
-  fontStyle: 'italic'
+  lineHeight: '1.6',
+  fontStyle: 'italic',
+  textAlign: 'center'
 }
 
 const testimonialAuthorStyle = {
@@ -1268,10 +998,10 @@ const testimonialAuthorStyle = {
 }
 
 const authorImageStyle = {
-  width: '50px',
-  height: '50px',
+  width: '48px',
+  height: '48px',
   borderRadius: '50%',
-  background: 'rgba(255, 255, 255, 0.2)',
+  background: '#F7F9FC',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -1279,27 +1009,20 @@ const authorImageStyle = {
 }
 
 const authorNameStyle = {
-  fontWeight: '600',
-  fontSize: '16px'
+  fontWeight: '700',
+  color: '#111111',
+  fontSize: '14px'
 }
 
 const authorLocationStyle = {
-  fontSize: '14px',
-  opacity: '0.8'
-}
-
-const authorServiceStyle = {
   fontSize: '12px',
-  opacity: '0.7'
+  color: '#888888'
 }
 
 const testimonialRatingStyle = {
   display: 'flex',
-  gap: '2px'
-}
-
-const starStyle = {
-  fontSize: '16px'
+  gap: '2px',
+  fontSize: '14px'
 }
 
 const testimonialDotsStyle = {
@@ -1309,85 +1032,58 @@ const testimonialDotsStyle = {
 }
 
 const dotStyle = {
-  width: '12px',
-  height: '12px',
+  width: '10px',
+  height: '10px',
   borderRadius: '50%',
-  background: 'rgba(255, 255, 255, 0.3)',
   border: 'none',
   cursor: 'pointer',
-  transition: 'all 0.3s ease'
+  transition: 'all 0.2s ease'
 }
 
-const activeDotStyle = {
-  background: 'white',
-  transform: 'scale(1.2)'
-}
-
+// CTA Section
 const ctaStyle = {
-  background: 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)',
-  color: 'white',
-  padding: '100px 0',
-  position: 'relative',
-  overflow: 'hidden'
-}
-
-const ctaBackgroundStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  background: 'radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%)',
-  animation: 'backgroundFloat 15s ease-in-out infinite reverse'
+  background: '#F7F9FC',
+  padding: '80px 0'
 }
 
 const ctaContentStyle = {
   textAlign: 'center',
-  position: 'relative',
-  zIndex: 1,
-  opacity: '0',
+  opacity: 0,
   transform: 'translateY(20px)',
   animation: 'fadeInUp 0.6s ease-out forwards'
 }
 
 const ctaTitleStyle = {
-  fontSize: '42px',
+  fontSize: '40px',
   fontWeight: '700',
-  marginBottom: '20px',
-  background: 'linear-gradient(135deg, #ffffff, #e3f2fd)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text'
+  color: '#111111',
+  marginBottom: '16px'
 }
 
 const ctaSubtitleStyle = {
-  fontSize: '18px',
+  fontSize: '16px',
+  color: '#555555',
   marginBottom: '40px',
-  opacity: '0.9',
   maxWidth: '600px',
   margin: '0 auto 40px'
 }
 
 const ctaButtonsStyle = {
   display: 'flex',
-  gap: '20px',
+  gap: '16px',
   justifyContent: 'center',
   flexWrap: 'wrap',
   marginBottom: '60px'
 }
 
 const ctaBtnStyle = {
-  fontSize: '16px',
-  padding: '16px 32px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  minWidth: '200px'
+  minWidth: '180px',
+  fontSize: '15px'
 }
 
 const ctaStatsStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+  gridTemplateColumns: 'repeat(3, 1fr)',
   gap: '40px',
   maxWidth: '600px',
   margin: '0 auto'
@@ -1399,67 +1095,24 @@ const ctaStatStyle = {
 
 const ctaStatValueStyle = {
   display: 'block',
-  fontSize: '28px',
+  fontSize: '24px',
   fontWeight: '700',
-  color: '#ffd700',
+  color: '#0A66FF',
   marginBottom: '8px'
 }
 
 const ctaStatLabelStyle = {
-  fontSize: '14px',
-  opacity: '0.8',
+  fontSize: '12px',
+  color: '#888888',
   textTransform: 'uppercase',
   letterSpacing: '0.5px'
 }
 
-// Add CSS animations
-const animations = `
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  @keyframes fadeInLeft {
-    from { opacity: 0; transform: translateX(-30px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  
-  @keyframes fadeInRight {
-    from { opacity: 0; transform: translateX(30px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  
-  @keyframes backgroundFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(1deg); }
-  }
-  
-  @keyframes floatParticle {
-    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-  }
-  
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
-  @keyframes glow {
-    from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-    to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
-  }
-  
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
+// Responsive styles for mobile
+const mediaQueryStyles = `
+  @media (max-width: 768px) {
+    section {
+      padding: 48px 0;
+    }
   }
 `
-
-// Inject animations
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style')
-  style.textContent = animations
-  document.head.appendChild(style)
-}
