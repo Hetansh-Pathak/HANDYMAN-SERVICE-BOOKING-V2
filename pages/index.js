@@ -463,6 +463,22 @@ export default function Home() {
                 <div style={providerMetricsStyle}>
                   <div style={metricItemStyle}>⏱️ {provider.responseTime} response</div>
                   <div style={metricItemStyle}>🎯 {provider.experience}+ years</div>
+                  {provider.distance !== undefined && (
+                    <div style={metricItemStyle}>📍 {provider.distanceText || formatDistance(provider.distance)}</div>
+                  )}
+                </div>
+
+                {/* Availability Badges */}
+                <div style={providerBadgesStyle}>
+                  {provider.available && (
+                    <span style={badgeAvailableStyle}>✓ Available Today</span>
+                  )}
+                  {provider.urgentAvailable && (
+                    <span style={badgeEmergencyStyle}>⚡ Emergency</span>
+                  )}
+                  {provider.experience >= 10 && (
+                    <span style={badgeExperienceStyle}>🏆 Expert</span>
+                  )}
                 </div>
 
                 <Link 
