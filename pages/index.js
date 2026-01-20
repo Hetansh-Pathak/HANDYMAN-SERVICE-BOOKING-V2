@@ -14,6 +14,37 @@ export default function Home() {
   const [sortBy, setSortBy] = useState('rating') // rating, distance, response
   const { user, isProvider, isCustomer } = useUser()
 
+  // Handle availability check
+  const handleAvailabilityCheck = (result) => {
+    if (result.isInGujarate) {
+      setUserPincode(result.city.pincodes[0])
+      // Filter and sort providers based on location
+      const filtered = filterProvidersByLocation(featuredProviders, result.city.pincodes[0])
+      setFilteredProviders(filtered)
+    } else {
+      setFilteredProviders(null)
+    }
+  }
+
+  // Get providers to display
+  const displayProviders = filteredProviders || featuredProviders
+
+  // Sort providers based on selected criteria
+  const sortedProviders = [...displayProviders].sort((a, b) => {
+    switch(sortBy) {
+      case 'distance':
+        return (a.distance || Infinity) - (b.distance || Infinity)
+      case 'response':
+        // Parse response time (e.g., "15 min" -> 15)
+        const aTime = parseInt(a.responseTime || '999')
+        const bTime = parseInt(b.responseTime || '999')
+        return aTime - bTime
+      case 'rating':
+      default:
+        return b.rating - a.rating
+    }
+  })
+
   // Auto-rotate testimonials
   useEffect(() => {
     const timer = setInterval(() => {
