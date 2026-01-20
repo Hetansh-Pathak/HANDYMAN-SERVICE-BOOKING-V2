@@ -140,6 +140,72 @@ export default function Home() {
     { label: 'Cities Covered', value: '25+', icon: '🏙️' }
   ]
 
+  // State declarations
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedService, setSelectedService] = useState('')
+  const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [userPincode, setUserPincode] = useState(null)
+  const [filteredProviders, setFilteredProviders] = useState(null)
+  const [sortBy, setSortBy] = useState('rating')
+  const { user, isProvider, isCustomer } = useUser()
+
+  // Handle availability check
+  const handleAvailabilityCheck = (result) => {
+    if (result.isInGujarate) {
+      setUserPincode(result.city.pincodes[0])
+      const filtered = filterProvidersByLocation(featuredProviders, result.city.pincodes[0])
+      setFilteredProviders(filtered)
+    } else {
+      setFilteredProviders(null)
+    }
+  }
+
+  // Get providers to display
+  const displayProviders = filteredProviders || featuredProviders
+
+  // Sort providers based on selected criteria
+  const sortedProviders = [...displayProviders].sort((a, b) => {
+    switch(sortBy) {
+      case 'distance':
+        return (a.distance || Infinity) - (b.distance || Infinity)
+      case 'response':
+        const aTime = parseInt(a.responseTime || '999')
+        const bTime = parseInt(b.responseTime || '999')
+        return aTime - bTime
+      case 'rating':
+      default:
+        return b.rating - a.rating
+    }
+  })
+
+  // Auto-rotate testimonials
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1'
+            entry.target.style.transform = 'translateY(0)'
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    const elements = document.querySelectorAll('.animate-on-scroll')
+    elements.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [])
+
   const handleSearch = () => {
     const query = searchQuery || selectedService
     if (query) {
