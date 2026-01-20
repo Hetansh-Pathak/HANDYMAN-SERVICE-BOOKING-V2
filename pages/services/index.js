@@ -425,8 +425,10 @@ const filterLabelStyle = {
   display: 'block',
   marginBottom: '8px',
   fontWeight: '600',
-  color: '#2c3e50',
-  fontSize: '14px'
+  color: '#111111',
+  fontSize: '13px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px'
 }
 
 const priceInputsStyle = {
@@ -436,7 +438,7 @@ const priceInputsStyle = {
 
 const priceDisplayStyle = {
   fontSize: '12px',
-  color: '#7f8c8d',
+  color: '#888888',
   marginTop: '8px'
 }
 
@@ -577,7 +579,7 @@ const statIconStyle = {
 const statLabelStyle = {
   margin: '0',
   fontSize: '12px',
-  color: '#7f8c8d'
+  color: '#555555'
 }
 
 const priceAndActionStyle = {
@@ -606,16 +608,16 @@ const actionButtonsStyle = {
 
 const viewProfileBtn = {
   padding: '10px 16px',
-  background: '#e8f4fd',
-  color: '#007bff',
-  border: '1px solid #007bff',
-  borderRadius: '8px',
+  background: '#E8F3FF',
+  color: '#0A66FF',
+  border: '1px solid #0A66FF',
+  borderRadius: '10px',
   cursor: 'pointer',
   textDecoration: 'none',
   fontWeight: '600',
   fontSize: '14px',
   textAlign: 'center',
-  transition: 'all 0.3s ease'
+  transition: 'all 0.2s ease'
 }
 
 const bookNowBtn = {
@@ -651,6 +653,6 @@ const noResultsStyle = {
 
 const noResultsTextStyle = {
   fontSize: '16px',
-  color: '#7f8c8d',
+  color: '#555555',
   margin: '0 0 20px'
 }
