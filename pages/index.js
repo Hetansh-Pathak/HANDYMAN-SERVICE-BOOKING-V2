@@ -278,6 +278,14 @@ export default function Home() {
                 <div style={trustItemStyle}>⚡ Same-day Service Available</div>
                 <div style={trustItemStyle}>🛡️ Safe & Secure</div>
               </div>
+
+              {/* Pincode Search */}
+              <div style={pincodeSearchWrapperStyle}>
+                <PincodeSearch
+                  onAvailabilityCheck={handleAvailabilityCheck}
+                  onPincodeSelect={(pincode, city) => setUserPincode(pincode)}
+                />
+              </div>
             </div>
 
             {/* Hero Stats */}
