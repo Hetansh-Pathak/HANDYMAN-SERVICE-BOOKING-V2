@@ -1198,6 +1198,101 @@ const ctaStatLabelStyle = {
   letterSpacing: '0.5px'
 }
 
+// Pincode Search Wrapper
+const pincodeSearchWrapperStyle = {
+  marginTop: '48px',
+  animation: 'fadeInUp 0.6s ease-out 0.4s both'
+}
+
+// Provider Section Header with Sorting
+const providerHeaderFlexStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: '40px',
+  flexWrap: 'wrap'
+}
+
+const sortingControlsStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  flexWrap: 'wrap'
+}
+
+const sortLabelStyle = {
+  fontSize: '13px',
+  fontWeight: '600',
+  color: '#888888',
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px',
+  whiteSpace: 'nowrap'
+}
+
+const sortButtonsStyle = {
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap'
+}
+
+const sortBtnStyle = {
+  padding: '6px 14px',
+  background: '#F7F9FC',
+  border: '1px solid #E8EAED',
+  color: '#555555',
+  borderRadius: '20px',
+  fontSize: '12px',
+  fontWeight: '600',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease'
+}
+
+const activeSortBtnStyle = {
+  background: '#0A66FF',
+  color: 'white',
+  border: '1px solid #0A66FF'
+}
+
+// Provider Card Badges
+const providerBadgesStyle = {
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap',
+  marginTop: '12px',
+  paddingTop: '12px',
+  borderTop: '1px solid #E8EAED'
+}
+
+const badgeAvailableStyle = {
+  background: 'rgba(0, 184, 148, 0.1)',
+  color: '#00B894',
+  padding: '4px 10px',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  whiteSpace: 'nowrap'
+}
+
+const badgeEmergencyStyle = {
+  background: 'rgba(255, 165, 0, 0.1)',
+  color: '#FFA500',
+  padding: '4px 10px',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  whiteSpace: 'nowrap'
+}
+
+const badgeExperienceStyle = {
+  background: 'rgba(10, 102, 255, 0.1)',
+  color: '#0A66FF',
+  padding: '4px 10px',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  whiteSpace: 'nowrap'
+}
+
 // Responsive styles for mobile
 const mediaQueryStyles = `
   @media (max-width: 768px) {
