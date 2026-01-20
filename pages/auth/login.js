@@ -189,7 +189,7 @@ const containerStyle = {
   minHeight: '80vh',
   display: 'flex',
   alignItems: 'center',
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  background: '#FFFFFF',
   padding: '40px 0'
 }
 
@@ -200,7 +200,8 @@ const loginBoxStyle = {
   background: 'white',
   borderRadius: '16px',
   padding: '40px',
-  boxShadow: '0 20px 50px rgba(0,0,0,0.1)'
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+  border: '1px solid #E8EAED'
 }
 
 const headerStyle = {
@@ -212,11 +213,11 @@ const titleStyle = {
   fontSize: '28px',
   fontWeight: '700',
   marginBottom: '8px',
-  color: '#2c3e50'
+  color: '#111111'
 }
 
 const subtitleStyle = {
-  color: '#7f8c8d',
+  color: '#555555',
   fontSize: '16px'
 }
 
@@ -348,28 +349,28 @@ const featureStyle = {
 }
 
 const errorStyle = {
-  background: '#f8d7da',
-  color: '#721c24',
+  background: 'rgba(220, 53, 69, 0.1)',
+  color: '#DC3545',
   padding: '12px',
-  borderRadius: '6px',
+  borderRadius: '10px',
   marginBottom: '16px',
   fontSize: '14px',
-  border: '1px solid #f5c6cb'
+  border: '1px solid rgba(220, 53, 69, 0.2)'
 }
 
 const demoCredentialsStyle = {
   marginTop: '24px',
   padding: '16px',
-  background: '#e8f4fd',
-  borderRadius: '8px',
-  border: '1px solid #bee5eb'
+  background: '#E8F3FF',
+  borderRadius: '12px',
+  border: '1px solid #0A66FF'
 }
 
 const demoTitleStyle = {
-  fontSize: '16px',
-  fontWeight: '600',
+  fontSize: '14px',
+  fontWeight: '700',
   marginBottom: '12px',
-  color: '#0c5460'
+  color: '#0A66FF'
 }
 
 const demoListStyle = {
