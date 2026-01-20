@@ -389,12 +389,42 @@ export default function Home() {
       <section style={providersStyle}>
         <div className="container">
           <div style={sectionHeaderStyle} className="animate-on-scroll">
-            <h2 style={sectionTitleStyle}>Featured Service Providers</h2>
-            <p style={sectionSubtitleStyle}>Top-rated professionals in your area</p>
+            <div style={providerHeaderFlexStyle}>
+              <div>
+                <h2 style={sectionTitleStyle}>Featured Service Providers</h2>
+                <p style={sectionSubtitleStyle}>
+                  {userPincode ? 'Nearby professionals based on your location' : 'Top-rated professionals in your area'}
+                </p>
+              </div>
+
+              {userPincode && (
+                <div style={sortingControlsStyle}>
+                  <span style={sortLabelStyle}>Sort by:</span>
+                  <div style={sortButtonsStyle}>
+                    {[
+                      { value: 'rating', label: '⭐ Rating' },
+                      { value: 'distance', label: '📍 Distance' },
+                      { value: 'response', label: '⚡ Response' }
+                    ].map(opt => (
+                      <button
+                        key={opt.value}
+                        style={{
+                          ...sortBtnStyle,
+                          ...(sortBy === opt.value && activeSortBtnStyle)
+                        }}
+                        onClick={() => setSortBy(opt.value)}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          
+
           <div style={providersGridStyle}>
-            {featuredProviders.map((provider, index) => (
+            {sortedProviders.map((provider, index) => (
               <div 
                 key={provider.id} 
                 style={{
