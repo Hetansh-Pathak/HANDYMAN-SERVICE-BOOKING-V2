@@ -364,7 +364,7 @@ export default function ServicesPage() {
 
 // Styles
 const pageStyle = {
-  background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+  background: '#F7F9FC',
   minHeight: '100vh',
   padding: '60px 0'
 }
@@ -372,47 +372,49 @@ const pageStyle = {
 const headerStyle = {
   textAlign: 'center',
   marginBottom: '40px',
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-  color: 'white',
-  padding: '60px 20px'
+  background: '#FFFFFF',
+  color: '#111111',
+  padding: '60px 20px',
+  borderBottom: '1px solid #E8EAED'
 }
 
 const titleStyle = {
-  fontSize: '42px',
+  fontSize: '40px',
   fontWeight: '700',
-  margin: '0 0 16px',
-  background: 'linear-gradient(135deg, #ffffff, #f0f8ff)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text'
+  margin: '0 0 12px',
+  color: '#111111'
 }
 
 const subtitleStyle = {
-  fontSize: '18px',
-  opacity: '0.9',
+  fontSize: '16px',
+  color: '#555555',
   margin: '0'
 }
 
 const sidebarStyle = {
   background: 'white',
   padding: '24px',
-  borderRadius: '12px',
+  borderRadius: '14px',
   height: 'fit-content',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-  border: '1px solid #e0e0e0'
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+  border: '1px solid #E8EAED',
+  position: 'sticky',
+  top: '100px'
 }
 
 const filterTitleStyle = {
-  fontSize: '18px',
+  fontSize: '16px',
   fontWeight: '700',
-  color: '#2c3e50',
-  marginBottom: '24px'
+  color: '#111111',
+  marginBottom: '24px',
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px'
 }
 
 const filterGroupStyle = {
-  marginBottom: '24px',
-  paddingBottom: '24px',
-  borderBottom: '1px solid #e0e0e0'
+  marginBottom: '20px',
+  paddingBottom: '20px',
+  borderBottom: '1px solid #E8EAED'
 }
 
 const filterGroupStyle_last = {
@@ -441,13 +443,14 @@ const priceDisplayStyle = {
 const resetBtnStyle = {
   width: '100%',
   padding: '10px 16px',
-  background: '#dc3545',
-  color: 'white',
-  border: 'none',
-  borderRadius: '8px',
+  background: '#FFFFFF',
+  color: '#0A66FF',
+  border: '2px solid #0A66FF',
+  borderRadius: '10px',
   cursor: 'pointer',
   fontWeight: '600',
-  fontSize: '14px'
+  fontSize: '14px',
+  transition: 'all 0.2s ease'
 }
 
 const resultHeaderStyle = {
@@ -455,9 +458,9 @@ const resultHeaderStyle = {
 }
 
 const resultTitleStyle = {
-  fontSize: '24px',
-  fontWeight: '600',
-  color: '#2c3e50',
+  fontSize: '20px',
+  fontWeight: '700',
+  color: '#111111',
   margin: '0'
 }
 
@@ -468,11 +471,12 @@ const providersGridStyle = {
 
 const providerCardStyle = {
   background: 'white',
-  borderRadius: '12px',
+  borderRadius: '14px',
   padding: '24px',
-  border: '1px solid #e0e0e0',
-  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-  transition: 'all 0.3s ease'
+  border: '1px solid #E8EAED',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+  transition: 'all 0.3s ease',
+  cursor: 'pointer'
 }
 
 const cardHeaderStyle = {
@@ -516,16 +520,16 @@ const providerInfoStyle = {
 
 const providerNameStyle = {
   margin: '0',
-  fontSize: '18px',
-  fontWeight: '600',
-  color: '#2c3e50'
+  fontSize: '16px',
+  fontWeight: '700',
+  color: '#111111'
 }
 
 const serviceStyle = {
   margin: '4px 0 0',
-  fontSize: '14px',
-  color: '#007bff',
-  fontWeight: '500'
+  fontSize: '13px',
+  color: '#0A66FF',
+  fontWeight: '600'
 }
 
 const ratingStyle = {
@@ -616,22 +620,22 @@ const viewProfileBtn = {
 
 const bookNowBtn = {
   padding: '10px 20px',
-  background: 'linear-gradient(135deg, #28a745, #20c997)',
+  background: '#0A66FF',
   color: 'white',
   border: 'none',
-  borderRadius: '8px',
+  borderRadius: '10px',
   cursor: 'pointer',
   fontWeight: '600',
   fontSize: '14px',
-  transition: 'all 0.3s ease'
+  transition: 'all 0.2s ease'
 }
 
 const unavailableBtn = {
   padding: '10px 20px',
-  background: '#e0e0e0',
-  color: '#666',
-  border: 'none',
-  borderRadius: '8px',
+  background: '#F7F9FC',
+  color: '#888888',
+  border: '1px solid #E8EAED',
+  borderRadius: '10px',
   cursor: 'not-allowed',
   fontWeight: '600',
   fontSize: '14px'
