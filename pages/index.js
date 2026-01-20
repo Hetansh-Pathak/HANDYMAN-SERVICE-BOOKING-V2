@@ -1,42 +1,12 @@
 import RoleBasedLayout from '../components/RoleBasedLayout'
+import PincodeSearch from '../components/PincodeSearch'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useUser } from '../context/UserContext'
+import { filterProvidersByLocation, formatDistance } from '../lib/location-service'
 
 export default function Home() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedService, setSelectedService] = useState('')
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const { user, isProvider, isCustomer } = useUser()
-
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
-
-  // Intersection Observer for scroll animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = '1'
-            entry.target.style.transform = 'translateY(0)'
-          }
-        })
-      },
-      { threshold: 0.1 }
-    )
-
-    const elements = document.querySelectorAll('.animate-on-scroll')
-    elements.forEach((el) => observer.observe(el))
-
-    return () => observer.disconnect()
-  }, [])
-
+  // Data declarations (must be before state)
   const services = [
     { 
       id: 1, 
@@ -170,6 +140,72 @@ export default function Home() {
     { label: 'Cities Covered', value: '25+', icon: '🏙️' }
   ]
 
+  // State declarations
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedService, setSelectedService] = useState('')
+  const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [userPincode, setUserPincode] = useState(null)
+  const [filteredProviders, setFilteredProviders] = useState(null)
+  const [sortBy, setSortBy] = useState('rating')
+  const { user, isProvider, isCustomer } = useUser()
+
+  // Handle availability check
+  const handleAvailabilityCheck = (result) => {
+    if (result.isInGujarate) {
+      setUserPincode(result.city.pincodes[0])
+      const filtered = filterProvidersByLocation(featuredProviders, result.city.pincodes[0])
+      setFilteredProviders(filtered)
+    } else {
+      setFilteredProviders(null)
+    }
+  }
+
+  // Get providers to display
+  const displayProviders = filteredProviders || featuredProviders
+
+  // Sort providers based on selected criteria
+  const sortedProviders = [...displayProviders].sort((a, b) => {
+    switch(sortBy) {
+      case 'distance':
+        return (a.distance || Infinity) - (b.distance || Infinity)
+      case 'response':
+        const aTime = parseInt(a.responseTime || '999')
+        const bTime = parseInt(b.responseTime || '999')
+        return aTime - bTime
+      case 'rating':
+      default:
+        return b.rating - a.rating
+    }
+  })
+
+  // Auto-rotate testimonials
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
+    }, 5000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1'
+            entry.target.style.transform = 'translateY(0)'
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    const elements = document.querySelectorAll('.animate-on-scroll')
+    elements.forEach((el) => observer.observe(el))
+
+    return () => observer.disconnect()
+  }, [])
+
   const handleSearch = () => {
     const query = searchQuery || selectedService
     if (query) {
@@ -241,6 +277,14 @@ export default function Home() {
                 <div style={trustItemStyle}>✓ 100% Verified Professionals</div>
                 <div style={trustItemStyle}>⚡ Same-day Service Available</div>
                 <div style={trustItemStyle}>🛡️ Safe & Secure</div>
+              </div>
+
+              {/* Pincode Search */}
+              <div style={pincodeSearchWrapperStyle}>
+                <PincodeSearch
+                  onAvailabilityCheck={handleAvailabilityCheck}
+                  onPincodeSelect={(pincode, city) => setUserPincode(pincode)}
+                />
               </div>
             </div>
 
@@ -345,12 +389,42 @@ export default function Home() {
       <section style={providersStyle}>
         <div className="container">
           <div style={sectionHeaderStyle} className="animate-on-scroll">
-            <h2 style={sectionTitleStyle}>Featured Service Providers</h2>
-            <p style={sectionSubtitleStyle}>Top-rated professionals in your area</p>
+            <div style={providerHeaderFlexStyle}>
+              <div>
+                <h2 style={sectionTitleStyle}>Featured Service Providers</h2>
+                <p style={sectionSubtitleStyle}>
+                  {userPincode ? 'Nearby professionals based on your location' : 'Top-rated professionals in your area'}
+                </p>
+              </div>
+
+              {userPincode && (
+                <div style={sortingControlsStyle}>
+                  <span style={sortLabelStyle}>Sort by:</span>
+                  <div style={sortButtonsStyle}>
+                    {[
+                      { value: 'rating', label: '⭐ Rating' },
+                      { value: 'distance', label: '📍 Distance' },
+                      { value: 'response', label: '⚡ Response' }
+                    ].map(opt => (
+                      <button
+                        key={opt.value}
+                        style={{
+                          ...sortBtnStyle,
+                          ...(sortBy === opt.value && activeSortBtnStyle)
+                        }}
+                        onClick={() => setSortBy(opt.value)}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-          
+
           <div style={providersGridStyle}>
-            {featuredProviders.map((provider, index) => (
+            {sortedProviders.map((provider, index) => (
               <div 
                 key={provider.id} 
                 style={{
@@ -389,6 +463,22 @@ export default function Home() {
                 <div style={providerMetricsStyle}>
                   <div style={metricItemStyle}>⏱️ {provider.responseTime} response</div>
                   <div style={metricItemStyle}>🎯 {provider.experience}+ years</div>
+                  {provider.distance !== undefined && (
+                    <div style={metricItemStyle}>📍 {provider.distanceText || formatDistance(provider.distance)}</div>
+                  )}
+                </div>
+
+                {/* Availability Badges */}
+                <div style={providerBadgesStyle}>
+                  {provider.available && (
+                    <span style={badgeAvailableStyle}>✓ Available Today</span>
+                  )}
+                  {provider.urgentAvailable && (
+                    <span style={badgeEmergencyStyle}>⚡ Emergency</span>
+                  )}
+                  {provider.experience >= 10 && (
+                    <span style={badgeExperienceStyle}>🏆 Expert</span>
+                  )}
                 </div>
 
                 <Link 
@@ -1106,6 +1196,101 @@ const ctaStatLabelStyle = {
   color: '#888888',
   textTransform: 'uppercase',
   letterSpacing: '0.5px'
+}
+
+// Pincode Search Wrapper
+const pincodeSearchWrapperStyle = {
+  marginTop: '48px',
+  animation: 'fadeInUp 0.6s ease-out 0.4s both'
+}
+
+// Provider Section Header with Sorting
+const providerHeaderFlexStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  gap: '40px',
+  flexWrap: 'wrap'
+}
+
+const sortingControlsStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  flexWrap: 'wrap'
+}
+
+const sortLabelStyle = {
+  fontSize: '13px',
+  fontWeight: '600',
+  color: '#888888',
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px',
+  whiteSpace: 'nowrap'
+}
+
+const sortButtonsStyle = {
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap'
+}
+
+const sortBtnStyle = {
+  padding: '6px 14px',
+  background: '#F7F9FC',
+  border: '1px solid #E8EAED',
+  color: '#555555',
+  borderRadius: '20px',
+  fontSize: '12px',
+  fontWeight: '600',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease'
+}
+
+const activeSortBtnStyle = {
+  background: '#0A66FF',
+  color: 'white',
+  border: '1px solid #0A66FF'
+}
+
+// Provider Card Badges
+const providerBadgesStyle = {
+  display: 'flex',
+  gap: '8px',
+  flexWrap: 'wrap',
+  marginTop: '12px',
+  paddingTop: '12px',
+  borderTop: '1px solid #E8EAED'
+}
+
+const badgeAvailableStyle = {
+  background: 'rgba(0, 184, 148, 0.1)',
+  color: '#00B894',
+  padding: '4px 10px',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  whiteSpace: 'nowrap'
+}
+
+const badgeEmergencyStyle = {
+  background: 'rgba(255, 165, 0, 0.1)',
+  color: '#FFA500',
+  padding: '4px 10px',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  whiteSpace: 'nowrap'
+}
+
+const badgeExperienceStyle = {
+  background: 'rgba(10, 102, 255, 0.1)',
+  color: '#0A66FF',
+  padding: '4px 10px',
+  borderRadius: '12px',
+  fontSize: '11px',
+  fontWeight: '600',
+  whiteSpace: 'nowrap'
 }
 
 // Responsive styles for mobile
