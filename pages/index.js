@@ -9,6 +9,9 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedService, setSelectedService] = useState('')
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [userPincode, setUserPincode] = useState(null)
+  const [filteredProviders, setFilteredProviders] = useState(null)
+  const [sortBy, setSortBy] = useState('rating') // rating, distance, response
   const { user, isProvider, isCustomer } = useUser()
 
   // Auto-rotate testimonials
