@@ -889,15 +889,18 @@ const providersGridStyle = {
 }
 
 const providerCardStyle = {
-  background: 'white',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
   border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '24px',
+  borderRadius: '16px',
+  padding: '28px',
   opacity: 0,
   transform: 'translateY(20px)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden'
 }
 
 const providerHeaderStyle = {
