@@ -522,16 +522,23 @@ export default function Home() {
 
 // Hero Section
 const heroStyle = {
-  background: '#FFFFFF',
-  padding: '80px 0 60px',
-  borderBottom: '1px solid #E8EAED'
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  padding: '0',
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderBottom: '1px solid #E8EAED',
+  position: 'relative',
+  overflow: 'hidden'
 }
 
 const heroContentStyle = {
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gap: '60px',
-  alignItems: 'center'
+  alignItems: 'center',
+  padding: '80px 0'
 }
 
 const heroTextStyle = {
