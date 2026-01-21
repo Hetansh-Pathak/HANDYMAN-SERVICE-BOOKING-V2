@@ -531,7 +531,11 @@ const heroContentStyle = {
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
   gap: '60px',
-  alignItems: 'center'
+  alignItems: 'center',
+  '@media (max-width: 1024px)': {
+    gridTemplateColumns: '1fr',
+    gap: '40px'
+  }
 }
 
 const heroTextStyle = {
