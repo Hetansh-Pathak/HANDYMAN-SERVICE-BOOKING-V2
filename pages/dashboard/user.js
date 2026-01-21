@@ -28,7 +28,8 @@ export default function CustomerDashboard() {
       time: '10:00 AM',
       amount: '₹500',
       rating: 5,
-      review: 'Excellent service!'
+      review: 'Excellent service!',
+      address: 'Sector 7, Gurugram'
     },
     {
       id: 'HF123457',
@@ -39,7 +40,32 @@ export default function CustomerDashboard() {
       time: '02:00 PM',
       amount: '₹600',
       rating: null,
-      review: null
+      review: null,
+      address: 'DLF Phase 3, Gurugram'
+    },
+    {
+      id: 'HF123458',
+      service: 'Carpentry',
+      provider: 'Vikram Patel',
+      status: 'in-progress',
+      date: '2024-01-18',
+      time: '11:00 AM',
+      amount: '₹800',
+      rating: null,
+      review: null,
+      address: 'Sector 46, Gurugram'
+    },
+    {
+      id: 'HF123459',
+      service: 'Cleaning',
+      provider: 'Priya Singh',
+      status: 'cancelled',
+      date: '2024-01-10',
+      time: '03:00 PM',
+      amount: '₹300',
+      rating: null,
+      review: null,
+      address: 'Sector 12, Gurugram'
     }
   ]
 
