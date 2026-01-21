@@ -596,7 +596,9 @@ const successCardStyle = {
 
 const successIconStyle = {
   fontSize: '64px',
-  marginBottom: '24px'
+  marginBottom: '24px',
+  animation: 'checkmark 0.6s ease',
+  display: 'inline-block'
 }
 
 const successTitleStyle = {
