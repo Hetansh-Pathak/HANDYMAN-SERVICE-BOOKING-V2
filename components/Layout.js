@@ -344,18 +344,19 @@ const notificationContainerStyle = {
 const notificationBtnStyle = {
   background: 'transparent',
   border: 'none',
-  fontSize: '20px',
+  fontSize: '18px',
   cursor: 'pointer',
-  padding: '8px',
+  padding: '6px 8px',
   position: 'relative',
-  transition: 'transform 0.2s ease'
+  transition: 'all 0.2s ease',
+  borderRadius: '6px'
 }
 
 const notificationBadgeStyle = {
   position: 'absolute',
-  top: '0px',
-  right: '0px',
-  background: '#DC3545',
+  top: '-6px',
+  right: '-6px',
+  background: 'linear-gradient(135deg, #DC3545 0%, #C82333 100%)',
   color: 'white',
   borderRadius: '50%',
   width: '20px',
@@ -364,7 +365,9 @@ const notificationBadgeStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '10px',
-  fontWeight: '700'
+  fontWeight: '700',
+  border: '2px solid white',
+  boxShadow: '0 2px 6px rgba(220, 53, 69, 0.3)'
 }
 
 const notificationDropdownStyle = {
