@@ -669,12 +669,14 @@ const loginBtnStyle = {
   color: '#0A66FF',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '13px',
-  padding: '8px 14px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
+  fontSize: '14px',
+  padding: '10px 18px',
+  borderRadius: '8px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   whiteSpace: 'nowrap',
-  border: '1px solid transparent'
+  border: '2px solid #0A66FF',
+  display: 'inline-block',
+  background: 'transparent'
 }
 
 const signUpBtnStyle = {
@@ -682,13 +684,14 @@ const signUpBtnStyle = {
   color: 'white',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '13px',
-  padding: '8px 16px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
+  fontSize: '14px',
+  padding: '10px 20px',
+  borderRadius: '8px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   display: 'inline-block',
   whiteSpace: 'nowrap',
-  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.2)'
+  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.25)',
+  border: 'none'
 }
 
 const mobileMenuBtnStyle = {
