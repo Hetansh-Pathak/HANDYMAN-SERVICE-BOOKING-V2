@@ -248,55 +248,89 @@ export default function CustomerDashboard() {
                 </Link>
               </div>
 
-              <div style={{ marginTop: '40px' }}>
-                {bookings.map(booking => (
-                  <div key={booking.id} style={bookingDetailCardStyle}>
-                    <div style={bookingDetailHeaderStyle}>
-                      <div>
-                        <h3 style={bookingServiceStyle}>{booking.service}</h3>
-                        <p style={bookingBookingIdStyle}>Booking ID: {booking.id}</p>
-                      </div>
-                      <span style={{
-                        ...statusBadgeStyle,
-                        ...(booking.status === 'completed' ? completedStatusStyle : pendingStatusStyle)
-                      }}>
-                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                      </span>
-                    </div>
-
-                    <div style={bookingInfoGridStyle}>
-                      <div>
-                        <p style={bookingInfoLabelStyle}>Provider</p>
-                        <p style={bookingInfoValueStyle}>{booking.provider}</p>
-                      </div>
-                      <div>
-                        <p style={bookingInfoLabelStyle}>Date & Time</p>
-                        <p style={bookingInfoValueStyle}>{booking.date} at {booking.time}</p>
-                      </div>
-                      <div>
-                        <p style={bookingInfoLabelStyle}>Amount</p>
-                        <p style={bookingInfoValueStyle}>{booking.amount}</p>
-                      </div>
-                    </div>
-
-                    {booking.status === 'completed' && (
-                      <div style={reviewSectionStyle}>
-                        <p style={reviewLabelStyle}>Rating: {booking.rating}/5 ⭐</p>
-                        <p style={reviewTextStyle}>"{booking.review}"</p>
-                      </div>
-                    )}
-
-                    <div style={actionButtonsStyle}>
-                      <button style={primaryActionStyle}>View Details</button>
-                      {booking.status === 'pending' && (
-                        <>
-                          <button style={secondaryActionStyle}>Reschedule</button>
-                          <button style={cancelActionStyle}>Cancel</button>
-                        </>
-                      )}
-                    </div>
-                  </div>
+              {/* Filters */}
+              <div style={filterContainerStyle}>
+                {['all', 'pending', 'in-progress', 'completed', 'cancelled'].map(status => (
+                  <button
+                    key={status}
+                    style={{
+                      ...filterBtnStyle,
+                      ...(bookingStatusFilter === status ? activeFilterBtnStyle : {})
+                    }}
+                    onClick={() => setBookingStatusFilter(status)}
+                  >
+                    {status === 'all' ? '📋 All Bookings' : `${getStatusDetails(status).icon} ${getStatusDetails(status).label}`}
+                  </button>
                 ))}
+              </div>
+
+              <div style={{ marginTop: '40px' }}>
+                {filteredBookings.length === 0 ? (
+                  <div style={emptyStateStyle}>
+                    <div style={emptyIconStyle}>📭</div>
+                    <h3 style={emptyTitleStyle}>No {bookingStatusFilter === 'all' ? '' : bookingStatusFilter} bookings</h3>
+                    <p style={emptyMessageStyle}>
+                      {bookingStatusFilter === 'all'
+                        ? "You don't have any bookings yet. Start by booking a service!"
+                        : `You don't have any ${bookingStatusFilter} bookings.`}
+                    </p>
+                    <Link href="/services" className="btn btn-primary" style={{ marginTop: '20px', display: 'inline-block' }}>
+                      Browse Services
+                    </Link>
+                  </div>
+                ) : (
+                  filteredBookings.map(booking => {
+                    const statusDetails = getStatusDetails(booking.status)
+                    return (
+                      <div key={booking.id} style={bookingDetailCardStyle}>
+                        <div style={bookingDetailHeaderStyle}>
+                          <div>
+                            <h3 style={bookingServiceStyle}>{booking.service}</h3>
+                            <p style={bookingBookingIdStyle}>Booking ID: {booking.id}</p>
+                          </div>
+                          <span style={{
+                            ...statusBadgeStyle,
+                            background: statusDetails.color
+                          }}>
+                            {statusDetails.icon} {statusDetails.label}
+                          </span>
+                        </div>
+
+                        <div style={bookingInfoGridStyle}>
+                          <div>
+                            <p style={bookingInfoLabelStyle}>Provider</p>
+                            <p style={bookingInfoValueStyle}>{booking.provider}</p>
+                          </div>
+                          <div>
+                            <p style={bookingInfoLabelStyle}>Date & Time</p>
+                            <p style={bookingInfoValueStyle}>{booking.date} at {booking.time}</p>
+                          </div>
+                          <div>
+                            <p style={bookingInfoLabelStyle}>Amount</p>
+                            <p style={bookingInfoValueStyle}>{booking.amount}</p>
+                          </div>
+                        </div>
+
+                        {booking.status === 'completed' && (
+                          <div style={reviewSectionStyle}>
+                            <p style={reviewLabelStyle}>Rating: {booking.rating}/5 ⭐</p>
+                            <p style={reviewTextStyle}>"{booking.review}"</p>
+                          </div>
+                        )}
+
+                        <div style={actionButtonsStyle}>
+                          <button style={primaryActionStyle}>View Details</button>
+                          {booking.status === 'pending' && (
+                            <>
+                              <button style={secondaryActionStyle}>Reschedule</button>
+                              <button style={cancelActionStyle}>Cancel</button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
               </div>
             </div>
           )}
