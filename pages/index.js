@@ -250,9 +250,18 @@ export default function Home() {
             {/* Hero Stats */}
             <div style={heroStatsGridStyle}>
               {stats.map((stat, index) => (
-                <div key={index} style={statCardStyle} className="animate-on-scroll">
-                  <div style={statIconStyle}>{stat.icon}</div>
-                  <div style={statValueStyle}>{stat.value}</div>
+                <div key={index} style={{
+                  ...statCardStyle,
+                  borderLeft: `4px solid ${stat.color}`
+                }} className="animate-on-scroll" onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-6px) scale(1.05)'
+                  e.currentTarget.style.boxShadow = `0 12px 32px rgba(${stat.color === '#FF6B6B' ? '255, 107, 107' : stat.color === '#00B894' ? '0, 184, 148' : stat.color === '#0A66FF' ? '10, 102, 255' : '255, 215, 0'}, 0.2)`
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                }}>
+                  <div style={{...statIconStyle, color: stat.color}}>{stat.icon}</div>
+                  <div style={{...statValueStyle, color: stat.color}}>{stat.value}</div>
                   <div style={statLabelStyle}>{stat.label}</div>
                 </div>
               ))}
