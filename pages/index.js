@@ -1,7 +1,9 @@
 import RoleBasedLayout from '../components/RoleBasedLayout'
+import PincodeSearch from '../components/PincodeSearch'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useUser } from '../context/UserContext'
+import { useRouter } from 'next/router'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
