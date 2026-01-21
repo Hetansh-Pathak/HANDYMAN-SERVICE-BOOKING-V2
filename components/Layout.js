@@ -333,7 +333,8 @@ const navLinkStyle = {
 const rightSectionStyle = {
   display: 'flex',
   alignItems: 'center',
-  gap: '12px'
+  gap: '8px',
+  marginLeft: 'auto'
 }
 
 const notificationContainerStyle = {
