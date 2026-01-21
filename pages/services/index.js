@@ -363,7 +363,12 @@ export default function ServicesPage() {
                           View Profile
                         </Link>
                         {provider.available ? (
-                          <button style={bookNowBtn}>Book Now</button>
+                          <button
+                            style={bookNowBtn}
+                            onClick={() => handleBookNow(provider)}
+                          >
+                            Book Now
+                          </button>
                         ) : (
                           <button style={unavailableBtn} disabled>Unavailable</button>
                         )}
