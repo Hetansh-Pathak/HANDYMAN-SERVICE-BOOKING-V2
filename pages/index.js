@@ -566,7 +566,18 @@ const heroSubtitleStyle = {
 }
 
 const searchBarContainerStyle = {
+  marginBottom: '40px'
+}
+
+const quickServicesStyle = {
   marginBottom: '32px'
+}
+
+const quickServicesLabelStyle = {
+  fontSize: '14px',
+  color: '#555555',
+  marginBottom: '12px',
+  fontWeight: '500'
 }
 
 const searchBarStyle = {
