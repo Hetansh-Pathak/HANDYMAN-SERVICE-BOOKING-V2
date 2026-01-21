@@ -636,16 +636,17 @@ const emergencyBtnStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '40px',
-  height: '40px',
+  width: '44px',
+  height: '44px',
   background: 'rgba(220, 53, 69, 0.1)',
-  border: 'none',
-  borderRadius: '50%',
-  fontSize: '16px',
+  border: '1px solid rgba(220, 53, 69, 0.3)',
+  borderRadius: '10px',
+  fontSize: '18px',
   textDecoration: 'none',
   cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  animation: 'pulse 2s infinite'
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  animation: 'pulse 2s infinite',
+  position: 'relative'
 }
 
 const authLinksStyle = {
