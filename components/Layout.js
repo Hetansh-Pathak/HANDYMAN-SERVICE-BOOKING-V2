@@ -588,10 +588,10 @@ const mobileMenuBtnStyle = {
   display: 'none',
   background: 'none',
   border: 'none',
-  fontSize: '24px',
+  fontSize: '22px',
   cursor: 'pointer',
   color: '#555555',
-  padding: '8px',
+  padding: '6px 8px',
   transition: 'color 0.2s ease'
 }
 
