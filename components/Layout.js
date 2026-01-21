@@ -417,13 +417,16 @@ const notificationContainerStyle = {
 
 const notificationBtnStyle = {
   background: 'transparent',
-  border: 'none',
-  fontSize: '18px',
+  border: '1px solid transparent',
+  fontSize: '20px',
   cursor: 'pointer',
-  padding: '6px 8px',
+  padding: '8px 10px',
   position: 'relative',
-  transition: 'all 0.2s ease',
-  borderRadius: '6px'
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  borderRadius: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 }
 
 const notificationBadgeStyle = {
