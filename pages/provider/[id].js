@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import Link from 'next/link'
+import { useUser } from '../../context/UserContext'
 
 export default function ProviderProfile() {
   const router = useRouter()
   const { id } = router.query
-  
+  const { user } = useUser()
+
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedTime, setSelectedTime] = useState('')
   const [showBookingForm, setShowBookingForm] = useState(false)
