@@ -18,11 +18,14 @@
   --text-tertiary: #888888;
   --bg-white: #FFFFFF;
   --bg-light: #F7F9FC;
+  --bg-lighter: #FAFBFC;
   --border-light: #E8EAED;
   --border-medium: #D2D3D5;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
 /* Reset */
