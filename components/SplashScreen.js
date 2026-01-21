@@ -25,7 +25,10 @@ export default function SplashScreen({ onComplete = () => {} }) {
   if (!isVisible) return null
 
   return (
-    <div style={splashContainerStyle}>
+    <div style={{
+      ...splashContainerStyle,
+      animation: isFadingOut ? 'fadeOutDown 0.5s ease-out forwards' : 'fadeInUp 0.3s ease forwards'
+    }}>
       <div style={splashContentStyle}>
         {/* Logo */}
         <div style={logoContainerStyle}>
