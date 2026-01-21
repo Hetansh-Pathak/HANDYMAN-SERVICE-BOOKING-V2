@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Layout from '../../components/Layout'
+import PincodeSearch from '../../components/PincodeSearch'
 import { useRouter } from 'next/router'
+import { getServiceAvailability } from '../../lib/pincodeService'
 
 export default function ServicesPage() {
   const router = useRouter()
