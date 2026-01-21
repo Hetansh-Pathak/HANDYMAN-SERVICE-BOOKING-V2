@@ -200,38 +200,30 @@ export default function Home() {
                 Book verified professionals for plumbing, electrical work, carpentry, and more. Quick booking, transparent pricing, and 24/7 support.
               </p>
               
-              {/* Search Bar */}
+              {/* Pincode Search - Smart Location Discovery */}
               <div style={searchBarContainerStyle}>
-                <div style={searchBarStyle}>
-                  <div style={searchInputGroupStyle}>
-                    <span style={searchIconStyle}>🔍</span>
-                    <input 
-                      type="text" 
-                      placeholder="What service do you need?" 
-                      style={searchInputStyle}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    />
-                  </div>
-                  
-                  <button 
-                    className="btn btn-primary" 
-                    style={searchBtnStyle}
-                    onClick={handleSearch}
-                  >
-                    Find Services
-                  </button>
-                </div>
-                
+                <PincodeSearch
+                  showFull={true}
+                  onSearch={(data) => {
+                    if (data) {
+                      router.push(`/services?pincode=${data.pincode}&city=${data.location.city}`)
+                    }
+                  }}
+                />
+              </div>
+
+              {/* Quick Service Tags */}
+              <div style={quickServicesStyle}>
+                <p style={quickServicesLabelStyle}>Or browse popular services:</p>
                 <div style={searchTagsStyle}>
                   {['Plumbing', 'Electrical', 'AC Repair', 'Cleaning'].map(tag => (
-                    <button 
+                    <button
                       key={tag}
                       style={tagStyle}
                       onClick={() => {
                         setSelectedService(tag)
                         setSearchQuery(tag)
+                        handleSearch()
                       }}
                     >
                       {tag}
