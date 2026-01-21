@@ -10,6 +10,8 @@ export default function Home() {
   const [selectedService, setSelectedService] = useState('')
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const { user, isProvider, isCustomer } = useUser()
+  const router = useRouter()
+  const [showPincodeSearch, setShowPincodeSearch] = useState(true)
 
   // Auto-rotate testimonials
   useEffect(() => {
