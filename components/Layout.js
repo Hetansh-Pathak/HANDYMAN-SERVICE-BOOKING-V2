@@ -407,7 +407,7 @@ const navLinkStyle = {
 const rightSectionStyle = {
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
+  gap: '12px',
   marginLeft: 'auto'
 }
 
