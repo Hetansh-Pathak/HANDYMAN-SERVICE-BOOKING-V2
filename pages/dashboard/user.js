@@ -99,6 +99,32 @@ export default function CustomerDashboard() {
     router.push('/auth/login')
   }
 
+  // Filter bookings based on status
+  const getFilteredBookings = () => {
+    if (bookingStatusFilter === 'all') {
+      return bookings
+    }
+    return bookings.filter(booking => booking.status === bookingStatusFilter)
+  }
+
+  // Get status icon and color
+  const getStatusDetails = (status) => {
+    switch (status) {
+      case 'completed':
+        return { icon: '✅', color: '#00B894', label: 'Completed' }
+      case 'pending':
+        return { icon: '⏳', color: '#FFA500', label: 'Pending' }
+      case 'in-progress':
+        return { icon: '🔄', color: '#0A66FF', label: 'In Progress' }
+      case 'cancelled':
+        return { icon: '❌', color: '#DC3545', label: 'Cancelled' }
+      default:
+        return { icon: '❓', color: '#888888', label: 'Unknown' }
+    }
+  }
+
+  const filteredBookings = getFilteredBookings()
+
   if (loading || !user) {
     return (
       <Layout title="Dashboard">
