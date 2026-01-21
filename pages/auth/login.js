@@ -1,183 +1,280 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import Layout from '../../components/Layout'
 import Link from 'next/link'
+import Layout from '../../components/Layout'
 import { useUser } from '../../context/UserContext'
-import { authAPI } from '../../lib/auth-enhanced'
+import { useToast } from '../../components/Toast'
 
-export default function Login() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    userType: 'customer'
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-
-  const { login } = useUser()
+export default function LoginPage() {
   const router = useRouter()
+  const { login } = useUser()
+  const { showToast } = useToast()
+  const [step, setStep] = useState('input') // 'input' | 'otp' | 'password'
+  const [loginMethod, setLoginMethod] = useState('email') // 'email' | 'mobile'
+  const [emailOrMobile, setEmailOrMobile] = useState('')
+  const [password, setPassword] = useState('')
+  const [otp, setOtp] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-
-    try {
-      const result = await authAPI.login(formData)
-      await login(result.user)
-
-      // Redirect based on user type
-      const redirectPath = result.redirectUrl || (result.user.userType === 'provider'
-        ? '/dashboard/provider'
-        : result.user.userType === 'admin'
-        ? '/admin/dashboard'
-        : '/dashboard/user')
-
-      // Use replace to avoid back button issues
-      router.push(redirectPath)
-    } catch (err) {
-      setError(err.message || 'Login failed. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+  const handleInputChange = (e) => {
+    setEmailOrMobile(e.target.value)
   }
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+  }
+
+  const handleOtpChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6)
+    setOtp(value)
+  }
+
+  const handleInputSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!emailOrMobile.trim()) {
+      showToast('Please enter your ' + (loginMethod === 'email' ? 'email' : 'mobile number'), 'error')
+      return
+    }
+
+    // Validate email or mobile
+    if (loginMethod === 'email' && !emailOrMobile.includes('@')) {
+      showToast('Please enter a valid email address', 'error')
+      return
+    }
+
+    if (loginMethod === 'mobile' && emailOrMobile.length < 10) {
+      showToast('Please enter a valid mobile number', 'error')
+      return
+    }
+
+    setIsLoading(true)
+
+    // Simulate sending OTP
+    setTimeout(() => {
+      showToast('OTP sent successfully', 'success')
+      setStep('otp')
+      setIsLoading(false)
+    }, 800)
+  }
+
+  const handleOtpSubmit = async (e) => {
+    e.preventDefault()
+
+    if (otp.length !== 6) {
+      showToast('Please enter a valid 6-digit OTP', 'error')
+      return
+    }
+
+    setIsLoading(true)
+
+    // Simulate OTP verification
+    setTimeout(async () => {
+      const userData = {
+        userType: 'customer',
+        email: loginMethod === 'email' ? emailOrMobile : `user@handyfix.com`,
+        mobile: loginMethod === 'mobile' ? emailOrMobile : '9876543210',
+        name: 'User'
+      }
+
+      await login(userData)
+      showToast('Login successful!', 'success')
+      setIsLoading(false)
+
+      // Redirect to return URL or home
+      const returnUrl = router.query.redirect || '/'
+      router.push(returnUrl)
+    }, 800)
+  }
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!password.trim()) {
+      showToast('Please enter your password', 'error')
+      return
+    }
+
+    setIsLoading(true)
+
+    // Simulate password login
+    setTimeout(async () => {
+      const userData = {
+        userType: 'customer',
+        email: emailOrMobile,
+        name: 'User'
+      }
+
+      await login(userData)
+      showToast('Login successful!', 'success')
+      setIsLoading(false)
+
+      const returnUrl = router.query.redirect || '/'
+      router.push(returnUrl)
+    }, 800)
   }
 
   return (
     <Layout title="Login - HandyFix">
-      <div style={containerStyle}>
-        <div style={loginBoxStyle}>
-          <div style={headerStyle}>
-            <h1 style={titleStyle}>Welcome Back</h1>
-            <p style={subtitleStyle}>Sign in to your account</p>
-          </div>
-
-          <form onSubmit={handleSubmit} style={formStyle}>
-            <div className="form-group">
-              <label className="form-label">Login As</label>
-              <div style={userTypeStyle}>
-                <label style={radioLabelStyle}>
-                  <input
-                    type="radio"
-                    name="userType"
-                    value="customer"
-                    checked={formData.userType === 'customer'}
-                    onChange={handleChange}
-                    style={radioStyle}
-                  />
-                  Customer
-                </label>
-                <label style={radioLabelStyle}>
-                  <input
-                    type="radio"
-                    name="userType"
-                    value="provider"
-                    checked={formData.userType === 'provider'}
-                    onChange={handleChange}
-                    style={radioStyle}
-                  />
-                  Service Provider
-                </label>
-              </div>
+      <div style={pageStyle}>
+        <div className="container" style={containerStyle}>
+          <div style={cardStyle}>
+            {/* Header */}
+            <div style={headerStyle}>
+              <h1 style={titleStyle}>Welcome Back</h1>
+              <p style={subtitleStyle}>Please login to continue</p>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">Email Address</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                className="form-input"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
+            {/* Login Form */}
+            <form onSubmit={step === 'input' ? handleInputSubmit : step === 'otp' ? handleOtpSubmit : handlePasswordSubmit} style={formStyle}>
+              {/* Input Step */}
+              {step === 'input' && (
+                <>
+                  {/* Login Method Tabs */}
+                  <div style={tabsStyle}>
+                    <button
+                      type="button"
+                      style={{
+                        ...tabStyle,
+                        ...(loginMethod === 'email' ? activeTabStyle : {})
+                      }}
+                      onClick={() => setLoginMethod('email')}
+                    >
+                      Email
+                    </button>
+                    <button
+                      type="button"
+                      style={{
+                        ...tabStyle,
+                        ...(loginMethod === 'mobile' ? activeTabStyle : {})
+                      }}
+                      onClick={() => setLoginMethod('mobile')}
+                    >
+                      Mobile
+                    </button>
+                  </div>
 
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">Password</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="form-input"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
+                  {/* Input Field */}
+                  <div style={formGroupStyle}>
+                    <label style={labelStyle}>
+                      {loginMethod === 'email' ? 'Email Address' : 'Mobile Number'}
+                    </label>
+                    <input
+                      type={loginMethod === 'email' ? 'email' : 'tel'}
+                      placeholder={loginMethod === 'email' ? 'you@example.com' : '9876543210'}
+                      value={emailOrMobile}
+                      onChange={handleInputChange}
+                      className="form-input"
+                      style={inputStyle}
+                    />
+                  </div>
 
-            <div style={forgotStyle}>
-              <Link href="/auth/forgot-password" style={forgotLinkStyle}>
-                Forgot your password?
-              </Link>
-            </div>
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="btn btn-primary"
+                    style={{ ...submitBtnStyle, opacity: isLoading ? 0.6 : 1 }}
+                  >
+                    {isLoading ? (
+                      <>
+                        <span style={spinnerStyle} className="spinner"></span>
+                        Sending...
+                      </>
+                    ) : (
+                      'Send OTP'
+                    )}
+                  </button>
+                </>
+              )}
 
-            {error && (
-              <div style={errorStyle}>
-                {error}
-              </div>
-            )}
+              {/* OTP Step */}
+              {step === 'otp' && (
+                <>
+                  <div style={otpHeaderStyle}>
+                    <button
+                      type="button"
+                      style={backBtnStyle}
+                      onClick={() => setStep('input')}
+                    >
+                      ← Back
+                    </button>
+                    <h2 style={otpTitleStyle}>Enter OTP</h2>
+                  </div>
 
-            <button type="submit" className="btn btn-primary" style={submitBtnStyle} disabled={loading}>
-              {loading ? 'Signing In...' : 'Sign In'}
-            </button>
+                  <p style={otpSubtitleStyle}>
+                    We've sent a 6-digit code to {loginMethod === 'email' ? 'your email' : emailOrMobile}
+                  </p>
 
-            <div style={demoCredentialsStyle}>
-              <h4 style={demoTitleStyle}>Demo Credentials:</h4>
-              <div style={demoListStyle}>
-                <div style={demoItemStyle}>
-                  <strong>Customer:</strong> customer@test.com / password123
-                </div>
-                <div style={demoItemStyle}>
-                  <strong>Provider:</strong> provider@test.com / password123
-                </div>
-                <div style={demoItemStyle}>
-                  <strong>Admin:</strong> admin@test.com / password123
-                </div>
-              </div>
-            </div>
+                  <div style={formGroupStyle}>
+                    <label style={labelStyle}>OTP Code</label>
+                    <input
+                      type="text"
+                      placeholder="000000"
+                      value={otp}
+                      onChange={handleOtpChange}
+                      maxLength="6"
+                      inputMode="numeric"
+                      className="form-input"
+                      style={{ ...inputStyle, ...otpInputStyle }}
+                    />
+                  </div>
 
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="btn btn-primary"
+                    style={{ ...submitBtnStyle, opacity: isLoading ? 0.6 : 1 }}
+                  >
+                    {isLoading ? (
+                      <>
+                        <span style={spinnerStyle} className="spinner"></span>
+                        Verifying...
+                      </>
+                    ) : (
+                      'Verify OTP'
+                    )}
+                  </button>
+
+                  <p style={resendStyle}>
+                    Didn't receive the code?{' '}
+                    <button
+                      type="button"
+                      style={resendBtnStyle}
+                      onClick={() => {
+                        setStep('input')
+                        showToast('OTP resent successfully', 'info')
+                      }}
+                    >
+                      Resend OTP
+                    </button>
+                  </p>
+                </>
+              )}
+            </form>
+
+            {/* Divider */}
             <div style={dividerStyle}>
-              <span style={dividerTextStyle}>or</span>
+              <span style={dividerTextStyle}>Or</span>
             </div>
 
-            <button type="button" className="btn btn-outline" style={googleBtnStyle}>
-              <span style={googleIconStyle}>🔍</span>
-              Continue with Google
-            </button>
-          </form>
-
-          <div style={footerStyle}>
-            <p style={footerTextStyle}>
+            {/* Sign Up Link */}
+            <p style={signupLinkStyle}>
               Don't have an account?{' '}
-              <Link href="/auth/register" style={linkStyle}>
-                Sign up here
+              <Link href="/auth/register" style={signupBtnStyle}>
+                Sign Up
               </Link>
             </p>
-          </div>
-        </div>
 
-        <div style={sideImageStyle}>
-          <div style={sideContentStyle}>
-            <h2 style={sideHeadingStyle}>Find Trusted Service Providers</h2>
-            <p style={sideTextStyle}>
-              Connect with verified plumbers, electricians, carpenters and more in your area.
-            </p>
-            <div style={featuresStyle}>
-              <div style={featureStyle}>✓ Verified Professionals</div>
-              <div style={featureStyle}>✓ 24/7 Support</div>
-              <div style={featureStyle}>✓ Secure Payments</div>
-              <div style={featureStyle}>✓ Real-time Tracking</div>
-            </div>
+            {/* Guest Continue */}
+            <button
+              type="button"
+              className="btn btn-outline"
+              style={guestBtnStyle}
+              onClick={() => router.push('/')}
+            >
+              Continue as Guest
+            </button>
           </div>
         </div>
       </div>
@@ -185,23 +282,31 @@ export default function Login() {
   )
 }
 
-const containerStyle = {
-  minHeight: '80vh',
+// ==================== STYLES ====================
+
+const pageStyle = {
+  background: '#F7F9FC',
+  minHeight: 'calc(100vh - 300px)',
+  padding: '60px 0',
   display: 'flex',
-  alignItems: 'center',
-  background: '#FFFFFF',
-  padding: '40px 0'
+  alignItems: 'center'
 }
 
-const loginBoxStyle = {
-  flex: '1',
-  maxWidth: '450px',
-  margin: '0 auto',
+const containerStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
+}
+
+const cardStyle = {
   background: 'white',
   borderRadius: '16px',
+  border: '1px solid #E8EAED',
+  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
   padding: '40px',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-  border: '1px solid #E8EAED'
+  width: '100%',
+  maxWidth: '400px',
+  animation: 'slideUp 0.4s ease'
 }
 
 const headerStyle = {
@@ -212,175 +317,176 @@ const headerStyle = {
 const titleStyle = {
   fontSize: '28px',
   fontWeight: '700',
-  marginBottom: '8px',
-  color: '#111111'
+  color: '#111111',
+  margin: '0 0 8px'
 }
 
 const subtitleStyle = {
+  fontSize: '14px',
   color: '#555555',
-  fontSize: '16px'
+  margin: 0
 }
 
 const formStyle = {
   marginBottom: '24px'
 }
 
-const userTypeStyle = {
-  display: 'flex',
-  gap: '24px',
-  padding: '12px 0'
+const formGroupStyle = {
+  marginBottom: '20px'
 }
 
-const radioLabelStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  cursor: 'pointer',
-  fontSize: '16px',
-  fontWeight: '500',
-  color: '#2c3e50'
-}
-
-const radioStyle = {
-  width: '18px',
-  height: '18px'
-}
-
-const forgotStyle = {
-  textAlign: 'right',
-  marginBottom: '24px'
-}
-
-const forgotLinkStyle = {
-  color: '#007bff',
-  textDecoration: 'none',
+const labelStyle = {
+  display: 'block',
+  marginBottom: '8px',
+  fontWeight: '600',
+  color: '#111111',
   fontSize: '14px'
+}
+
+const inputStyle = {
+  width: '100%',
+  padding: '12px 16px',
+  border: '1px solid #E8EAED',
+  borderRadius: '10px',
+  fontSize: '16px',
+  transition: 'all 0.3s ease'
+}
+
+const otpInputStyle = {
+  letterSpacing: '8px',
+  fontWeight: '600',
+  textAlign: 'center',
+  fontSize: '20px'
+}
+
+const tabsStyle = {
+  display: 'flex',
+  gap: '12px',
+  marginBottom: '24px',
+  background: '#F7F9FC',
+  padding: '4px',
+  borderRadius: '10px'
+}
+
+const tabStyle = {
+  flex: 1,
+  padding: '10px 16px',
+  border: 'none',
+  background: 'transparent',
+  color: '#555555',
+  fontWeight: '600',
+  fontSize: '14px',
+  cursor: 'pointer',
+  borderRadius: '8px',
+  transition: 'all 0.2s ease'
+}
+
+const activeTabStyle = {
+  background: 'white',
+  color: '#0A66FF',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.04)'
 }
 
 const submitBtnStyle = {
   width: '100%',
-  padding: '14px',
-  fontSize: '16px',
-  fontWeight: '600'
-}
-
-const dividerStyle = {
-  position: 'relative',
-  textAlign: 'center',
-  margin: '24px 0'
-}
-
-const dividerTextStyle = {
-  background: 'white',
-  padding: '0 16px',
-  color: '#7f8c8d',
-  fontSize: '14px'
-}
-
-const googleBtnStyle = {
-  width: '100%',
-  padding: '14px',
-  fontSize: '16px',
-  fontWeight: '600',
+  padding: '12px 24px',
+  minHeight: '48px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: '12px'
+  gap: '8px',
+  transition: 'all 0.3s ease'
 }
 
-const googleIconStyle = {
-  fontSize: '20px'
+const spinnerStyle = {
+  display: 'inline-block',
+  width: '16px',
+  height: '16px',
+  borderWidth: '2px'
 }
 
-const footerStyle = {
-  textAlign: 'center',
-  paddingTop: '24px',
-  borderTop: '1px solid #eee'
-}
-
-const footerTextStyle = {
-  color: '#7f8c8d',
-  fontSize: '14px'
-}
-
-const linkStyle = {
-  color: '#007bff',
-  textDecoration: 'none',
-  fontWeight: '600'
-}
-
-const sideImageStyle = {
-  flex: '1',
-  background: 'rgba(255,255,255,0.1)',
-  borderRadius: '16px',
-  margin: '20px',
-  padding: '60px 40px',
-  color: 'white',
+const otpHeaderStyle = {
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  gap: '12px',
+  marginBottom: '20px'
 }
 
-const sideContentStyle = {
-  width: '100%'
-}
-
-const sideHeadingStyle = {
-  fontSize: '32px',
-  fontWeight: '700',
-  marginBottom: '20px',
-  lineHeight: '1.2'
-}
-
-const sideTextStyle = {
-  fontSize: '18px',
-  marginBottom: '32px',
-  opacity: '0.9',
-  lineHeight: '1.6'
-}
-
-const featuresStyle = {
-  display: 'grid',
-  gap: '16px'
-}
-
-const featureStyle = {
+const backBtnStyle = {
+  background: 'none',
+  border: 'none',
+  color: '#0A66FF',
   fontSize: '16px',
-  fontWeight: '500'
+  cursor: 'pointer',
+  fontWeight: '600',
+  padding: '0',
+  flexShrink: 0
 }
 
-const errorStyle = {
-  background: 'rgba(220, 53, 69, 0.1)',
-  color: '#DC3545',
-  padding: '12px',
-  borderRadius: '10px',
-  marginBottom: '16px',
-  fontSize: '14px',
-  border: '1px solid rgba(220, 53, 69, 0.2)'
-}
-
-const demoCredentialsStyle = {
-  marginTop: '24px',
-  padding: '16px',
-  background: '#E8F3FF',
-  borderRadius: '12px',
-  border: '1px solid #0A66FF'
-}
-
-const demoTitleStyle = {
-  fontSize: '14px',
+const otpTitleStyle = {
+  fontSize: '20px',
   fontWeight: '700',
-  marginBottom: '12px',
-  color: '#0A66FF'
+  color: '#111111',
+  margin: 0,
+  flex: 1
 }
 
-const demoListStyle = {
+const otpSubtitleStyle = {
+  fontSize: '13px',
+  color: '#555555',
+  marginBottom: '20px',
+  lineHeight: '1.5'
+}
+
+const resendStyle = {
+  textAlign: 'center',
+  fontSize: '13px',
+  color: '#555555',
+  marginTop: '16px'
+}
+
+const resendBtnStyle = {
+  background: 'none',
+  border: 'none',
+  color: '#0A66FF',
+  fontWeight: '600',
+  cursor: 'pointer',
+  padding: '0',
+  textDecoration: 'underline'
+}
+
+const dividerStyle = {
   display: 'flex',
-  flexDirection: 'column',
-  gap: '8px'
+  alignItems: 'center',
+  gap: '16px',
+  margin: '24px 0',
+  position: 'relative'
 }
 
-const demoItemStyle = {
+const dividerTextStyle = {
+  fontSize: '13px',
+  color: '#888888',
+  background: 'white',
+  padding: '0 8px',
+  position: 'relative',
+  zIndex: 2
+}
+
+const signupLinkStyle = {
+  textAlign: 'center',
   fontSize: '14px',
-  color: '#0c5460',
-  fontFamily: 'monospace'
+  color: '#555555',
+  marginBottom: '16px'
+}
+
+const signupBtnStyle = {
+  color: '#0A66FF',
+  fontWeight: '600',
+  textDecoration: 'none',
+  cursor: 'pointer',
+  borderBottom: '1px solid #0A66FF'
+}
+
+const guestBtnStyle = {
+  width: '100%'
 }
