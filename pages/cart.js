@@ -4,11 +4,13 @@ import Layout from '../components/Layout'
 import Link from 'next/link'
 import { useCart } from '../context/CartContext'
 import { useUser } from '../context/UserContext'
+import { useToast } from '../components/Toast'
 
 export default function CartPage() {
   const router = useRouter()
   const { cart, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart()
   const { user } = useUser()
+  const { showToast } = useToast()
   const [isProcessing, setIsProcessing] = useState(false)
 
   const handleRemove = (cartId) => {
