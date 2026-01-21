@@ -256,7 +256,15 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
             </button>
 
             {/* Emergency Button */}
-            <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services">
+            <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services" onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(220, 53, 69, 0.2)'
+              e.currentTarget.style.borderColor = '#DC3545'
+              e.currentTarget.style.transform = 'scale(1.1)'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(220, 53, 69, 0.1)'
+              e.currentTarget.style.borderColor = 'rgba(220, 53, 69, 0.3)'
+              e.currentTarget.style.transform = 'scale(1)'
+            }}>
               🚨
             </Link>
 
