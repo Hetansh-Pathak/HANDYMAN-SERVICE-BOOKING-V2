@@ -455,8 +455,10 @@ const navLinkStyle = {
 const rightSectionStyle = {
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
-  marginLeft: 'auto'
+  gap: '10px',
+  marginLeft: 'auto',
+  flexWrap: 'nowrap',
+  flexShrink: 0
 }
 
 const notificationContainerStyle = {
