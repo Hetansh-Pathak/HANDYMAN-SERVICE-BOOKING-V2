@@ -270,8 +270,24 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 
             {/* Auth Links */}
             <div style={authLinksStyle}>
-              <Link href="/auth/login" style={loginBtnStyle}>Log In</Link>
-              <Link href="/auth/register" style={signUpBtnStyle}>Sign Up</Link>
+              <Link href="/auth/login" style={loginBtnStyle} onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#0A66FF'
+                e.currentTarget.style.color = 'white'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.2)'
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.color = '#0A66FF'
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}>Log In</Link>
+              <Link href="/auth/register" style={signUpBtnStyle} onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)'
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(10, 102, 255, 0.35)'
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(10, 102, 255, 0.25)'
+              }}>Sign Up</Link>
             </div>
           </div>
 
