@@ -616,11 +616,14 @@ const heroStyle = {
 }
 
 const heroContentStyle = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '60px',
-  alignItems: 'center',
-  padding: '80px 0'
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '40px',
+  alignItems: 'flex-start',
+  justifyContent: 'center',
+  padding: '60px 0',
+  width: '100%',
+  maxWidth: '700px'
 }
 
 const heroTextStyle = {
