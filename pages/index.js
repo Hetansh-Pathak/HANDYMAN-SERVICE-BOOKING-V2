@@ -1226,6 +1226,83 @@ const ctaStatLabelStyle = {
   letterSpacing: '0.5px'
 }
 
+// Trending Section
+const trendingStyle = {
+  background: 'linear-gradient(135deg, #FFF5E1 0%, #FFFFFF 100%)',
+  padding: '120px 0',
+  position: 'relative'
+}
+
+const trendingGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: '24px'
+}
+
+const trendingCardStyle = {
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '16px',
+  padding: '28px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden',
+  opacity: 0,
+  transform: 'translateY(20px)'
+}
+
+const trendingIconStyle = {
+  fontSize: '48px',
+  marginBottom: '16px',
+  display: 'block'
+}
+
+const trendingNameStyle = {
+  fontSize: '18px',
+  fontWeight: '700',
+  color: '#111111',
+  marginBottom: '12px'
+}
+
+const discountBadgeStyle = {
+  display: 'inline-block',
+  background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+  color: 'white',
+  padding: '8px 16px',
+  borderRadius: '20px',
+  fontSize: '14px',
+  fontWeight: '700',
+  marginBottom: '16px'
+}
+
+const bookTrendingBtnStyle = {
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  color: 'white',
+  border: 'none',
+  padding: '12px 24px',
+  borderRadius: '10px',
+  fontWeight: '600',
+  cursor: 'pointer',
+  fontSize: '14px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  width: '100%',
+  marginTop: '16px'
+}
+
+const popularBadgeStyle = {
+  position: 'absolute',
+  top: '12px',
+  right: '12px',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  color: 'white',
+  padding: '6px 12px',
+  borderRadius: '20px',
+  fontSize: '11px',
+  fontWeight: '700'
+}
+
 // Responsive styles for mobile
 const mediaQueryStyles = `
   @media (max-width: 768px) {
