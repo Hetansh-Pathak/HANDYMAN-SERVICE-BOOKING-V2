@@ -1116,15 +1116,15 @@ const ctaStatStyle = {
 
 const ctaStatValueStyle = {
   display: 'block',
-  fontSize: '24px',
+  fontSize: '28px',
   fontWeight: '700',
-  color: '#0A66FF',
+  color: 'white',
   marginBottom: '8px'
 }
 
 const ctaStatLabelStyle = {
-  fontSize: '12px',
-  color: '#888888',
+  fontSize: '13px',
+  color: 'rgba(255, 255, 255, 0.8)',
   textTransform: 'uppercase',
   letterSpacing: '0.5px'
 }
