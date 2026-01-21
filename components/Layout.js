@@ -552,9 +552,9 @@ const emergencyBtnStyle = {
 
 const authLinksStyle = {
   display: 'flex',
-  gap: '12px',
+  gap: '8px',
   alignItems: 'center',
-  paddingLeft: '12px',
+  paddingLeft: '8px',
   borderLeft: '1px solid #E8EAED'
 }
 
@@ -562,24 +562,26 @@ const loginBtnStyle = {
   color: '#0A66FF',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '14px',
-  padding: '8px 16px',
-  borderRadius: '8px',
+  fontSize: '13px',
+  padding: '8px 14px',
+  borderRadius: '6px',
   transition: 'all 0.2s ease',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  border: '1px solid transparent'
 }
 
 const signUpBtnStyle = {
-  background: '#0A66FF',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
   color: 'white',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '14px',
-  padding: '10px 20px',
-  borderRadius: '8px',
+  fontSize: '13px',
+  padding: '8px 16px',
+  borderRadius: '6px',
   transition: 'all 0.2s ease',
   display: 'inline-block',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.2)'
 }
 
 const mobileMenuBtnStyle = {
