@@ -357,13 +357,23 @@ export default function Home() {
           
           <div style={providersGridStyle}>
             {featuredProviders.map((provider, index) => (
-              <div 
-                key={provider.id} 
+              <div
+                key={provider.id}
                 style={{
                   ...providerCardStyle,
                   animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                 }}
                 className="animate-on-scroll"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)'
+                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(0, 0, 0, 0.12)'
+                  e.currentTarget.style.borderColor = '#0A66FF'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                  e.currentTarget.style.borderColor = '#E8EAED'
+                }}
               >
                 <div style={providerHeaderStyle}>
                   <div style={providerImageStyle}>
