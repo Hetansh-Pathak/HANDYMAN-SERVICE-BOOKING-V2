@@ -251,6 +251,36 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Statistics Section */}
+      <section style={statsStyle}>
+        <div className="container">
+          <div style={sectionHeaderStyle} className="animate-on-scroll">
+            <h2 style={sectionTitleStyle}>Why Trust HandyFix?</h2>
+            <p style={sectionSubtitleStyle}>Thousands of satisfied customers and trusted professionals</p>
+          </div>
+
+          <div style={statsGridStyle}>
+            {stats.map((stat, index) => (
+              <div key={index} style={{
+                ...statCardStyle,
+                borderLeft: `4px solid ${stat.color}`,
+                animation: `fadeInUp 0.6s ease-out ${index * 0.15}s both`
+              }} className="animate-on-scroll" onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px) scale(1.05)'
+                e.currentTarget.style.boxShadow = `0 12px 32px rgba(${stat.color === '#FF6B6B' ? '255, 107, 107' : stat.color === '#00B894' ? '0, 184, 148' : stat.color === '#0A66FF' ? '10, 102, 255' : '255, 215, 0'}, 0.2)`
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+              }}>
+                <div style={{...statIconStyle, color: stat.color}}>{stat.icon}</div>
+                <div style={{...statValueStyle, color: stat.color}}>{stat.value}</div>
+                <div style={statLabelStyle}>{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section style={howItWorksStyle}>
         <div className="container">
