@@ -163,12 +163,30 @@ export default function ServicesPage() {
 
   const services = [...new Set(mockProviders.map(p => p.service))]
 
+  const handlePincodeSearch = (data) => {
+    if (data) {
+      setPincodeStatus(getServiceAvailability(data.pincode))
+      setFilters(prev => ({
+        ...prev,
+        pincode: data.pincode,
+        city: data.location.city
+      }))
+    }
+  }
+
   return (
     <Layout title="Find Service Providers - HandyFix">
       <div style={pageStyle}>
         <div style={headerStyle}>
           <h1 style={titleStyle}>Find Service Providers</h1>
           <p style={subtitleStyle}>Choose from verified professionals near you</p>
+        </div>
+
+        <div className="container" style={pincodeSearchWrapperStyle}>
+          <PincodeSearch
+            onSearch={handlePincodeSearch}
+            showFull={false}
+          />
         </div>
 
         <div className="container" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '40px', marginTop: '40px' }}>
