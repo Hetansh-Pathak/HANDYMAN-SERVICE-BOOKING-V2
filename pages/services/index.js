@@ -7,17 +7,20 @@ import { getServiceAvailability } from '../../lib/pincodeService'
 
 export default function ServicesPage() {
   const router = useRouter()
-  const { search } = router.query
+  const { search, pincode, city } = router.query
   const [filters, setFilters] = useState({
     searchTerm: search || '',
     service: '',
     minPrice: 0,
     maxPrice: 5000,
     rating: 0,
-    sortBy: 'rating'
+    sortBy: 'rating',
+    pincode: pincode || '',
+    city: city || ''
   })
   const [providers, setProviders] = useState([])
   const [filteredProviders, setFilteredProviders] = useState([])
+  const [pincodeStatus, setPincodeStatus] = useState(null)
 
   // Mock providers data
   const mockProviders = [
