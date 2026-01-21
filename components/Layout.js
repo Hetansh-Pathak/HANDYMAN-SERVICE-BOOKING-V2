@@ -270,13 +270,13 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 /* ==================== NAVBAR STYLES ==================== */
 const headerStyle = {
   background: 'linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)',
-  borderBottom: '1px solid #E8EAED',
+  borderBottom: '2px solid #E8EAED',
   position: 'sticky',
   top: 0,
   zIndex: 1000,
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
-  backdropFilter: 'blur(10px)',
-  backgroundColor: 'rgba(255, 255, 255, 0.95)'
+  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.08)',
+  backdropFilter: 'blur(15px)',
+  backgroundColor: 'rgba(255, 255, 255, 0.98)'
 }
 
 const navContainerStyle = {
@@ -284,38 +284,36 @@ const navContainerStyle = {
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '12px 0',
-  minHeight: '56px',
+  minHeight: '70px',
   gap: '20px'
 }
 
 const logoStyle = {
   fontSize: '22px',
   fontWeight: '800',
-  color: '#0A66FF',
+  color: 'white',
   textDecoration: 'none',
-  padding: '8px 16px',
+  padding: '12px 20px',
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   whiteSpace: 'nowrap',
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
   background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
-  color: 'white',
-  borderRadius: '10px',
-  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)'
-}
-
-const logoStyle_hover = {
-  transform: 'scale(1.05)',
-  boxShadow: '0 6px 20px rgba(10, 102, 255, 0.4)'
+  borderRadius: '12px',
+  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)',
+  position: 'relative',
+  overflow: 'hidden',
+  cursor: 'pointer'
 }
 
 const desktopMenuStyle = {
   display: 'flex',
-  gap: '8px',
+  gap: '12px',
   alignItems: 'center',
   flex: 1,
-  justifyContent: 'center'
+  justifyContent: 'center',
+  padding: '0 20px'
 }
 
 const navLinkStyle = {
@@ -323,11 +321,17 @@ const navLinkStyle = {
   textDecoration: 'none',
   fontWeight: '600',
   fontSize: '14px',
-  padding: '8px 14px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
+  padding: '10px 16px',
+  borderRadius: '10px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   position: 'relative',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '6px',
+  background: 'transparent',
+  border: '1px solid transparent',
+  overflow: 'hidden'
 }
 
 const rightSectionStyle = {
