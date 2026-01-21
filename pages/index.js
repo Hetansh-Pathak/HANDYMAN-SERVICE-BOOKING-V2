@@ -774,8 +774,9 @@ const stepDescStyle = {
 
 // Services Section
 const servicesStyle = {
-  background: 'white',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '120px 0',
+  position: 'relative'
 }
 
 const servicesGridStyle = {
@@ -787,18 +788,19 @@ const servicesGridStyle = {
 const serviceCardStyle = {
   background: 'white',
   border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '28px 20px',
+  borderRadius: '16px',
+  padding: '32px 24px',
   textAlign: 'center',
   cursor: 'pointer',
-  transition: 'all 0.3s ease',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   position: 'relative',
   overflow: 'hidden',
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
   opacity: 0,
-  transform: 'translateY(20px)'
+  transform: 'translateY(20px)',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)'
 }
 
 const serviceIconStyle = {
