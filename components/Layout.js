@@ -148,6 +148,25 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
               )}
             </div>
 
+            {/* Cart Icon */}
+            <button
+              style={cartBtnStyle}
+              onClick={() => {
+                if (!user) {
+                  router.push(`/auth/login?redirect=${encodeURIComponent('/cart')}`)
+                } else {
+                  router.push('/cart')
+                }
+              }}
+              title="Shopping Cart"
+              aria-label="Shopping Cart"
+            >
+              🛒
+              {cartCount > 0 && (
+                <span style={cartBadgeStyle}>{cartCount > 9 ? '9+' : cartCount}</span>
+              )}
+            </button>
+
             {/* Emergency Button */}
             <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services">
               🚨
