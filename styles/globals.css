@@ -574,6 +574,13 @@ a:hover {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(10, 102, 255, 0.1);
   background: #FAFBFC;
+  animation: slideDown 0.2s ease;
+}
+
+.form-input.success,
+.form-textarea.success {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
 }
 
 .form-textarea {
