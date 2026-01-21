@@ -72,15 +72,85 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
       <header style={headerStyle}>
         <nav style={navContainerStyle} className="container">
           <Link href="/" style={logoStyle}>
-            🔧 HandyFix
+            <span style={{fontSize: '24px'}}>🔧</span> HandyFix
           </Link>
-          
+
           <div style={desktopMenuStyle}>
-            <Link href="/" style={navLinkStyle}>Home</Link>
-            <Link href="/services" style={navLinkStyle}>Services</Link>
-            <Link href="/providers" style={navLinkStyle}>Providers</Link>
-            <Link href="/about" style={navLinkStyle}>About</Link>
-            <Link href="/contact" style={navLinkStyle}>Contact</Link>
+            <Link href="/" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              🏠 Home
+            </Link>
+            <Link href="/services" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              🔧 Services
+            </Link>
+            <Link href="/providers" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              👨‍💼 Providers
+            </Link>
+            <Link href="/about" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              ℹ️ About
+            </Link>
+            <Link href="/contact" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              📞 Contact
+            </Link>
           </div>
 
           <div style={rightSectionStyle}>
