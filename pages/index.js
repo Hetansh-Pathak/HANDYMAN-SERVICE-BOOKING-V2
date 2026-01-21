@@ -1327,6 +1327,34 @@ const popularBadgeStyle = {
   fontWeight: '700'
 }
 
+// Statistics Section Styles
+const statsStyle = {
+  background: 'linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '120px 0',
+  position: 'relative'
+}
+
+const statsGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: '28px'
+}
+
+// Update statCardStyle for the new section
+const statCardStyle = {
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '32px 24px',
+  borderRadius: '16px',
+  border: '1px solid #E8EAED',
+  textAlign: 'center',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden',
+  opacity: 0,
+  transform: 'translateY(20px)',
+  cursor: 'pointer'
+}
+
 // Responsive styles for mobile
 const mediaQueryStyles = `
   @media (max-width: 768px) {
