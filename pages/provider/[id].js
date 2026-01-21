@@ -147,10 +147,10 @@ export default function ProviderProfile() {
                   <span style={priceFromStyle}>Starting from</span>
                   <span style={priceAmountStyle}>₹{provider.basePrice}</span>
                 </div>
-                <button 
-                  className="btn btn-primary" 
+                <button
+                  className="btn btn-primary"
                   style={bookNowBtnStyle}
-                  onClick={() => setShowBookingForm(true)}
+                  onClick={handleBookClick}
                 >
                   Book Now
                 </button>
