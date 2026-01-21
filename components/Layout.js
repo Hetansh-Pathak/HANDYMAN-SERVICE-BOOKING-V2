@@ -72,23 +72,102 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
       <header style={headerStyle}>
         <nav style={navContainerStyle} className="container">
           <Link href="/" style={logoStyle}>
-            🔧 HandyFix
+            <span style={{fontSize: '24px'}}>🔧</span> HandyFix
           </Link>
-          
+
           <div style={desktopMenuStyle}>
-            <Link href="/" style={navLinkStyle}>Home</Link>
-            <Link href="/services" style={navLinkStyle}>Services</Link>
-            <Link href="/providers" style={navLinkStyle}>Providers</Link>
-            <Link href="/about" style={navLinkStyle}>About</Link>
-            <Link href="/contact" style={navLinkStyle}>Contact</Link>
+            <Link href="/" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              🏠 Home
+            </Link>
+            <Link href="/services" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              🔧 Services
+            </Link>
+            <Link href="/providers" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              👨‍💼 Providers
+            </Link>
+            <Link href="/about" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              ℹ️ About
+            </Link>
+            <Link href="/contact" style={navLinkStyle} onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(10, 102, 255, 0.08)'
+              e.currentTarget.style.color = '#0A66FF'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.15)'
+              e.currentTarget.style.borderColor = '#0A66FF'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = '#555555'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.borderColor = 'transparent'
+            }}>
+              📞 Contact
+            </Link>
           </div>
 
           <div style={rightSectionStyle}>
             {/* Notification Dropdown */}
             <div style={notificationContainerStyle}>
-              <button 
+              <button
                 style={notificationBtnStyle}
                 onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(10, 102, 255, 0.1)'
+                  e.currentTarget.style.borderColor = '#0A66FF'
+                  e.currentTarget.style.transform = 'scale(1.1)'
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.borderColor = 'transparent'
+                  e.currentTarget.style.transform = 'scale(1)'
+                }}
                 aria-label="Notifications"
               >
                 🔔
@@ -158,6 +237,15 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
                   router.push('/cart')
                 }
               }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(10, 102, 255, 0.1)'
+                e.currentTarget.style.borderColor = '#0A66FF'
+                e.currentTarget.style.transform = 'scale(1.1)'
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.borderColor = 'transparent'
+                e.currentTarget.style.transform = 'scale(1)'
+              }}
               title="Shopping Cart"
               aria-label="Shopping Cart"
             >
@@ -168,14 +256,38 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
             </button>
 
             {/* Emergency Button */}
-            <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services">
+            <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services" onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(220, 53, 69, 0.2)'
+              e.currentTarget.style.borderColor = '#DC3545'
+              e.currentTarget.style.transform = 'scale(1.1)'
+            }} onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(220, 53, 69, 0.1)'
+              e.currentTarget.style.borderColor = 'rgba(220, 53, 69, 0.3)'
+              e.currentTarget.style.transform = 'scale(1)'
+            }}>
               🚨
             </Link>
 
             {/* Auth Links */}
             <div style={authLinksStyle}>
-              <Link href="/auth/login" style={loginBtnStyle}>Log In</Link>
-              <Link href="/auth/register" style={signUpBtnStyle}>Sign Up</Link>
+              <Link href="/auth/login" style={loginBtnStyle} onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#0A66FF'
+                e.currentTarget.style.color = 'white'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(10, 102, 255, 0.2)'
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.color = '#0A66FF'
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}>Log In</Link>
+              <Link href="/auth/register" style={signUpBtnStyle} onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-3px)'
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(10, 102, 255, 0.35)'
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(10, 102, 255, 0.25)'
+              }}>Sign Up</Link>
             </div>
           </div>
 
@@ -270,71 +382,83 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 /* ==================== NAVBAR STYLES ==================== */
 const headerStyle = {
   background: 'linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)',
-  borderBottom: '1px solid #E8EAED',
+  borderBottom: '2px solid #E8EAED',
   position: 'sticky',
   top: 0,
   zIndex: 1000,
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
-  backdropFilter: 'blur(10px)',
-  backgroundColor: 'rgba(255, 255, 255, 0.95)'
+  boxShadow: '0 4px 30px rgba(0, 0, 0, 0.08)',
+  backdropFilter: 'blur(15px)',
+  backgroundColor: 'rgba(255, 255, 255, 0.98)'
 }
 
 const navContainerStyle = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   padding: '12px 0',
-  minHeight: '56px',
-  gap: '20px'
+  minHeight: '70px',
+  gap: '16px',
+  width: '100%',
+  flexWrap: 'nowrap',
+  overflow: 'visible'
 }
 
 const logoStyle = {
   fontSize: '22px',
   fontWeight: '800',
-  color: '#0A66FF',
+  color: 'white',
   textDecoration: 'none',
-  padding: '8px 16px',
+  padding: '12px 20px',
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   whiteSpace: 'nowrap',
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
   background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
-  color: 'white',
-  borderRadius: '10px',
-  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)'
-}
-
-const logoStyle_hover = {
-  transform: 'scale(1.05)',
-  boxShadow: '0 6px 20px rgba(10, 102, 255, 0.4)'
+  borderRadius: '12px',
+  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)',
+  position: 'relative',
+  overflow: 'hidden',
+  cursor: 'pointer',
+  flexShrink: 0
 }
 
 const desktopMenuStyle = {
   display: 'flex',
   gap: '8px',
   alignItems: 'center',
-  flex: 1,
-  justifyContent: 'center'
+  justifyContent: 'flex-start',
+  padding: '0',
+  flexWrap: 'nowrap',
+  flexShrink: 0
 }
 
 const navLinkStyle = {
   color: '#555555',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '14px',
-  padding: '8px 14px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
+  fontSize: '13px',
+  padding: '9px 14px',
+  borderRadius: '10px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   position: 'relative',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '5px',
+  background: 'transparent',
+  border: '1px solid transparent',
+  overflow: 'hidden',
+  flexShrink: 0
 }
 
 const rightSectionStyle = {
   display: 'flex',
   alignItems: 'center',
-  gap: '8px',
-  marginLeft: 'auto'
+  gap: '10px',
+  marginLeft: 'auto',
+  flexWrap: 'nowrap',
+  flexShrink: 0
 }
 
 const notificationContainerStyle = {
@@ -343,13 +467,16 @@ const notificationContainerStyle = {
 
 const notificationBtnStyle = {
   background: 'transparent',
-  border: 'none',
-  fontSize: '18px',
+  border: '1px solid transparent',
+  fontSize: '20px',
   cursor: 'pointer',
-  padding: '6px 8px',
+  padding: '8px 10px',
   position: 'relative',
-  transition: 'all 0.2s ease',
-  borderRadius: '6px'
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  borderRadius: '10px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
 }
 
 const notificationBadgeStyle = {
@@ -508,14 +635,14 @@ const cartBtnStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '40px',
-  height: '40px',
+  width: '44px',
+  height: '44px',
   background: 'transparent',
-  border: 'none',
-  borderRadius: '50%',
-  fontSize: '18px',
+  border: '1px solid transparent',
+  borderRadius: '10px',
+  fontSize: '20px',
   cursor: 'pointer',
-  transition: 'all 0.2s ease',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   position: 'relative',
   padding: '0'
 }
@@ -541,24 +668,27 @@ const emergencyBtnStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '40px',
-  height: '40px',
+  width: '44px',
+  height: '44px',
   background: 'rgba(220, 53, 69, 0.1)',
-  border: 'none',
-  borderRadius: '50%',
-  fontSize: '16px',
+  border: '1px solid rgba(220, 53, 69, 0.3)',
+  borderRadius: '10px',
+  fontSize: '18px',
   textDecoration: 'none',
   cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  animation: 'pulse 2s infinite'
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  animation: 'pulse 2s infinite',
+  position: 'relative'
 }
 
 const authLinksStyle = {
   display: 'flex',
   gap: '8px',
   alignItems: 'center',
-  paddingLeft: '8px',
-  borderLeft: '1px solid #E8EAED'
+  paddingLeft: '10px',
+  borderLeft: '1px solid #E8EAED',
+  flexWrap: 'nowrap',
+  flexShrink: 0
 }
 
 const loginBtnStyle = {
@@ -566,11 +696,14 @@ const loginBtnStyle = {
   textDecoration: 'none',
   fontWeight: '600',
   fontSize: '13px',
-  padding: '8px 14px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
+  padding: '9px 16px',
+  borderRadius: '8px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   whiteSpace: 'nowrap',
-  border: '1px solid transparent'
+  border: '2px solid #0A66FF',
+  display: 'inline-block',
+  background: 'transparent',
+  flexShrink: 0
 }
 
 const signUpBtnStyle = {
@@ -579,51 +712,61 @@ const signUpBtnStyle = {
   textDecoration: 'none',
   fontWeight: '600',
   fontSize: '13px',
-  padding: '8px 16px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
+  padding: '9px 18px',
+  borderRadius: '8px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   display: 'inline-block',
   whiteSpace: 'nowrap',
-  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.2)'
+  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.25)',
+  border: 'none',
+  flexShrink: 0
 }
 
 const mobileMenuBtnStyle = {
   display: 'none',
   background: 'none',
-  border: 'none',
-  fontSize: '22px',
+  border: '1px solid transparent',
+  fontSize: '24px',
   cursor: 'pointer',
   color: '#555555',
-  padding: '6px 8px',
-  transition: 'color 0.2s ease'
+  padding: '8px 10px',
+  transition: 'all 0.2s ease',
+  borderRadius: '8px'
 }
 
 const mobileMenuStyle = {
   display: 'none',
   flexDirection: 'column',
-  background: 'white',
-  padding: '16px 20px',
-  borderTop: '1px solid #E8EAED'
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '20px 20px',
+  borderTop: '2px solid #E8EAED',
+  animation: 'slideDown 0.3s ease'
 }
 
 const mobileNavLinkStyle = {
-  padding: '12px 0',
+  padding: '14px 0',
   textDecoration: 'none',
   color: '#555555',
   fontWeight: '500',
   fontSize: '15px',
-  transition: 'color 0.2s ease',
-  display: 'block'
+  transition: 'all 0.2s ease',
+  display: 'block',
+  borderRadius: '8px',
+  paddingLeft: '12px'
 }
 
 const mobileSignUpStyle = {
-  padding: '12px 0',
+  padding: '12px 16px',
   textDecoration: 'none',
-  color: '#0A66FF',
+  color: 'white',
   fontWeight: '600',
   fontSize: '15px',
-  transition: 'color 0.2s ease',
-  display: 'block'
+  transition: 'all 0.2s ease',
+  display: 'block',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  borderRadius: '8px',
+  marginTop: '8px',
+  textAlign: 'center'
 }
 
 const mobileDividerStyle = {

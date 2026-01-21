@@ -168,10 +168,17 @@ export default function Home() {
   ]
 
   const stats = [
-    { label: 'Happy Customers', value: '50,000+', icon: '😊' },
-    { label: 'Verified Providers', value: '2,500+', icon: '✅' },
-    { label: 'Services Completed', value: '1,00,000+', icon: '🎯' },
-    { label: 'Cities Covered', value: '25+', icon: '🏙️' }
+    { label: 'Happy Customers', value: '50,000+', icon: '😊', color: '#FF6B6B' },
+    { label: 'Verified Providers', value: '2,500+', icon: '✅', color: '#00B894' },
+    { label: 'Services Completed', value: '1,00,000+', icon: '🎯', color: '#0A66FF' },
+    { label: 'Cities Covered', value: '25+', icon: '🏙️', color: '#FFD700' }
+  ]
+
+  const trendingServices = [
+    { name: 'Same-day Plumbing', discount: '20% OFF', icon: '🚰', popular: true },
+    { name: 'Quick AC Service', discount: '15% OFF', icon: '❄️', popular: true },
+    { name: 'Express Cleaning', discount: '25% OFF', icon: '✨', popular: false },
+    { name: 'Electrical Repair', discount: '10% OFF', icon: '⚡', popular: true }
   ]
 
   const handleSearch = () => {
@@ -240,16 +247,36 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Hero Stats */}
-            <div style={heroStatsGridStyle}>
-              {stats.map((stat, index) => (
-                <div key={index} style={statCardStyle} className="animate-on-scroll">
-                  <div style={statIconStyle}>{stat.icon}</div>
-                  <div style={statValueStyle}>{stat.value}</div>
-                  <div style={statLabelStyle}>{stat.label}</div>
-                </div>
-              ))}
-            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Statistics Section */}
+      <section style={statsStyle}>
+        <div className="container">
+          <div style={sectionHeaderStyle} className="animate-on-scroll">
+            <h2 style={sectionTitleStyle}>Why Trust HandyFix?</h2>
+            <p style={sectionSubtitleStyle}>Thousands of satisfied customers and trusted professionals</p>
+          </div>
+
+          <div style={statsGridStyle}>
+            {stats.map((stat, index) => (
+              <div key={index} style={{
+                ...statCardStyle,
+                borderLeft: `4px solid ${stat.color}`,
+                animation: `fadeInUp 0.6s ease-out ${index * 0.15}s both`
+              }} className="animate-on-scroll" onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px) scale(1.05)'
+                e.currentTarget.style.boxShadow = `0 12px 32px rgba(${stat.color === '#FF6B6B' ? '255, 107, 107' : stat.color === '#00B894' ? '0, 184, 148' : stat.color === '#0A66FF' ? '10, 102, 255' : '255, 215, 0'}, 0.2)`
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+              }}>
+                <div style={{...statIconStyle, color: stat.color}}>{stat.icon}</div>
+                <div style={{...statValueStyle, color: stat.color}}>{stat.value}</div>
+                <div style={statLabelStyle}>{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -264,26 +291,37 @@ export default function Home() {
           
           <div style={stepsGridStyle}>
             {[
-              { 
-                step: '1', 
-                title: 'Choose Service', 
+              {
+                step: '1',
+                title: 'Choose Service',
                 desc: 'Select from 50+ services',
                 icon: '🔍'
               },
-              { 
-                step: '2', 
-                title: 'Book Instantly', 
+              {
+                step: '2',
+                title: 'Book Instantly',
                 desc: 'Get matched with professionals',
                 icon: '📱'
               },
-              { 
-                step: '3', 
-                title: 'Get It Done', 
+              {
+                step: '3',
+                title: 'Get It Done',
                 desc: 'Relax while experts work',
                 icon: '✨'
               }
             ].map((item, index) => (
-              <div key={index} style={stepCardStyle} className="animate-on-scroll">
+              <div key={index} style={stepCardStyle} className="animate-on-scroll"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)'
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(10, 102, 255, 0.15)'
+                  e.currentTarget.style.borderColor = '#0A66FF'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                  e.currentTarget.style.borderColor = '#E8EAED'
+                }}
+              >
                 <div style={stepNumberStyle}>{item.step}</div>
                 <div style={stepEmojiStyle}>{item.icon}</div>
                 <h3 style={stepTitleStyle}>{item.title}</h3>
@@ -304,34 +342,98 @@ export default function Home() {
           
           <div style={servicesGridStyle}>
             {services.map((service, index) => (
-              <Link 
-                key={service.id} 
-                href={`/services/${service.name.toLowerCase().replace(' ', '-')}`} 
+              <Link
+                key={service.id}
+                href={`/services/${service.name.toLowerCase().replace(' ', '-')}`}
                 style={{textDecoration: 'none'}}
               >
-                <div 
+                <div
                   style={{
                     ...serviceCardStyle,
                     animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                   }}
                   className="animate-on-scroll"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)'
+                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(10, 102, 255, 0.2)'
+                    e.currentTarget.style.borderColor = '#0A66FF'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                    e.currentTarget.style.borderColor = '#E8EAED'
+                  }}
                 >
                   <div style={serviceIconStyle}>{service.icon}</div>
                   <h3 style={serviceNameStyle}>{service.name}</h3>
                   <p style={serviceDescStyle}>{service.desc}</p>
-                  
+
                   <div style={serviceMetricsStyle}>
                     <div style={metricStyle}>👥 {service.providers} providers</div>
                     <div style={metricStyle}>💰 From {service.avgPrice}</div>
                   </div>
-                  
+
                   {service.urgentAvailable && (
                     <div style={urgentBadgeStyle}>⚡ Emergency Available</div>
                   )}
-                  
+
                   <div style={bookNowStyle}>Book Now →</div>
                 </div>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trending Deals Section */}
+      <section style={trendingStyle}>
+        <div className="container">
+          <div style={sectionHeaderStyle} className="animate-on-scroll">
+            <h2 style={sectionTitleStyle}>🔥 Limited Time Offers</h2>
+            <p style={sectionSubtitleStyle}>Exclusive deals on popular services</p>
+          </div>
+
+          <div style={trendingGridStyle}>
+            {trendingServices.map((service, index) => (
+              <div
+                key={index}
+                style={{
+                  ...trendingCardStyle,
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`,
+                  borderColor: service.popular ? '#0A66FF' : '#E8EAED'
+                }}
+                className="animate-on-scroll"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)'
+                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(10, 102, 255, 0.25)'
+                  if (service.popular) {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #E8F3FF 0%, #F0F7FF 100%)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                  if (service.popular) {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)'
+                  }
+                }}
+              >
+                {service.popular && (
+                  <div style={popularBadgeStyle}>⭐ Most Popular</div>
+                )}
+                <div style={trendingIconStyle}>{service.icon}</div>
+                <h3 style={trendingNameStyle}>{service.name}</h3>
+                <div style={discountBadgeStyle}>{service.discount}</div>
+                <button style={bookTrendingBtnStyle} onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#0052CC'
+                  e.currentTarget.style.transform = 'scale(1.05)'
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)'
+                  e.currentTarget.style.transform = 'scale(1)'
+                }}>
+                  Book Now
+                </button>
+              </div>
             ))}
           </div>
         </div>
@@ -347,13 +449,23 @@ export default function Home() {
           
           <div style={providersGridStyle}>
             {featuredProviders.map((provider, index) => (
-              <div 
-                key={provider.id} 
+              <div
+                key={provider.id}
                 style={{
                   ...providerCardStyle,
                   animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                 }}
                 className="animate-on-scroll"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)'
+                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(0, 0, 0, 0.12)'
+                  e.currentTarget.style.borderColor = '#0A66FF'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                  e.currentTarget.style.borderColor = '#E8EAED'
+                }}
               >
                 <div style={providerHeaderStyle}>
                   <div style={providerImageStyle}>
@@ -522,16 +634,27 @@ export default function Home() {
 
 // Hero Section
 const heroStyle = {
-  background: '#FFFFFF',
-  padding: '80px 0 60px',
-  borderBottom: '1px solid #E8EAED'
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  padding: '0 24px',
+  minHeight: '100vh',
+  height: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  borderBottom: '1px solid #E8EAED',
+  position: 'relative',
+  overflow: 'hidden'
 }
 
 const heroContentStyle = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '60px',
-  alignItems: 'center'
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '40px',
+  alignItems: 'flex-start',
+  justifyContent: 'center',
+  padding: '60px 0',
+  width: '100%',
+  maxWidth: '700px'
 }
 
 const heroTextStyle = {
@@ -647,22 +770,18 @@ const trustItemStyle = {
   fontWeight: '500'
 }
 
-const heroStatsGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '20px',
-  animation: 'fadeInUp 0.6s ease-out 0.2s both'
-}
-
 const statCardStyle = {
-  background: '#F7F9FC',
-  padding: '28px',
-  borderRadius: '14px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '32px 24px',
+  borderRadius: '16px',
   border: '1px solid #E8EAED',
   textAlign: 'center',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden',
   opacity: 0,
   transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards'
+  cursor: 'pointer'
 }
 
 const statIconStyle = {
@@ -687,8 +806,9 @@ const statLabelStyle = {
 
 // How It Works Section
 const howItWorksStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #F7F9FC 0%, #FFFFFF 100%)',
+  padding: '120px 0',
+  position: 'relative'
 }
 
 const sectionHeaderStyle = {
@@ -718,15 +838,17 @@ const stepsGridStyle = {
 }
 
 const stepCardStyle = {
-  background: 'white',
-  padding: '40px 28px',
-  borderRadius: '16px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '48px 32px',
+  borderRadius: '18px',
   border: '1px solid #E8EAED',
   textAlign: 'center',
   opacity: 0,
   transform: 'translateY(20px)',
   animation: 'fadeInUp 0.6s ease-out forwards',
-  position: 'relative'
+  position: 'relative',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  cursor: 'pointer'
 }
 
 const stepNumberStyle = {
@@ -766,8 +888,9 @@ const stepDescStyle = {
 
 // Services Section
 const servicesStyle = {
-  background: 'white',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '120px 0',
+  position: 'relative'
 }
 
 const servicesGridStyle = {
@@ -779,18 +902,19 @@ const servicesGridStyle = {
 const serviceCardStyle = {
   background: 'white',
   border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '28px 20px',
+  borderRadius: '16px',
+  padding: '32px 24px',
   textAlign: 'center',
   cursor: 'pointer',
-  transition: 'all 0.3s ease',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   position: 'relative',
   overflow: 'hidden',
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
   opacity: 0,
-  transform: 'translateY(20px)'
+  transform: 'translateY(20px)',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)'
 }
 
 const serviceIconStyle = {
@@ -847,8 +971,9 @@ const bookNowStyle = {
 
 // Providers Section
 const providersStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #F7F9FC 0%, #FFFFFF 100%)',
+  padding: '120px 0',
+  position: 'relative'
 }
 
 const providersGridStyle = {
@@ -858,15 +983,18 @@ const providersGridStyle = {
 }
 
 const providerCardStyle = {
-  background: 'white',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
   border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '24px',
+  borderRadius: '16px',
+  padding: '28px',
   opacity: 0,
   transform: 'translateY(20px)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden'
 }
 
 const providerHeaderStyle = {
@@ -968,8 +1096,9 @@ const metricItemStyle = {
 
 // Testimonials Section
 const testimonialsStyle = {
-  background: 'white',
-  padding: '80px 0'
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  padding: '120px 0',
+  position: 'relative'
 }
 
 const testimonialCarouselStyle = {
@@ -1049,8 +1178,10 @@ const dotStyle = {
 
 // CTA Section
 const ctaStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  padding: '120px 0',
+  position: 'relative',
+  color: 'white'
 }
 
 const ctaContentStyle = {
@@ -1061,15 +1192,15 @@ const ctaContentStyle = {
 }
 
 const ctaTitleStyle = {
-  fontSize: '40px',
+  fontSize: '48px',
   fontWeight: '700',
-  color: '#111111',
+  color: 'white',
   marginBottom: '16px'
 }
 
 const ctaSubtitleStyle = {
-  fontSize: '16px',
-  color: '#555555',
+  fontSize: '18px',
+  color: 'rgba(255, 255, 255, 0.9)',
   marginBottom: '40px',
   maxWidth: '600px',
   margin: '0 auto 40px'
@@ -1102,17 +1233,107 @@ const ctaStatStyle = {
 
 const ctaStatValueStyle = {
   display: 'block',
-  fontSize: '24px',
+  fontSize: '28px',
   fontWeight: '700',
-  color: '#0A66FF',
+  color: 'white',
   marginBottom: '8px'
 }
 
 const ctaStatLabelStyle = {
-  fontSize: '12px',
-  color: '#888888',
+  fontSize: '13px',
+  color: 'rgba(255, 255, 255, 0.8)',
   textTransform: 'uppercase',
   letterSpacing: '0.5px'
+}
+
+// Trending Section
+const trendingStyle = {
+  background: 'linear-gradient(135deg, #FFF5E1 0%, #FFFFFF 100%)',
+  padding: '120px 0',
+  position: 'relative'
+}
+
+const trendingGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: '24px'
+}
+
+const trendingCardStyle = {
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '16px',
+  padding: '28px',
+  textAlign: 'center',
+  cursor: 'pointer',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden',
+  opacity: 0,
+  transform: 'translateY(20px)'
+}
+
+const trendingIconStyle = {
+  fontSize: '48px',
+  marginBottom: '16px',
+  display: 'block'
+}
+
+const trendingNameStyle = {
+  fontSize: '18px',
+  fontWeight: '700',
+  color: '#111111',
+  marginBottom: '12px'
+}
+
+const discountBadgeStyle = {
+  display: 'inline-block',
+  background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+  color: 'white',
+  padding: '8px 16px',
+  borderRadius: '20px',
+  fontSize: '14px',
+  fontWeight: '700',
+  marginBottom: '16px'
+}
+
+const bookTrendingBtnStyle = {
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  color: 'white',
+  border: 'none',
+  padding: '12px 24px',
+  borderRadius: '10px',
+  fontWeight: '600',
+  cursor: 'pointer',
+  fontSize: '14px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  width: '100%',
+  marginTop: '16px'
+}
+
+const popularBadgeStyle = {
+  position: 'absolute',
+  top: '12px',
+  right: '12px',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  color: 'white',
+  padding: '6px 12px',
+  borderRadius: '20px',
+  fontSize: '11px',
+  fontWeight: '700'
+}
+
+// Statistics Section Styles
+const statsStyle = {
+  background: 'linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '120px 0',
+  position: 'relative'
+}
+
+const statsGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+  gap: '28px'
 }
 
 // Responsive styles for mobile
