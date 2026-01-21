@@ -109,7 +109,7 @@ export default function CartPage() {
                     </div>
 
                     <button
-                      style={removeBtn Style}
+                      style={removeBtnStyle}
                       onClick={() => handleRemove(item.cartId)}
                       title="Remove from cart"
                     >
