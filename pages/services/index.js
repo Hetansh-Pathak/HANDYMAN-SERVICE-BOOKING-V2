@@ -4,9 +4,11 @@ import Layout from '../../components/Layout'
 import PincodeSearch from '../../components/PincodeSearch'
 import { useRouter } from 'next/router'
 import { getServiceAvailability } from '../../lib/pincodeService'
+import { useUser } from '../../context/UserContext'
 
 export default function ServicesPage() {
   const router = useRouter()
+  const { user } = useUser()
   const { search, pincode, city } = router.query
   const [filters, setFilters] = useState({
     searchTerm: search || '',
