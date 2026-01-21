@@ -392,6 +392,10 @@ const pageStyle = {
   padding: '60px 0'
 }
 
+const pincodeSearchWrapperStyle = {
+  marginBottom: '24px'
+}
+
 const headerStyle = {
   textAlign: 'center',
   marginBottom: '40px',
