@@ -176,6 +176,16 @@ export default function ServicesPage() {
     }
   }
 
+  const handleBookNow = (provider) => {
+    if (!user) {
+      // Redirect to login with the booking URL as redirect
+      router.push(`/auth/login?redirect=${encodeURIComponent(`/book/${provider.id}`)}`)
+      return
+    }
+    // Redirect to booking page
+    router.push(`/book/${provider.id}`)
+  }
+
   return (
     <Layout title="Find Service Providers - HandyFix">
       <div style={pageStyle}>
