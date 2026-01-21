@@ -10,6 +10,7 @@ export default function CustomerDashboard() {
   const [activeTab, setActiveTab] = useState('overview')
   const [bookings, setBookings] = useState([])
   const [savedProviders, setSavedProviders] = useState([])
+  const [bookingStatusFilter, setBookingStatusFilter] = useState('all')
 
   useEffect(() => {
     if (!loading && !user) {
