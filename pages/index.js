@@ -168,10 +168,17 @@ export default function Home() {
   ]
 
   const stats = [
-    { label: 'Happy Customers', value: '50,000+', icon: '😊' },
-    { label: 'Verified Providers', value: '2,500+', icon: '✅' },
-    { label: 'Services Completed', value: '1,00,000+', icon: '🎯' },
-    { label: 'Cities Covered', value: '25+', icon: '🏙️' }
+    { label: 'Happy Customers', value: '50,000+', icon: '😊', color: '#FF6B6B' },
+    { label: 'Verified Providers', value: '2,500+', icon: '✅', color: '#00B894' },
+    { label: 'Services Completed', value: '1,00,000+', icon: '🎯', color: '#0A66FF' },
+    { label: 'Cities Covered', value: '25+', icon: '🏙️', color: '#FFD700' }
+  ]
+
+  const trendingServices = [
+    { name: 'Same-day Plumbing', discount: '20% OFF', icon: '🚰', popular: true },
+    { name: 'Quick AC Service', discount: '15% OFF', icon: '❄️', popular: true },
+    { name: 'Express Cleaning', discount: '25% OFF', icon: '✨', popular: false },
+    { name: 'Electrical Repair', discount: '10% OFF', icon: '⚡', popular: true }
   ]
 
   const handleSearch = () => {
