@@ -412,13 +412,14 @@ a:hover {
   border-radius: 16px;
   padding: 24px;
   box-shadow: var(--shadow-soft);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 }
 
 .card:hover {
   box-shadow: var(--shadow-medium);
   transform: translateY(-4px);
+  border-color: var(--border-medium);
 }
 
 .card-header {
