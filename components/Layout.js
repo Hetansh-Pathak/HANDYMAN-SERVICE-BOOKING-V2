@@ -269,47 +269,65 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 
 /* ==================== NAVBAR STYLES ==================== */
 const headerStyle = {
-  background: '#FFFFFF',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)',
   borderBottom: '1px solid #E8EAED',
   position: 'sticky',
   top: 0,
   zIndex: 1000,
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+  backdropFilter: 'blur(10px)',
+  backgroundColor: 'rgba(255, 255, 255, 0.95)'
 }
 
 const navContainerStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '16px 0',
-  minHeight: '64px'
+  padding: '12px 0',
+  minHeight: '56px',
+  gap: '20px'
 }
 
 const logoStyle = {
-  fontSize: '24px',
-  fontWeight: '700',
+  fontSize: '22px',
+  fontWeight: '800',
   color: '#0A66FF',
   textDecoration: 'none',
-  padding: '8px 0',
-  transition: 'color 0.3s ease',
-  whiteSpace: 'nowrap'
+  padding: '8px 16px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  whiteSpace: 'nowrap',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  color: 'white',
+  borderRadius: '10px',
+  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)'
+}
+
+const logoStyle_hover = {
+  transform: 'scale(1.05)',
+  boxShadow: '0 6px 20px rgba(10, 102, 255, 0.4)'
 }
 
 const desktopMenuStyle = {
   display: 'flex',
-  gap: '0',
-  alignItems: 'center'
+  gap: '8px',
+  alignItems: 'center',
+  flex: 1,
+  justifyContent: 'center'
 }
 
 const navLinkStyle = {
   color: '#555555',
   textDecoration: 'none',
-  fontWeight: '500',
-  fontSize: '15px',
-  padding: '12px 20px',
-  borderRadius: '8px',
-  transition: 'all 0.3s ease',
-  position: 'relative'
+  fontWeight: '600',
+  fontSize: '14px',
+  padding: '8px 14px',
+  borderRadius: '6px',
+  transition: 'all 0.2s ease',
+  position: 'relative',
+  whiteSpace: 'nowrap'
 }
 
 const rightSectionStyle = {
