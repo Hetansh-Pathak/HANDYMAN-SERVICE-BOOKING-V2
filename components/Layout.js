@@ -394,10 +394,13 @@ const headerStyle = {
 const navContainerStyle = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-start',
   padding: '12px 0',
   minHeight: '70px',
-  gap: '20px'
+  gap: '16px',
+  width: '100%',
+  flexWrap: 'nowrap',
+  overflow: 'visible'
 }
 
 const logoStyle = {
@@ -416,34 +419,37 @@ const logoStyle = {
   boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)',
   position: 'relative',
   overflow: 'hidden',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  flexShrink: 0
 }
 
 const desktopMenuStyle = {
   display: 'flex',
-  gap: '12px',
+  gap: '8px',
   alignItems: 'center',
-  flex: 1,
-  justifyContent: 'center',
-  padding: '0 20px'
+  justifyContent: 'flex-start',
+  padding: '0',
+  flexWrap: 'nowrap',
+  flexShrink: 0
 }
 
 const navLinkStyle = {
   color: '#555555',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '14px',
-  padding: '10px 16px',
+  fontSize: '13px',
+  padding: '9px 14px',
   borderRadius: '10px',
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   position: 'relative',
   whiteSpace: 'nowrap',
   display: 'flex',
   alignItems: 'center',
-  gap: '6px',
+  gap: '5px',
   background: 'transparent',
   border: '1px solid transparent',
-  overflow: 'hidden'
+  overflow: 'hidden',
+  flexShrink: 0
 }
 
 const rightSectionStyle = {
