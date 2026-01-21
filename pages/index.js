@@ -857,8 +857,9 @@ const bookNowStyle = {
 
 // Providers Section
 const providersStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #F7F9FC 0%, #FFFFFF 100%)',
+  padding: '120px 0',
+  position: 'relative'
 }
 
 const providersGridStyle = {
