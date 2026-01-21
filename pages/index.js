@@ -770,13 +770,6 @@ const trustItemStyle = {
   fontWeight: '500'
 }
 
-const heroStatsGridStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '20px',
-  animation: 'fadeInUp 0.6s ease-out 0.2s both'
-}
-
 const statCardStyle = {
   background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
   padding: '32px 24px',
