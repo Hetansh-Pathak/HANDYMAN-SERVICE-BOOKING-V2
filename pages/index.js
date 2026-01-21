@@ -979,8 +979,9 @@ const metricItemStyle = {
 
 // Testimonials Section
 const testimonialsStyle = {
-  background: 'white',
-  padding: '80px 0'
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  padding: '120px 0',
+  position: 'relative'
 }
 
 const testimonialCarouselStyle = {
