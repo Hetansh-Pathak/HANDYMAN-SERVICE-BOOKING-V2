@@ -7,7 +7,14 @@ import { bookingAPI, emailService, generateBookingId, formatBookingNotification 
 export default function BookingPage() {
   const router = useRouter()
   const { providerId } = router.query
-  const { user, addNotification, isCustomer } = useUser()
+  const { user, loading, addNotification, isCustomer } = useUser()
+
+  // Redirect to login if user is not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push(`/auth/login?redirect=${encodeURIComponent(router.asPath)}`)
+    }
+  }, [user, loading, router])
   
   const [provider, setProvider] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -589,7 +596,9 @@ const successCardStyle = {
 
 const successIconStyle = {
   fontSize: '64px',
-  marginBottom: '24px'
+  marginBottom: '24px',
+  animation: 'checkmark 0.6s ease',
+  display: 'inline-block'
 }
 
 const successTitleStyle = {

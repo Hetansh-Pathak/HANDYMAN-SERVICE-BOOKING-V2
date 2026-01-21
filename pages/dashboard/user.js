@@ -10,6 +10,7 @@ export default function CustomerDashboard() {
   const [activeTab, setActiveTab] = useState('overview')
   const [bookings, setBookings] = useState([])
   const [savedProviders, setSavedProviders] = useState([])
+  const [bookingStatusFilter, setBookingStatusFilter] = useState('all')
 
   useEffect(() => {
     if (!loading && !user) {
@@ -28,7 +29,8 @@ export default function CustomerDashboard() {
       time: '10:00 AM',
       amount: '₹500',
       rating: 5,
-      review: 'Excellent service!'
+      review: 'Excellent service!',
+      address: 'Sector 7, Gurugram'
     },
     {
       id: 'HF123457',
@@ -39,7 +41,32 @@ export default function CustomerDashboard() {
       time: '02:00 PM',
       amount: '₹600',
       rating: null,
-      review: null
+      review: null,
+      address: 'DLF Phase 3, Gurugram'
+    },
+    {
+      id: 'HF123458',
+      service: 'Carpentry',
+      provider: 'Vikram Patel',
+      status: 'in-progress',
+      date: '2024-01-18',
+      time: '11:00 AM',
+      amount: '₹800',
+      rating: null,
+      review: null,
+      address: 'Sector 46, Gurugram'
+    },
+    {
+      id: 'HF123459',
+      service: 'Cleaning',
+      provider: 'Priya Singh',
+      status: 'cancelled',
+      date: '2024-01-10',
+      time: '03:00 PM',
+      amount: '₹300',
+      rating: null,
+      review: null,
+      address: 'Sector 12, Gurugram'
     }
   ]
 
@@ -71,6 +98,32 @@ export default function CustomerDashboard() {
     await logout()
     router.push('/auth/login')
   }
+
+  // Filter bookings based on status
+  const getFilteredBookings = () => {
+    if (bookingStatusFilter === 'all') {
+      return bookings
+    }
+    return bookings.filter(booking => booking.status === bookingStatusFilter)
+  }
+
+  // Get status icon and color
+  const getStatusDetails = (status) => {
+    switch (status) {
+      case 'completed':
+        return { icon: '✅', color: '#00B894', label: 'Completed' }
+      case 'pending':
+        return { icon: '⏳', color: '#FFA500', label: 'Pending' }
+      case 'in-progress':
+        return { icon: '🔄', color: '#0A66FF', label: 'In Progress' }
+      case 'cancelled':
+        return { icon: '❌', color: '#DC3545', label: 'Cancelled' }
+      default:
+        return { icon: '❓', color: '#888888', label: 'Unknown' }
+    }
+  }
+
+  const filteredBookings = getFilteredBookings()
 
   if (loading || !user) {
     return (
@@ -195,55 +248,89 @@ export default function CustomerDashboard() {
                 </Link>
               </div>
 
-              <div style={{ marginTop: '40px' }}>
-                {bookings.map(booking => (
-                  <div key={booking.id} style={bookingDetailCardStyle}>
-                    <div style={bookingDetailHeaderStyle}>
-                      <div>
-                        <h3 style={bookingServiceStyle}>{booking.service}</h3>
-                        <p style={bookingBookingIdStyle}>Booking ID: {booking.id}</p>
-                      </div>
-                      <span style={{
-                        ...statusBadgeStyle,
-                        ...(booking.status === 'completed' ? completedStatusStyle : pendingStatusStyle)
-                      }}>
-                        {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                      </span>
-                    </div>
-
-                    <div style={bookingInfoGridStyle}>
-                      <div>
-                        <p style={bookingInfoLabelStyle}>Provider</p>
-                        <p style={bookingInfoValueStyle}>{booking.provider}</p>
-                      </div>
-                      <div>
-                        <p style={bookingInfoLabelStyle}>Date & Time</p>
-                        <p style={bookingInfoValueStyle}>{booking.date} at {booking.time}</p>
-                      </div>
-                      <div>
-                        <p style={bookingInfoLabelStyle}>Amount</p>
-                        <p style={bookingInfoValueStyle}>{booking.amount}</p>
-                      </div>
-                    </div>
-
-                    {booking.status === 'completed' && (
-                      <div style={reviewSectionStyle}>
-                        <p style={reviewLabelStyle}>Rating: {booking.rating}/5 ⭐</p>
-                        <p style={reviewTextStyle}>"{booking.review}"</p>
-                      </div>
-                    )}
-
-                    <div style={actionButtonsStyle}>
-                      <button style={primaryActionStyle}>View Details</button>
-                      {booking.status === 'pending' && (
-                        <>
-                          <button style={secondaryActionStyle}>Reschedule</button>
-                          <button style={cancelActionStyle}>Cancel</button>
-                        </>
-                      )}
-                    </div>
-                  </div>
+              {/* Filters */}
+              <div style={filterContainerStyle}>
+                {['all', 'pending', 'in-progress', 'completed', 'cancelled'].map(status => (
+                  <button
+                    key={status}
+                    style={{
+                      ...filterBtnStyle,
+                      ...(bookingStatusFilter === status ? activeFilterBtnStyle : {})
+                    }}
+                    onClick={() => setBookingStatusFilter(status)}
+                  >
+                    {status === 'all' ? '📋 All Bookings' : `${getStatusDetails(status).icon} ${getStatusDetails(status).label}`}
+                  </button>
                 ))}
+              </div>
+
+              <div style={{ marginTop: '40px' }}>
+                {filteredBookings.length === 0 ? (
+                  <div style={emptyStateStyle}>
+                    <div style={emptyIconStyle}>📭</div>
+                    <h3 style={emptyTitleStyle}>No {bookingStatusFilter === 'all' ? '' : bookingStatusFilter} bookings</h3>
+                    <p style={emptyMessageStyle}>
+                      {bookingStatusFilter === 'all'
+                        ? "You don't have any bookings yet. Start by booking a service!"
+                        : `You don't have any ${bookingStatusFilter} bookings.`}
+                    </p>
+                    <Link href="/services" className="btn btn-primary" style={{ marginTop: '20px', display: 'inline-block' }}>
+                      Browse Services
+                    </Link>
+                  </div>
+                ) : (
+                  filteredBookings.map(booking => {
+                    const statusDetails = getStatusDetails(booking.status)
+                    return (
+                      <div key={booking.id} style={bookingDetailCardStyle}>
+                        <div style={bookingDetailHeaderStyle}>
+                          <div>
+                            <h3 style={bookingServiceStyle}>{booking.service}</h3>
+                            <p style={bookingBookingIdStyle}>Booking ID: {booking.id}</p>
+                          </div>
+                          <span style={{
+                            ...statusBadgeStyle,
+                            background: statusDetails.color
+                          }}>
+                            {statusDetails.icon} {statusDetails.label}
+                          </span>
+                        </div>
+
+                        <div style={bookingInfoGridStyle}>
+                          <div>
+                            <p style={bookingInfoLabelStyle}>Provider</p>
+                            <p style={bookingInfoValueStyle}>{booking.provider}</p>
+                          </div>
+                          <div>
+                            <p style={bookingInfoLabelStyle}>Date & Time</p>
+                            <p style={bookingInfoValueStyle}>{booking.date} at {booking.time}</p>
+                          </div>
+                          <div>
+                            <p style={bookingInfoLabelStyle}>Amount</p>
+                            <p style={bookingInfoValueStyle}>{booking.amount}</p>
+                          </div>
+                        </div>
+
+                        {booking.status === 'completed' && (
+                          <div style={reviewSectionStyle}>
+                            <p style={reviewLabelStyle}>Rating: {booking.rating}/5 ⭐</p>
+                            <p style={reviewTextStyle}>"{booking.review}"</p>
+                          </div>
+                        )}
+
+                        <div style={actionButtonsStyle}>
+                          <button style={primaryActionStyle}>View Details</button>
+                          {booking.status === 'pending' && (
+                            <>
+                              <button style={secondaryActionStyle}>Reschedule</button>
+                              <button style={cancelActionStyle}>Cancel</button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })
+                )}
               </div>
             </div>
           )}
@@ -755,4 +842,58 @@ const checkboxLabelStyle = {
   marginBottom: '12px',
   cursor: 'pointer',
   color: '#495057'
+}
+
+// Filter styles
+const filterContainerStyle = {
+  display: 'flex',
+  gap: '12px',
+  flexWrap: 'wrap',
+  marginTop: '20px',
+  marginBottom: '20px'
+}
+
+const filterBtnStyle = {
+  padding: '10px 16px',
+  background: 'white',
+  border: '1px solid #E8EAED',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontSize: '14px',
+  fontWeight: '500',
+  color: '#555555',
+  transition: 'all 0.2s ease'
+}
+
+const activeFilterBtnStyle = {
+  background: '#0A66FF',
+  color: 'white',
+  border: '1px solid #0A66FF'
+}
+
+// Empty state styles
+const emptyStateStyle = {
+  textAlign: 'center',
+  padding: '60px 20px',
+  background: 'white',
+  borderRadius: '12px',
+  border: '1px solid #E8EAED'
+}
+
+const emptyIconStyle = {
+  fontSize: '64px',
+  marginBottom: '16px'
+}
+
+const emptyTitleStyle = {
+  fontSize: '22px',
+  fontWeight: '600',
+  color: '#111111',
+  margin: '0 0 8px'
+}
+
+const emptyMessageStyle = {
+  fontSize: '14px',
+  color: '#555555',
+  margin: '0'
 }

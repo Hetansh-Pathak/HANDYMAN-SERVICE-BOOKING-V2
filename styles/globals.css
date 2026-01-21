@@ -119,6 +119,8 @@ a:hover {
   margin: 0 auto;
   padding: 0 24px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 1024px) {
@@ -159,6 +161,17 @@ a:hover {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
   }
 }
 
@@ -263,6 +276,52 @@ a:hover {
   }
 }
 
+@keyframes scaleUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0) rotate(-45deg);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* Buttons */
 .btn {
   padding: 12px 24px;
@@ -294,6 +353,14 @@ a:hover {
 
 .btn:hover::before:not(:disabled) {
   opacity: 1;
+}
+
+.btn:hover:not(:disabled) {
+  animation: scaleUp 0.3s ease;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .btn:disabled {
@@ -421,12 +488,16 @@ a:hover {
   box-shadow: var(--shadow-soft);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .card:hover {
   box-shadow: var(--shadow-medium);
   transform: translateY(-4px);
   border-color: var(--border-medium);
+  animation: slideDown 0.3s ease;
 }
 
 .card-header {
@@ -503,6 +574,13 @@ a:hover {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(10, 102, 255, 0.1);
   background: #FAFBFC;
+  animation: slideDown 0.2s ease;
+}
+
+.form-input.success,
+.form-textarea.success {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
 }
 
 .form-textarea {
@@ -524,18 +602,22 @@ a:hover {
 .grid {
   display: grid;
   gap: 24px;
+  align-items: stretch;
 }
 
 .grid-2 {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
 }
 
 .grid-3 {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
 }
 
 .grid-4 {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
 }
 
 @media (max-width: 768px) {
@@ -558,6 +640,7 @@ a:hover {
 /* Section Styling */
 section {
   padding: 80px 0;
+  position: relative;
 }
 
 section:nth-child(even) {
@@ -566,6 +649,16 @@ section:nth-child(even) {
 
 section:nth-child(odd) {
   background: var(--bg-white);
+}
+
+/* Improved Section Spacing */
+section + section {
+  margin-top: 0;
+}
+
+/* Hero Section Improvements */
+section:first-of-type {
+  padding: 80px 0 60px;
 }
 
 @media (max-width: 768px) {
@@ -890,6 +983,26 @@ section:nth-child(odd) {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Success and Animation Utilities */
+.success-animation {
+  animation: successPulse 0.6s ease;
+}
+
+.loading-state {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.button-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Reduced Motion */

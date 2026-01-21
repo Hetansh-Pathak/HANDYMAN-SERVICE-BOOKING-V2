@@ -1,11 +1,18 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useCart } from '../context/CartContext'
+import { useUser } from '../context/UserContext'
+import { useRouter } from 'next/router'
 
 export default function Layout({ children, title = 'HandyFix - Find Trusted Service Providers' }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const { getCartCount } = useCart()
+  const { user } = useUser()
+  const router = useRouter()
+  const cartCount = getCartCount()
 
   // Mock notifications data
   useEffect(() => {
@@ -141,6 +148,25 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
               )}
             </div>
 
+            {/* Cart Icon */}
+            <button
+              style={cartBtnStyle}
+              onClick={() => {
+                if (!user) {
+                  router.push(`/auth/login?redirect=${encodeURIComponent('/cart')}`)
+                } else {
+                  router.push('/cart')
+                }
+              }}
+              title="Shopping Cart"
+              aria-label="Shopping Cart"
+            >
+              🛒
+              {cartCount > 0 && (
+                <span style={cartBadgeStyle}>{cartCount > 9 ? '9+' : cartCount}</span>
+              )}
+            </button>
+
             {/* Emergency Button */}
             <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services">
               🚨
@@ -243,53 +269,72 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 
 /* ==================== NAVBAR STYLES ==================== */
 const headerStyle = {
-  background: '#FFFFFF',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)',
   borderBottom: '1px solid #E8EAED',
   position: 'sticky',
   top: 0,
   zIndex: 1000,
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
+  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
+  backdropFilter: 'blur(10px)',
+  backgroundColor: 'rgba(255, 255, 255, 0.95)'
 }
 
 const navContainerStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  padding: '16px 0',
-  minHeight: '64px'
+  padding: '12px 0',
+  minHeight: '56px',
+  gap: '20px'
 }
 
 const logoStyle = {
-  fontSize: '24px',
-  fontWeight: '700',
+  fontSize: '22px',
+  fontWeight: '800',
   color: '#0A66FF',
   textDecoration: 'none',
-  padding: '8px 0',
-  transition: 'color 0.3s ease',
-  whiteSpace: 'nowrap'
+  padding: '8px 16px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  whiteSpace: 'nowrap',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  color: 'white',
+  borderRadius: '10px',
+  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)'
+}
+
+const logoStyle_hover = {
+  transform: 'scale(1.05)',
+  boxShadow: '0 6px 20px rgba(10, 102, 255, 0.4)'
 }
 
 const desktopMenuStyle = {
   display: 'flex',
-  gap: '0',
-  alignItems: 'center'
+  gap: '8px',
+  alignItems: 'center',
+  flex: 1,
+  justifyContent: 'center'
 }
 
 const navLinkStyle = {
   color: '#555555',
   textDecoration: 'none',
-  fontWeight: '500',
-  fontSize: '15px',
-  padding: '12px 20px',
-  borderRadius: '8px',
-  transition: 'all 0.3s ease',
-  position: 'relative'
+  fontWeight: '600',
+  fontSize: '14px',
+  padding: '8px 14px',
+  borderRadius: '6px',
+  transition: 'all 0.2s ease',
+  position: 'relative',
+  whiteSpace: 'nowrap'
 }
 
 const rightSectionStyle = {
   display: 'flex',
   alignItems: 'center',
-  gap: '12px'
+  gap: '8px',
+  marginLeft: 'auto'
 }
 
 const notificationContainerStyle = {
@@ -299,18 +344,19 @@ const notificationContainerStyle = {
 const notificationBtnStyle = {
   background: 'transparent',
   border: 'none',
-  fontSize: '20px',
+  fontSize: '18px',
   cursor: 'pointer',
-  padding: '8px',
+  padding: '6px 8px',
   position: 'relative',
-  transition: 'transform 0.2s ease'
+  transition: 'all 0.2s ease',
+  borderRadius: '6px'
 }
 
 const notificationBadgeStyle = {
   position: 'absolute',
-  top: '0px',
-  right: '0px',
-  background: '#DC3545',
+  top: '-6px',
+  right: '-6px',
+  background: 'linear-gradient(135deg, #DC3545 0%, #C82333 100%)',
   color: 'white',
   borderRadius: '50%',
   width: '20px',
@@ -319,7 +365,9 @@ const notificationBadgeStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   fontSize: '10px',
-  fontWeight: '700'
+  fontWeight: '700',
+  border: '2px solid white',
+  boxShadow: '0 2px 6px rgba(220, 53, 69, 0.3)'
 }
 
 const notificationDropdownStyle = {
@@ -456,6 +504,39 @@ const viewAllLinkStyle = {
   transition: 'color 0.2s ease'
 }
 
+const cartBtnStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '40px',
+  height: '40px',
+  background: 'transparent',
+  border: 'none',
+  borderRadius: '50%',
+  fontSize: '18px',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+  position: 'relative',
+  padding: '0'
+}
+
+const cartBadgeStyle = {
+  position: 'absolute',
+  top: '-4px',
+  right: '-4px',
+  background: '#DC3545',
+  color: 'white',
+  borderRadius: '50%',
+  width: '22px',
+  height: '22px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '11px',
+  fontWeight: '700',
+  minWidth: '22px'
+}
+
 const emergencyBtnStyle = {
   display: 'flex',
   alignItems: 'center',
@@ -474,9 +555,9 @@ const emergencyBtnStyle = {
 
 const authLinksStyle = {
   display: 'flex',
-  gap: '12px',
+  gap: '8px',
   alignItems: 'center',
-  paddingLeft: '12px',
+  paddingLeft: '8px',
   borderLeft: '1px solid #E8EAED'
 }
 
@@ -484,34 +565,36 @@ const loginBtnStyle = {
   color: '#0A66FF',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '14px',
-  padding: '8px 16px',
-  borderRadius: '8px',
+  fontSize: '13px',
+  padding: '8px 14px',
+  borderRadius: '6px',
   transition: 'all 0.2s ease',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  border: '1px solid transparent'
 }
 
 const signUpBtnStyle = {
-  background: '#0A66FF',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
   color: 'white',
   textDecoration: 'none',
   fontWeight: '600',
-  fontSize: '14px',
-  padding: '10px 20px',
-  borderRadius: '8px',
+  fontSize: '13px',
+  padding: '8px 16px',
+  borderRadius: '6px',
   transition: 'all 0.2s ease',
   display: 'inline-block',
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.2)'
 }
 
 const mobileMenuBtnStyle = {
   display: 'none',
   background: 'none',
   border: 'none',
-  fontSize: '24px',
+  fontSize: '22px',
   cursor: 'pointer',
   color: '#555555',
-  padding: '8px',
+  padding: '6px 8px',
   transition: 'color 0.2s ease'
 }
 

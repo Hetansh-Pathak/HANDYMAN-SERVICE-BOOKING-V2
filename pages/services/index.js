@@ -4,9 +4,11 @@ import Layout from '../../components/Layout'
 import PincodeSearch from '../../components/PincodeSearch'
 import { useRouter } from 'next/router'
 import { getServiceAvailability } from '../../lib/pincodeService'
+import { useUser } from '../../context/UserContext'
 
 export default function ServicesPage() {
   const router = useRouter()
+  const { user } = useUser()
   const { search, pincode, city } = router.query
   const [filters, setFilters] = useState({
     searchTerm: search || '',
@@ -172,6 +174,16 @@ export default function ServicesPage() {
         city: data.location.city
       }))
     }
+  }
+
+  const handleBookNow = (provider) => {
+    if (!user) {
+      // Redirect to login with the booking URL as redirect
+      router.push(`/auth/login?redirect=${encodeURIComponent(`/book/${provider.id}`)}`)
+      return
+    }
+    // Redirect to booking page
+    router.push(`/book/${provider.id}`)
   }
 
   return (
@@ -351,7 +363,12 @@ export default function ServicesPage() {
                           View Profile
                         </Link>
                         {provider.available ? (
-                          <button style={bookNowBtn}>Book Now</button>
+                          <button
+                            style={bookNowBtn}
+                            onClick={() => handleBookNow(provider)}
+                          >
+                            Book Now
+                          </button>
                         ) : (
                           <button style={unavailableBtn} disabled>Unavailable</button>
                         )}

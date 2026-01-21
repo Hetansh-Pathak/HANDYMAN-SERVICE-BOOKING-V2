@@ -2,21 +2,33 @@ import { useState, useEffect } from 'react'
 
 export default function SplashScreen({ onComplete = () => {} }) {
   const [isVisible, setIsVisible] = useState(true)
+  const [isFadingOut, setIsFadingOut] = useState(false)
 
   useEffect(() => {
-    // Auto-hide splash screen after 2 seconds
-    const timer = setTimeout(() => {
+    // Start fade-out animation after 1.5 seconds
+    const fadeOutTimer = setTimeout(() => {
+      setIsFadingOut(true)
+    }, 1500)
+
+    // Hide splash screen after fade-out animation completes
+    const hideTimer = setTimeout(() => {
       setIsVisible(false)
       onComplete()
     }, 2000)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(fadeOutTimer)
+      clearTimeout(hideTimer)
+    }
   }, [onComplete])
 
   if (!isVisible) return null
 
   return (
-    <div style={splashContainerStyle}>
+    <div style={{
+      ...splashContainerStyle,
+      animation: isFadingOut ? 'fadeOutDown 0.5s ease-out forwards' : 'fadeInUp 0.3s ease forwards'
+    }}>
       <div style={splashContentStyle}>
         {/* Logo */}
         <div style={logoContainerStyle}>

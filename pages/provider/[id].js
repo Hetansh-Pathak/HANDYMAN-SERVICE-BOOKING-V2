@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import Link from 'next/link'
+import { useUser } from '../../context/UserContext'
 
 export default function ProviderProfile() {
   const router = useRouter()
   const { id } = router.query
-  
+  const { user } = useUser()
+
   const [selectedDate, setSelectedDate] = useState('')
   const [selectedTime, setSelectedTime] = useState('')
   const [showBookingForm, setShowBookingForm] = useState(false)
@@ -77,6 +79,15 @@ export default function ProviderProfile() {
     '9:00 AM', '10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'
   ]
 
+  const handleBookClick = () => {
+    if (!user) {
+      // Redirect to login with the provider booking URL as redirect
+      router.push(`/auth/login?redirect=${encodeURIComponent(`/book/${id}`)}`)
+      return
+    }
+    router.push(`/book/${id}`)
+  }
+
   const handleBookingSubmit = (e) => {
     e.preventDefault()
     // Handle booking logic here
@@ -136,10 +147,10 @@ export default function ProviderProfile() {
                   <span style={priceFromStyle}>Starting from</span>
                   <span style={priceAmountStyle}>₹{provider.basePrice}</span>
                 </div>
-                <button 
-                  className="btn btn-primary" 
+                <button
+                  className="btn btn-primary"
                   style={bookNowBtnStyle}
-                  onClick={() => setShowBookingForm(true)}
+                  onClick={handleBookClick}
                 >
                   Book Now
                 </button>

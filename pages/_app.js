@@ -1,8 +1,13 @@
 import '../styles/globals.css'
 import { UserProvider } from '../context/UserContext'
-import { useEffect } from 'react'
+import { CartProvider } from '../context/CartContext'
+import ToastProvider from '../components/Toast'
+import SplashScreen from '../components/SplashScreen'
+import { useEffect, useState } from 'react'
 
 export default function App({ Component, pageProps }) {
+  const [showSplash, setShowSplash] = useState(true)
+
   useEffect(() => {
     // Request notification permission on app load (client-side only)
     try {
@@ -19,7 +24,12 @@ export default function App({ Component, pageProps }) {
 
   return (
     <UserProvider>
-      {getLayout(<Component {...pageProps} />)}
+      <CartProvider>
+        <ToastProvider>
+          {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+          {getLayout(<Component {...pageProps} />)}
+        </ToastProvider>
+      </CartProvider>
     </UserProvider>
   )
 }
