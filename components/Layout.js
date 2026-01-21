@@ -482,6 +482,39 @@ const viewAllLinkStyle = {
   transition: 'color 0.2s ease'
 }
 
+const cartBtnStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '40px',
+  height: '40px',
+  background: 'transparent',
+  border: 'none',
+  borderRadius: '50%',
+  fontSize: '18px',
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+  position: 'relative',
+  padding: '0'
+}
+
+const cartBadgeStyle = {
+  position: 'absolute',
+  top: '-4px',
+  right: '-4px',
+  background: '#DC3545',
+  color: 'white',
+  borderRadius: '50%',
+  width: '22px',
+  height: '22px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '11px',
+  fontWeight: '700',
+  minWidth: '22px'
+}
+
 const emergencyBtnStyle = {
   display: 'flex',
   alignItems: 'center',
