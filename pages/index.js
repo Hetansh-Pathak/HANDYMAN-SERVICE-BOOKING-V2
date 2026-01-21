@@ -605,11 +605,12 @@ export default function Home() {
 // Hero Section
 const heroStyle = {
   background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
-  padding: '0',
+  padding: '0 24px',
   minHeight: '100vh',
+  height: '100vh',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   borderBottom: '1px solid #E8EAED',
   position: 'relative',
   overflow: 'hidden'
