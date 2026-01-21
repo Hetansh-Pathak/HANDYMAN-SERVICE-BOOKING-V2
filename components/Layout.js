@@ -713,40 +713,48 @@ const signUpBtnStyle = {
 const mobileMenuBtnStyle = {
   display: 'none',
   background: 'none',
-  border: 'none',
-  fontSize: '22px',
+  border: '1px solid transparent',
+  fontSize: '24px',
   cursor: 'pointer',
   color: '#555555',
-  padding: '6px 8px',
-  transition: 'color 0.2s ease'
+  padding: '8px 10px',
+  transition: 'all 0.2s ease',
+  borderRadius: '8px'
 }
 
 const mobileMenuStyle = {
   display: 'none',
   flexDirection: 'column',
-  background: 'white',
-  padding: '16px 20px',
-  borderTop: '1px solid #E8EAED'
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '20px 20px',
+  borderTop: '2px solid #E8EAED',
+  animation: 'slideDown 0.3s ease'
 }
 
 const mobileNavLinkStyle = {
-  padding: '12px 0',
+  padding: '14px 0',
   textDecoration: 'none',
   color: '#555555',
   fontWeight: '500',
   fontSize: '15px',
-  transition: 'color 0.2s ease',
-  display: 'block'
+  transition: 'all 0.2s ease',
+  display: 'block',
+  borderRadius: '8px',
+  paddingLeft: '12px'
 }
 
 const mobileSignUpStyle = {
-  padding: '12px 0',
+  padding: '12px 16px',
   textDecoration: 'none',
-  color: '#0A66FF',
+  color: 'white',
   fontWeight: '600',
   fontSize: '15px',
-  transition: 'color 0.2s ease',
-  display: 'block'
+  transition: 'all 0.2s ease',
+  display: 'block',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  borderRadius: '8px',
+  marginTop: '8px',
+  textAlign: 'center'
 }
 
 const mobileDividerStyle = {
