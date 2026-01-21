@@ -569,6 +569,7 @@ a:hover {
 /* Section Styling */
 section {
   padding: 80px 0;
+  position: relative;
 }
 
 section:nth-child(even) {
@@ -577,6 +578,16 @@ section:nth-child(even) {
 
 section:nth-child(odd) {
   background: var(--bg-white);
+}
+
+/* Improved Section Spacing */
+section + section {
+  margin-top: 0;
+}
+
+/* Hero Section Improvements */
+section:first-of-type {
+  padding: 80px 0 60px;
 }
 
 @media (max-width: 768px) {
