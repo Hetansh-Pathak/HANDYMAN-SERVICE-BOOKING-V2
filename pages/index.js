@@ -304,31 +304,41 @@ export default function Home() {
           
           <div style={servicesGridStyle}>
             {services.map((service, index) => (
-              <Link 
-                key={service.id} 
-                href={`/services/${service.name.toLowerCase().replace(' ', '-')}`} 
+              <Link
+                key={service.id}
+                href={`/services/${service.name.toLowerCase().replace(' ', '-')}`}
                 style={{textDecoration: 'none'}}
               >
-                <div 
+                <div
                   style={{
                     ...serviceCardStyle,
                     animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
                   }}
                   className="animate-on-scroll"
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)'
+                    e.currentTarget.style.boxShadow = '0 12px 32px rgba(10, 102, 255, 0.2)'
+                    e.currentTarget.style.borderColor = '#0A66FF'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                    e.currentTarget.style.borderColor = '#E8EAED'
+                  }}
                 >
                   <div style={serviceIconStyle}>{service.icon}</div>
                   <h3 style={serviceNameStyle}>{service.name}</h3>
                   <p style={serviceDescStyle}>{service.desc}</p>
-                  
+
                   <div style={serviceMetricsStyle}>
                     <div style={metricStyle}>👥 {service.providers} providers</div>
                     <div style={metricStyle}>💰 From {service.avgPrice}</div>
                   </div>
-                  
+
                   {service.urgentAvailable && (
                     <div style={urgentBadgeStyle}>⚡ Emergency Available</div>
                   )}
-                  
+
                   <div style={bookNowStyle}>Book Now →</div>
                 </div>
               </Link>
