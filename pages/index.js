@@ -1061,8 +1061,10 @@ const dotStyle = {
 
 // CTA Section
 const ctaStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+  padding: '120px 0',
+  position: 'relative',
+  color: 'white'
 }
 
 const ctaContentStyle = {
