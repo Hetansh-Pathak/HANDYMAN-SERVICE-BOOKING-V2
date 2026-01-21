@@ -843,3 +843,57 @@ const checkboxLabelStyle = {
   cursor: 'pointer',
   color: '#495057'
 }
+
+// Filter styles
+const filterContainerStyle = {
+  display: 'flex',
+  gap: '12px',
+  flexWrap: 'wrap',
+  marginTop: '20px',
+  marginBottom: '20px'
+}
+
+const filterBtnStyle = {
+  padding: '10px 16px',
+  background: 'white',
+  border: '1px solid #E8EAED',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  fontSize: '14px',
+  fontWeight: '500',
+  color: '#555555',
+  transition: 'all 0.2s ease'
+}
+
+const activeFilterBtnStyle = {
+  background: '#0A66FF',
+  color: 'white',
+  border: '1px solid #0A66FF'
+}
+
+// Empty state styles
+const emptyStateStyle = {
+  textAlign: 'center',
+  padding: '60px 20px',
+  background: 'white',
+  borderRadius: '12px',
+  border: '1px solid #E8EAED'
+}
+
+const emptyIconStyle = {
+  fontSize: '64px',
+  marginBottom: '16px'
+}
+
+const emptyTitleStyle = {
+  fontSize: '22px',
+  fontWeight: '600',
+  color: '#111111',
+  margin: '0 0 8px'
+}
+
+const emptyMessageStyle = {
+  fontSize: '14px',
+  color: '#555555',
+  margin: '0'
+}
