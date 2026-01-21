@@ -1,13 +1,17 @@
 import RoleBasedLayout from '../components/RoleBasedLayout'
+import PincodeSearch from '../components/PincodeSearch'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useUser } from '../context/UserContext'
+import { useRouter } from 'next/router'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedService, setSelectedService] = useState('')
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const { user, isProvider, isCustomer } = useUser()
+  const router = useRouter()
+  const [showPincodeSearch, setShowPincodeSearch] = useState(true)
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -196,38 +200,30 @@ export default function Home() {
                 Book verified professionals for plumbing, electrical work, carpentry, and more. Quick booking, transparent pricing, and 24/7 support.
               </p>
               
-              {/* Search Bar */}
+              {/* Pincode Search - Smart Location Discovery */}
               <div style={searchBarContainerStyle}>
-                <div style={searchBarStyle}>
-                  <div style={searchInputGroupStyle}>
-                    <span style={searchIconStyle}>🔍</span>
-                    <input 
-                      type="text" 
-                      placeholder="What service do you need?" 
-                      style={searchInputStyle}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                    />
-                  </div>
-                  
-                  <button 
-                    className="btn btn-primary" 
-                    style={searchBtnStyle}
-                    onClick={handleSearch}
-                  >
-                    Find Services
-                  </button>
-                </div>
-                
+                <PincodeSearch
+                  showFull={true}
+                  onSearch={(data) => {
+                    if (data) {
+                      router.push(`/services?pincode=${data.pincode}&city=${data.location.city}`)
+                    }
+                  }}
+                />
+              </div>
+
+              {/* Quick Service Tags */}
+              <div style={quickServicesStyle}>
+                <p style={quickServicesLabelStyle}>Or browse popular services:</p>
                 <div style={searchTagsStyle}>
                   {['Plumbing', 'Electrical', 'AC Repair', 'Cleaning'].map(tag => (
-                    <button 
+                    <button
                       key={tag}
                       style={tagStyle}
                       onClick={() => {
                         setSelectedService(tag)
                         setSearchQuery(tag)
+                        handleSearch()
                       }}
                     >
                       {tag}
@@ -570,7 +566,18 @@ const heroSubtitleStyle = {
 }
 
 const searchBarContainerStyle = {
+  marginBottom: '40px'
+}
+
+const quickServicesStyle = {
   marginBottom: '32px'
+}
+
+const quickServicesLabelStyle = {
+  fontSize: '14px',
+  color: '#555555',
+  marginBottom: '12px',
+  fontWeight: '500'
 }
 
 const searchBarStyle = {

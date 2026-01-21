@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Layout from '../../components/Layout'
+import PincodeSearch from '../../components/PincodeSearch'
 import { useRouter } from 'next/router'
+import { getServiceAvailability } from '../../lib/pincodeService'
 
 export default function ServicesPage() {
   const router = useRouter()
-  const { search } = router.query
+  const { search, pincode, city } = router.query
   const [filters, setFilters] = useState({
     searchTerm: search || '',
     service: '',
     minPrice: 0,
     maxPrice: 5000,
     rating: 0,
-    sortBy: 'rating'
+    sortBy: 'rating',
+    pincode: pincode || '',
+    city: city || ''
   })
   const [providers, setProviders] = useState([])
   const [filteredProviders, setFilteredProviders] = useState([])
+  const [pincodeStatus, setPincodeStatus] = useState(null)
 
   // Mock providers data
   const mockProviders = [
@@ -158,12 +163,30 @@ export default function ServicesPage() {
 
   const services = [...new Set(mockProviders.map(p => p.service))]
 
+  const handlePincodeSearch = (data) => {
+    if (data) {
+      setPincodeStatus(getServiceAvailability(data.pincode))
+      setFilters(prev => ({
+        ...prev,
+        pincode: data.pincode,
+        city: data.location.city
+      }))
+    }
+  }
+
   return (
     <Layout title="Find Service Providers - HandyFix">
       <div style={pageStyle}>
         <div style={headerStyle}>
           <h1 style={titleStyle}>Find Service Providers</h1>
           <p style={subtitleStyle}>Choose from verified professionals near you</p>
+        </div>
+
+        <div className="container" style={pincodeSearchWrapperStyle}>
+          <PincodeSearch
+            onSearch={handlePincodeSearch}
+            showFull={false}
+          />
         </div>
 
         <div className="container" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '40px', marginTop: '40px' }}>
@@ -367,6 +390,10 @@ const pageStyle = {
   background: '#F7F9FC',
   minHeight: '100vh',
   padding: '60px 0'
+}
+
+const pincodeSearchWrapperStyle = {
+  marginBottom: '24px'
 }
 
 const headerStyle = {
