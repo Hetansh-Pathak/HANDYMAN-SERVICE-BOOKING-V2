@@ -264,26 +264,37 @@ export default function Home() {
           
           <div style={stepsGridStyle}>
             {[
-              { 
-                step: '1', 
-                title: 'Choose Service', 
+              {
+                step: '1',
+                title: 'Choose Service',
                 desc: 'Select from 50+ services',
                 icon: '🔍'
               },
-              { 
-                step: '2', 
-                title: 'Book Instantly', 
+              {
+                step: '2',
+                title: 'Book Instantly',
                 desc: 'Get matched with professionals',
                 icon: '📱'
               },
-              { 
-                step: '3', 
-                title: 'Get It Done', 
+              {
+                step: '3',
+                title: 'Get It Done',
                 desc: 'Relax while experts work',
                 icon: '✨'
               }
             ].map((item, index) => (
-              <div key={index} style={stepCardStyle} className="animate-on-scroll">
+              <div key={index} style={stepCardStyle} className="animate-on-scroll"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)'
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(10, 102, 255, 0.15)'
+                  e.currentTarget.style.borderColor = '#0A66FF'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                  e.currentTarget.style.borderColor = '#E8EAED'
+                }}
+              >
                 <div style={stepNumberStyle}>{item.step}</div>
                 <div style={stepEmojiStyle}>{item.icon}</div>
                 <h3 style={stepTitleStyle}>{item.title}</h3>
