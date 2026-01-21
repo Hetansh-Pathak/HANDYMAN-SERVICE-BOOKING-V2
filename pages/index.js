@@ -365,6 +365,60 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trending Deals Section */}
+      <section style={trendingStyle}>
+        <div className="container">
+          <div style={sectionHeaderStyle} className="animate-on-scroll">
+            <h2 style={sectionTitleStyle}>🔥 Limited Time Offers</h2>
+            <p style={sectionSubtitleStyle}>Exclusive deals on popular services</p>
+          </div>
+
+          <div style={trendingGridStyle}>
+            {trendingServices.map((service, index) => (
+              <div
+                key={index}
+                style={{
+                  ...trendingCardStyle,
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`,
+                  borderColor: service.popular ? '#0A66FF' : '#E8EAED'
+                }}
+                className="animate-on-scroll"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)'
+                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(10, 102, 255, 0.25)'
+                  if (service.popular) {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #E8F3FF 0%, #F0F7FF 100%)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)'
+                  if (service.popular) {
+                    e.currentTarget.style.background = 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)'
+                  }
+                }}
+              >
+                {service.popular && (
+                  <div style={popularBadgeStyle}>⭐ Most Popular</div>
+                )}
+                <div style={trendingIconStyle}>{service.icon}</div>
+                <h3 style={trendingNameStyle}>{service.name}</h3>
+                <div style={discountBadgeStyle}>{service.discount}</div>
+                <button style={bookTrendingBtnStyle} onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#0052CC'
+                  e.currentTarget.style.transform = 'scale(1.05)'
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)'
+                  e.currentTarget.style.transform = 'scale(1)'
+                }}>
+                  Book Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured Providers Section */}
       <section style={providersStyle}>
         <div className="container">
