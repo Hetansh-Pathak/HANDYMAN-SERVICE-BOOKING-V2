@@ -115,12 +115,21 @@ a:hover {
 
 /* Container */
 .container {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 24px;
   width: 100%;
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* Container for sections */
+section .container {
+  max-width: 1280px;
   flex-direction: column;
+  align-items: stretch;
 }
 
 @media (max-width: 1024px) {
