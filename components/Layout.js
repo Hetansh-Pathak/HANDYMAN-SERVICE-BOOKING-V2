@@ -1,11 +1,18 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useCart } from '../context/CartContext'
+import { useUser } from '../context/UserContext'
+import { useRouter } from 'next/router'
 
 export default function Layout({ children, title = 'HandyFix - Find Trusted Service Providers' }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const { getCartCount } = useCart()
+  const { user } = useUser()
+  const router = useRouter()
+  const cartCount = getCartCount()
 
   // Mock notifications data
   useEffect(() => {
