@@ -15,13 +15,16 @@ export default function CartPage() {
 
   const handleRemove = (cartId) => {
     removeFromCart(cartId)
+    showToast('Item removed from cart', 'info')
   }
 
   const handleQuantityChange = (cartId, newQuantity) => {
     if (newQuantity === 0) {
       removeFromCart(cartId)
+      showToast('Item removed from cart', 'info')
     } else {
       updateQuantity(cartId, newQuantity)
+      showToast('Quantity updated', 'info', 1500)
     }
   }
 
@@ -32,11 +35,15 @@ export default function CartPage() {
     }
 
     setIsProcessing(true)
+    showToast('Processing your booking...', 'info')
     // Simulate payment processing
     setTimeout(() => {
       // Clear cart and redirect to success page
       clearCart()
-      router.push('/payment?status=success')
+      showToast('Booking confirmed! 🎉', 'success')
+      setTimeout(() => {
+        router.push('/dashboard/user?tab=bookings')
+      }, 1500)
     }, 2000)
   }
 
