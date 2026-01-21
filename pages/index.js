@@ -1075,15 +1075,15 @@ const ctaContentStyle = {
 }
 
 const ctaTitleStyle = {
-  fontSize: '40px',
+  fontSize: '48px',
   fontWeight: '700',
-  color: '#111111',
+  color: 'white',
   marginBottom: '16px'
 }
 
 const ctaSubtitleStyle = {
-  fontSize: '16px',
-  color: '#555555',
+  fontSize: '18px',
+  color: 'rgba(255, 255, 255, 0.9)',
   marginBottom: '40px',
   maxWidth: '600px',
   margin: '0 auto 40px'
