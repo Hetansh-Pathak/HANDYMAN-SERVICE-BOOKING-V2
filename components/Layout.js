@@ -237,6 +237,15 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
                   router.push('/cart')
                 }
               }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(10, 102, 255, 0.1)'
+                e.currentTarget.style.borderColor = '#0A66FF'
+                e.currentTarget.style.transform = 'scale(1.1)'
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'transparent'
+                e.currentTarget.style.borderColor = 'transparent'
+                e.currentTarget.style.transform = 'scale(1)'
+              }}
               title="Shopping Cart"
               aria-label="Shopping Cart"
             >
