@@ -643,7 +643,8 @@ const searchBtnStyle = {
 const searchTagsStyle = {
   display: 'flex',
   gap: '8px',
-  flexWrap: 'wrap'
+  flexWrap: 'wrap',
+  justifyContent: 'center'
 }
 
 const tagStyle = {
