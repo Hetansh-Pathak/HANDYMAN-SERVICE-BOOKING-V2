@@ -787,28 +787,36 @@ const statLabelStyle = {
 
 // How It Works Section
 const howItWorksStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #F7F9FC 0%, #FFFFFF 100%)',
+  padding: '100px 0',
+  position: 'relative',
+  borderBottom: '1px solid #E8EAED'
 }
 
 const sectionHeaderStyle = {
   textAlign: 'center',
-  marginBottom: '60px',
-  animation: 'fadeInUp 0.6s ease-out'
+  marginBottom: '80px',
+  animation: 'fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
 }
 
 const sectionTitleStyle = {
-  fontSize: '40px',
-  fontWeight: '700',
+  fontSize: '44px',
+  fontWeight: '800',
   color: '#111111',
-  marginBottom: '12px'
+  marginBottom: '16px',
+  background: 'linear-gradient(135deg, #111111 0%, #0A66FF 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text'
 }
 
 const sectionSubtitleStyle = {
-  fontSize: '16px',
-  color: '#555555',
+  fontSize: '17px',
+  color: '#666666',
   maxWidth: '600px',
-  margin: '0 auto'
+  margin: '0 auto',
+  fontWeight: '500',
+  lineHeight: '1.6'
 }
 
 const stepsGridStyle = {
