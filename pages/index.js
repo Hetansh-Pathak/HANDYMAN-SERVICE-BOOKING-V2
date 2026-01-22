@@ -563,7 +563,8 @@ const heroTaglineStyle = {
   borderRadius: '20px',
   fontSize: '13px',
   fontWeight: '600',
-  marginBottom: '24px'
+  marginBottom: '24px',
+  textAlign: 'center'
 }
 
 const heroTitleStyle = {
