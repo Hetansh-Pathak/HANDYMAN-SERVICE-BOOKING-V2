@@ -70,41 +70,44 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={headerStyle}>
-        <nav style={navContainerStyle} className="container">
-          <Link href="/" style={logoStyle}>
+      <header className={styles.navbar}>
+        <nav className={styles.navContainer}>
+          {/* Logo */}
+          <Link href="/" className={styles.logo}>
             🔧 HandyFix
           </Link>
-          
-          <div style={desktopMenuStyle}>
-            <Link href="/" style={navLinkStyle}>Home</Link>
-            <Link href="/services" style={navLinkStyle}>Services</Link>
-            <Link href="/providers" style={navLinkStyle}>Providers</Link>
-            <Link href="/about" style={navLinkStyle}>About</Link>
-            <Link href="/contact" style={navLinkStyle}>Contact</Link>
+
+          {/* Desktop Navigation Links */}
+          <div className={styles.navLinks}>
+            <Link href="/" className={styles.navLink}>Home</Link>
+            <Link href="/services" className={styles.navLink}>Services</Link>
+            <Link href="/providers" className={styles.navLink}>Providers</Link>
+            <Link href="/about" className={styles.navLink}>About</Link>
+            <Link href="/contact" className={styles.navLink}>Contact</Link>
           </div>
 
-          <div style={rightSectionStyle}>
+          {/* Right Section - Icons & Buttons */}
+          <div className={styles.rightSection}>
             {/* Notification Dropdown */}
-            <div style={notificationContainerStyle}>
-              <button 
-                style={notificationBtnStyle}
+            <div className={styles.notificationContainer}>
+              <button
+                className={styles.iconBtn}
                 onClick={() => setIsNotificationOpen(!isNotificationOpen)}
                 aria-label="Notifications"
               >
                 🔔
                 {unreadCount > 0 && (
-                  <span style={notificationBadgeStyle}>{unreadCount > 9 ? '9+' : unreadCount}</span>
+                  <span className={styles.badge}>{unreadCount > 9 ? '9+' : unreadCount}</span>
                 )}
               </button>
 
               {isNotificationOpen && (
-                <div style={notificationDropdownStyle}>
-                  <div style={notificationHeaderStyle}>
-                    <h3 style={notificationTitleStyle}>Notifications</h3>
+                <div className={styles.notificationDropdown}>
+                  <div className={styles.notificationHeader}>
+                    <h3 className={styles.notificationTitle}>Notifications</h3>
                     {unreadCount > 0 && (
-                      <button 
-                        style={markAllReadBtnStyle}
+                      <button
+                        className={styles.markReadBtn}
                         onClick={markAllAsRead}
                       >
                         Mark all read
@@ -112,36 +115,33 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
                     )}
                   </div>
 
-                  <div style={notificationListStyle}>
+                  <div className={styles.notificationList}>
                     {notifications.length === 0 ? (
-                      <div style={emptyNotificationsStyle}>
-                        <span style={emptyIconStyle}>🔔</span>
+                      <div className={styles.emptyNotifications}>
+                        <span className={styles.emptyIcon}>🔔</span>
                         <p>No notifications</p>
                       </div>
                     ) : (
                       notifications.map(notification => (
-                        <div 
-                          key={notification.id} 
-                          style={{
-                            ...notificationItemStyle,
-                            ...(notification.read ? {} : unreadNotificationStyle)
-                          }}
+                        <div
+                          key={notification.id}
+                          className={`${styles.notificationItem} ${!notification.read ? styles.unread : ''}`}
                           onClick={() => markAsRead(notification.id)}
                         >
-                          <div style={notificationAvatarStyle}>{notification.avatar}</div>
-                          <div style={notificationContentStyle}>
-                            <div style={notificationItemTitleStyle}>{notification.title}</div>
-                            <div style={notificationMessageStyle}>{notification.message}</div>
-                            <div style={notificationTimeStyle}>{notification.time}</div>
+                          <div className={styles.notificationAvatar}>{notification.avatar}</div>
+                          <div className={styles.notificationContent}>
+                            <div className={styles.notificationItemTitle}>{notification.title}</div>
+                            <div className={styles.notificationMessage}>{notification.message}</div>
+                            <div className={styles.notificationTime}>{notification.time}</div>
                           </div>
-                          {!notification.read && <div style={unreadDotStyle}></div>}
+                          {!notification.read && <div className={styles.unreadDot}></div>}
                         </div>
                       ))
                     )}
                   </div>
 
-                  <div style={notificationFooterStyle}>
-                    <Link href="/notifications" style={viewAllLinkStyle}>
+                  <div className={styles.notificationFooter}>
+                    <Link href="/notifications" className={styles.viewAllLink}>
                       View All Notifications →
                     </Link>
                   </div>
@@ -151,7 +151,7 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 
             {/* Cart Icon */}
             <button
-              style={cartBtnStyle}
+              className={styles.iconBtn}
               onClick={() => {
                 if (!user) {
                   router.push(`/auth/login?redirect=${encodeURIComponent('/cart')}`)
@@ -164,25 +164,25 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
             >
               🛒
               {cartCount > 0 && (
-                <span style={cartBadgeStyle}>{cartCount > 9 ? '9+' : cartCount}</span>
+                <span className={styles.badge}>{cartCount > 9 ? '9+' : cartCount}</span>
               )}
             </button>
 
-            {/* Emergency Button */}
-            <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services">
-              🚨
-            </Link>
+            {/* Profile Icon */}
+            <button className={styles.iconBtn} title="Profile" aria-label="Profile">
+              👤
+            </button>
 
             {/* Auth Links */}
-            <div style={authLinksStyle}>
-              <Link href="/auth/login" style={loginBtnStyle}>Log In</Link>
-              <Link href="/auth/register" style={signUpBtnStyle}>Sign Up</Link>
+            <div className={styles.authLinksContainer}>
+              <Link href="/auth/login" className={styles.loginBtn}>Log In</Link>
+              <Link href="/auth/register" className={styles.signUpBtn}>Sign Up</Link>
             </div>
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button 
-            style={mobileMenuBtnStyle}
+          <button
+            className={styles.mobileMenuBtn}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -192,17 +192,18 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div style={mobileMenuStyle}>
-            <Link href="/" style={mobileNavLinkStyle}>Home</Link>
-            <Link href="/services" style={mobileNavLinkStyle}>Services</Link>
-            <Link href="/providers" style={mobileNavLinkStyle}>Providers</Link>
-            <Link href="/about" style={mobileNavLinkStyle}>About</Link>
-            <Link href="/contact" style={mobileNavLinkStyle}>Contact</Link>
-            <div style={mobileDividerStyle}></div>
-            <Link href="/emergency" style={mobileNavLinkStyle}>🚨 Emergency Services</Link>
-            <div style={mobileDividerStyle}></div>
-            <Link href="/auth/login" style={mobileNavLinkStyle}>Log In</Link>
-            <Link href="/auth/register" style={mobileSignUpStyle}>Sign Up</Link>
+          <div className={styles.mobileMenu}>
+            <Link href="/" className={styles.mobileNavLink}>Home</Link>
+            <Link href="/services" className={styles.mobileNavLink}>Services</Link>
+            <Link href="/providers" className={styles.mobileNavLink}>Providers</Link>
+            <Link href="/about" className={styles.mobileNavLink}>About</Link>
+            <Link href="/contact" className={styles.mobileNavLink}>Contact</Link>
+            <div className={styles.mobileDivider}></div>
+            <button className={`${styles.mobileNavLink} ${styles.iconBtn}`} title="Notifications">🔔 Notifications</button>
+            <button className={`${styles.mobileNavLink} ${styles.iconBtn}`} title="Cart">🛒 Cart</button>
+            <div className={styles.mobileDivider}></div>
+            <Link href="/auth/login" className={styles.mobileNavLink}>Log In</Link>
+            <Link href="/auth/register" className={styles.mobileSignUp}>Sign Up</Link>
           </div>
         )}
       </header>
