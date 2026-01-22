@@ -571,7 +571,8 @@ const heroTitleStyle = {
   fontWeight: '700',
   color: '#111111',
   marginBottom: '24px',
-  lineHeight: '1.2'
+  lineHeight: '1.2',
+  textAlign: 'center'
 }
 
 const heroSubtitleStyle = {
@@ -579,7 +580,9 @@ const heroSubtitleStyle = {
   color: '#555555',
   marginBottom: '40px',
   lineHeight: '1.6',
-  maxWidth: '500px'
+  maxWidth: '600px',
+  margin: '0 auto 40px auto',
+  textAlign: 'center'
 }
 
 const searchBarContainerStyle = {
