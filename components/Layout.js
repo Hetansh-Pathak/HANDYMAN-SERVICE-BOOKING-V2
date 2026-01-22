@@ -350,15 +350,3 @@ const footerBottomStyle = {
   color: '#888888',
   fontSize: '13px'
 }
-
-/* Mobile Menu Styles */
-if (typeof window !== 'undefined') {
-  const style = document.createElement('style')
-  style.textContent = `
-    @media (max-width: 768px) {
-      ${desktopMenuStyle}::style {
-        display: none !important;
-      }
-    }
-  `
-}
