@@ -586,7 +586,9 @@ const heroSubtitleStyle = {
 }
 
 const searchBarContainerStyle = {
-  marginBottom: '40px'
+  marginBottom: '40px',
+  display: 'flex',
+  justifyContent: 'center'
 }
 
 const quickServicesStyle = {
