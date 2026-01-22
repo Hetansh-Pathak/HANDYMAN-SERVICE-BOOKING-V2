@@ -239,17 +239,33 @@ export default function Home() {
                 <div style={trustItemStyle}>🛡️ Safe & Secure</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Hero Stats */}
-            <div style={heroStatsGridStyle}>
-              {stats.map((stat, index) => (
-                <div key={index} style={statCardStyle} className="animate-on-scroll">
-                  <div style={statIconStyle}>{stat.icon}</div>
-                  <div style={statValueStyle}>{stat.value}</div>
-                  <div style={statLabelStyle}>{stat.label}</div>
-                </div>
-              ))}
-            </div>
+      {/* Statistics Section - Appears After Scrolling */}
+      <section style={statsStyle}>
+        <div className="container">
+          <div style={sectionHeaderStyle} className="animate-on-scroll">
+            <h2 style={sectionTitleStyle}>Trusted by Thousands</h2>
+            <p style={sectionSubtitleStyle}>Join our growing community of satisfied customers</p>
+          </div>
+
+          <div style={statsGridStyle}>
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                style={{
+                  ...statCardStyle,
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
+                }}
+                className="animate-on-scroll"
+              >
+                <div style={statIconStyle}>{stat.icon}</div>
+                <div style={statValueStyle}>{stat.value}</div>
+                <div style={statLabelStyle}>{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
