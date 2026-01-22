@@ -885,65 +885,89 @@ const stepDescStyle = {
 
 // Services Section
 const servicesStyle = {
-  background: 'white',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '100px 0',
+  borderTop: '1px solid #E8EAED'
 }
 
 const servicesGridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-  gap: '24px'
+  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+  gap: '28px'
 }
 
 const serviceCardStyle = {
-  background: 'white',
-  border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '28px 20px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '16px',
+  padding: '32px 24px',
   textAlign: 'center',
   cursor: 'pointer',
-  transition: 'all 0.3s ease',
+  transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
   position: 'relative',
   overflow: 'hidden',
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
   opacity: 0,
-  transform: 'translateY(20px)'
+  transform: 'translateY(30px)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+  ':hover': {
+    transform: 'translateY(-12px)',
+    boxShadow: '0 20px 40px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  },
+  ':before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '4px',
+    background: 'linear-gradient(90deg, #0A66FF, #FF9F40)',
+    transform: 'scaleX(0)',
+    transformOrigin: 'center',
+    transition: 'transform 0.45s ease'
+  }
 }
 
 const serviceIconStyle = {
-  fontSize: '48px',
-  marginBottom: '16px',
-  display: 'block'
+  fontSize: '56px',
+  marginBottom: '20px',
+  display: 'block',
+  transition: 'transform 0.4s ease',
+  animation: 'float 3s ease-in-out infinite'
 }
 
 const serviceNameStyle = {
-  fontSize: '18px',
-  fontWeight: '700',
+  fontSize: '20px',
+  fontWeight: '800',
   color: '#111111',
-  marginBottom: '8px'
+  marginBottom: '10px',
+  transition: 'color 0.3s ease'
 }
 
 const serviceDescStyle = {
-  color: '#555555',
-  fontSize: '13px',
-  marginBottom: '16px',
-  lineHeight: '1.5'
+  color: '#666666',
+  fontSize: '14px',
+  marginBottom: '18px',
+  lineHeight: '1.6',
+  fontWeight: '500'
 }
 
 const serviceMetricsStyle = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '6px',
-  marginBottom: '16px',
-  paddingBottom: '16px',
-  borderBottom: '1px solid #E8EAED'
+  gap: '8px',
+  marginBottom: '20px',
+  paddingBottom: '20px',
+  borderBottom: '2px solid #E8EAED'
 }
 
 const metricStyle = {
-  fontSize: '12px',
-  color: '#555555'
+  fontSize: '13px',
+  color: '#0A66FF',
+  fontWeight: '600'
 }
 
 const urgentBadgeStyle = {
