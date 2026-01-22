@@ -1071,16 +1071,17 @@ const statusDotStyle = {
 }
 
 const providerNameStyle = {
-  fontSize: '16px',
-  fontWeight: '700',
+  fontSize: '18px',
+  fontWeight: '800',
   color: '#111111',
   marginBottom: '4px'
 }
 
 const providerServiceStyle = {
   color: '#0A66FF',
-  fontWeight: '600',
-  fontSize: '12px'
+  fontWeight: '700',
+  fontSize: '13px',
+  letterSpacing: '0.5px'
 }
 
 const providerRatingStyle = {
