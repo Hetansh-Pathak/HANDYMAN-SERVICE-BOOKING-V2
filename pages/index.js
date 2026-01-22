@@ -664,22 +664,39 @@ const trustItemStyle = {
   fontWeight: '500'
 }
 
-const heroStatsGridStyle = {
+// Statistics Section - Below Hero
+const statsStyle = {
+  background: '#F7F9FC',
+  padding: '100px 0 80px',
+  borderTop: '1px solid #E8EAED'
+}
+
+const statsGridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(2, 1fr)',
-  gap: '20px',
-  animation: 'fadeInUp 0.6s ease-out 0.2s both'
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '24px',
+  maxWidth: '1000px',
+  margin: '0 auto'
 }
 
 const statCardStyle = {
-  background: '#F7F9FC',
-  padding: '28px',
+  background: '#FFFFFF',
+  padding: '32px 28px',
   borderRadius: '14px',
   border: '1px solid #E8EAED',
   textAlign: 'center',
   opacity: 0,
   transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards'
+  animation: 'fadeInUp 0.6s ease-out forwards',
+  transition: 'all 0.3s ease',
+  cursor: 'default'
+}
+
+const heroStatsGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '20px',
+  animation: 'fadeInUp 0.6s ease-out 0.2s both'
 }
 
 const statIconStyle = {
