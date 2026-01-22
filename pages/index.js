@@ -536,11 +536,32 @@ export default function Home() {
 
 /* ==================== STYLES ==================== */
 
-// Hero Section
+// Hero Section - Enhanced with Advanced CSS
 const heroStyle = {
-  background: '#FFFFFF',
-  padding: '80px 0 60px',
-  borderBottom: '1px solid #E8EAED'
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  padding: '100px 0 80px',
+  borderBottom: '1px solid #E8EAED',
+  position: 'relative',
+  overflow: 'hidden',
+  minHeight: '80vh',
+  display: 'flex',
+  alignItems: 'center'
+}
+
+// Decorative background elements using CSS patterns
+const heroBackgroundPattern = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  opacity: 0.08,
+  pointerEvents: 'none',
+  backgroundImage: `
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(10, 102, 255, 0.1) 35px, rgba(10, 102, 255, 0.1) 70px),
+    repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 159, 64, 0.1) 35px, rgba(255, 159, 64, 0.1) 70px)
+  `,
+  backgroundSize: '500px 500px'
 }
 
 const heroContentStyle = {
@@ -548,42 +569,58 @@ const heroContentStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   maxWidth: '900px',
-  margin: '0 auto'
+  margin: '0 auto',
+  position: 'relative',
+  zIndex: 2,
+  width: '100%'
 }
 
 const heroTextStyle = {
-  animation: 'fadeInUp 0.6s ease-out'
+  animation: 'fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  textAlign: 'center',
+  width: '100%'
 }
 
 const heroTaglineStyle = {
   display: 'inline-block',
-  background: '#E8F3FF',
+  background: 'linear-gradient(135deg, #E8F3FF 0%, #CCE5FF 100%)',
   color: '#0A66FF',
-  padding: '8px 16px',
-  borderRadius: '20px',
+  padding: '10px 20px',
+  borderRadius: '25px',
   fontSize: '13px',
-  fontWeight: '600',
+  fontWeight: '700',
   marginBottom: '24px',
-  textAlign: 'center'
+  textAlign: 'center',
+  border: '1px solid #B3D9FF',
+  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.15)',
+  animation: 'slideDown 0.6s ease-out',
+  letterSpacing: '0.5px'
 }
 
 const heroTitleStyle = {
-  fontSize: '48px',
-  fontWeight: '700',
+  fontSize: '56px',
+  fontWeight: '800',
   color: '#111111',
   marginBottom: '24px',
-  lineHeight: '1.2',
-  textAlign: 'center'
+  lineHeight: '1.15',
+  textAlign: 'center',
+  animation: 'slideDown 0.8s ease-out 0.1s both',
+  background: 'linear-gradient(135deg, #111111 0%, #0A66FF 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text'
 }
 
 const heroSubtitleStyle = {
   fontSize: '18px',
   color: '#555555',
   marginBottom: '40px',
-  lineHeight: '1.6',
+  lineHeight: '1.8',
   maxWidth: '600px',
   margin: '0 auto 40px auto',
-  textAlign: 'center'
+  textAlign: 'center',
+  animation: 'slideDown 0.8s ease-out 0.2s both',
+  fontWeight: '500'
 }
 
 const searchBarContainerStyle = {
