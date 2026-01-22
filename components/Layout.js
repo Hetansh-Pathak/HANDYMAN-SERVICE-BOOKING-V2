@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useCart } from '../context/CartContext'
 import { useUser } from '../context/UserContext'
 import { useRouter } from 'next/router'
+import styles from '../styles/layout.module.css'
 
 export default function Layout({ children, title = 'HandyFix - Find Trusted Service Providers' }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
