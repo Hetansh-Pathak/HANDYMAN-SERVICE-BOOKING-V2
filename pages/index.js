@@ -663,7 +663,9 @@ const tagStyle = {
 const trustIndicatorsStyle = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px'
+  gap: '12px',
+  alignItems: 'center',
+  justifyContent: 'center'
 }
 
 const trustItemStyle = {
