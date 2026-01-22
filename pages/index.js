@@ -545,11 +545,7 @@ const heroStyle = {
   overflow: 'hidden',
   minHeight: '80vh',
   display: 'flex',
-  alignItems: 'center',
-  '@media (max-width: 768px)': {
-    padding: '60px 0 40px',
-    minHeight: '100vh'
-  }
+  alignItems: 'center'
 }
 
 // Decorative background elements using CSS patterns
