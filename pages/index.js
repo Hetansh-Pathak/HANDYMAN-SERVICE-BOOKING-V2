@@ -990,26 +990,34 @@ const bookNowStyle = {
 
 // Providers Section
 const providersStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #F7F9FC 0%, #FFFFFF 100%)',
+  padding: '100px 0',
+  borderTop: '1px solid #E8EAED'
 }
 
 const providersGridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '24px'
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+  gap: '28px'
 }
 
 const providerCardStyle = {
-  background: 'white',
-  border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '24px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '16px',
+  padding: '28px',
   opacity: 0,
-  transform: 'translateY(20px)',
+  transform: 'translateY(30px)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+  ':hover': {
+    transform: 'translateY(-12px)',
+    boxShadow: '0 20px 40px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
 }
 
 const providerHeaderStyle = {
