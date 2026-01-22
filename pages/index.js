@@ -738,16 +738,24 @@ const statsGridStyle = {
 }
 
 const statCardStyle = {
-  background: '#FFFFFF',
-  padding: '32px 28px',
-  borderRadius: '14px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '40px 32px',
+  borderRadius: '16px',
   border: '1px solid #E8EAED',
   textAlign: 'center',
   opacity: 0,
-  transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards',
-  transition: 'all 0.3s ease',
-  cursor: 'default'
+  transform: 'translateY(30px)',
+  animation: 'fadeInUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  cursor: 'pointer',
+  position: 'relative',
+  overflow: 'hidden',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  ':hover': {
+    transform: 'translateY(-8px)',
+    boxShadow: '0 12px 28px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
 }
 
 const heroStatsGridStyle = {
