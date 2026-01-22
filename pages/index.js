@@ -544,10 +544,11 @@ const heroStyle = {
 }
 
 const heroContentStyle = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '60px',
-  alignItems: 'center'
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  maxWidth: '900px',
+  margin: '0 auto'
 }
 
 const heroTextStyle = {
