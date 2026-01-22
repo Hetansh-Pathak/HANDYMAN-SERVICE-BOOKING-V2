@@ -826,50 +826,61 @@ const stepsGridStyle = {
 }
 
 const stepCardStyle = {
-  background: 'white',
-  padding: '40px 28px',
-  borderRadius: '16px',
-  border: '1px solid #E8EAED',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '48px 32px',
+  borderRadius: '18px',
+  border: '2px solid #E8EAED',
   textAlign: 'center',
   opacity: 0,
-  transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards',
-  position: 'relative'
+  transform: 'translateY(30px)',
+  animation: 'fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+  position: 'relative',
+  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+  ':hover': {
+    transform: 'translateY(-10px)',
+    boxShadow: '0 16px 32px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
 }
 
 const stepNumberStyle = {
   position: 'absolute',
-  top: '-16px',
+  top: '-20px',
   left: '50%',
   transform: 'translateX(-50%)',
-  width: '32px',
-  height: '32px',
-  background: '#0A66FF',
+  width: '44px',
+  height: '44px',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
   color: 'white',
   borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontWeight: '700',
-  fontSize: '14px'
+  fontWeight: '800',
+  fontSize: '18px',
+  boxShadow: '0 4px 16px rgba(10, 102, 255, 0.3)',
+  border: '4px solid white'
 }
 
 const stepEmojiStyle = {
-  fontSize: '40px',
-  marginBottom: '16px',
-  display: 'block'
+  fontSize: '48px',
+  marginBottom: '20px',
+  display: 'block',
+  animation: 'bounce 2s ease-in-out infinite'
 }
 
 const stepTitleStyle = {
-  fontSize: '20px',
-  fontWeight: '700',
+  fontSize: '22px',
+  fontWeight: '800',
   color: '#111111',
   marginBottom: '12px'
 }
 
 const stepDescStyle = {
-  color: '#555555',
-  fontSize: '14px'
+  color: '#666666',
+  fontSize: '15px',
+  lineHeight: '1.6'
 }
 
 // Services Section
