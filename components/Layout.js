@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useCart } from '../context/CartContext'
 import { useUser } from '../context/UserContext'
 import { useRouter } from 'next/router'
+import styles from '../styles/layout.module.css'
 
 export default function Layout({ children, title = 'HandyFix - Find Trusted Service Providers' }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -69,41 +70,44 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={headerStyle}>
-        <nav style={navContainerStyle} className="container">
-          <Link href="/" style={logoStyle}>
+      <header className={styles.navbar}>
+        <nav className={styles.navContainer}>
+          {/* Logo */}
+          <Link href="/" className={styles.logo}>
             🔧 HandyFix
           </Link>
-          
-          <div style={desktopMenuStyle}>
-            <Link href="/" style={navLinkStyle}>Home</Link>
-            <Link href="/services" style={navLinkStyle}>Services</Link>
-            <Link href="/providers" style={navLinkStyle}>Providers</Link>
-            <Link href="/about" style={navLinkStyle}>About</Link>
-            <Link href="/contact" style={navLinkStyle}>Contact</Link>
+
+          {/* Desktop Navigation Links */}
+          <div className={styles.navLinks}>
+            <Link href="/" className={styles.navLink}>Home</Link>
+            <Link href="/services" className={styles.navLink}>Services</Link>
+            <Link href="/providers" className={styles.navLink}>Providers</Link>
+            <Link href="/about" className={styles.navLink}>About</Link>
+            <Link href="/contact" className={styles.navLink}>Contact</Link>
           </div>
 
-          <div style={rightSectionStyle}>
+          {/* Right Section - Icons & Buttons */}
+          <div className={styles.rightSection}>
             {/* Notification Dropdown */}
-            <div style={notificationContainerStyle}>
-              <button 
-                style={notificationBtnStyle}
+            <div className={styles.notificationContainer}>
+              <button
+                className={styles.iconBtn}
                 onClick={() => setIsNotificationOpen(!isNotificationOpen)}
                 aria-label="Notifications"
               >
                 🔔
                 {unreadCount > 0 && (
-                  <span style={notificationBadgeStyle}>{unreadCount > 9 ? '9+' : unreadCount}</span>
+                  <span className={styles.badge}>{unreadCount > 9 ? '9+' : unreadCount}</span>
                 )}
               </button>
 
               {isNotificationOpen && (
-                <div style={notificationDropdownStyle}>
-                  <div style={notificationHeaderStyle}>
-                    <h3 style={notificationTitleStyle}>Notifications</h3>
+                <div className={styles.notificationDropdown}>
+                  <div className={styles.notificationHeader}>
+                    <h3 className={styles.notificationTitle}>Notifications</h3>
                     {unreadCount > 0 && (
-                      <button 
-                        style={markAllReadBtnStyle}
+                      <button
+                        className={styles.markReadBtn}
                         onClick={markAllAsRead}
                       >
                         Mark all read
@@ -111,36 +115,33 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
                     )}
                   </div>
 
-                  <div style={notificationListStyle}>
+                  <div className={styles.notificationList}>
                     {notifications.length === 0 ? (
-                      <div style={emptyNotificationsStyle}>
-                        <span style={emptyIconStyle}>🔔</span>
+                      <div className={styles.emptyNotifications}>
+                        <span className={styles.emptyIcon}>🔔</span>
                         <p>No notifications</p>
                       </div>
                     ) : (
                       notifications.map(notification => (
-                        <div 
-                          key={notification.id} 
-                          style={{
-                            ...notificationItemStyle,
-                            ...(notification.read ? {} : unreadNotificationStyle)
-                          }}
+                        <div
+                          key={notification.id}
+                          className={`${styles.notificationItem} ${!notification.read ? styles.unread : ''}`}
                           onClick={() => markAsRead(notification.id)}
                         >
-                          <div style={notificationAvatarStyle}>{notification.avatar}</div>
-                          <div style={notificationContentStyle}>
-                            <div style={notificationItemTitleStyle}>{notification.title}</div>
-                            <div style={notificationMessageStyle}>{notification.message}</div>
-                            <div style={notificationTimeStyle}>{notification.time}</div>
+                          <div className={styles.notificationAvatar}>{notification.avatar}</div>
+                          <div className={styles.notificationContent}>
+                            <div className={styles.notificationItemTitle}>{notification.title}</div>
+                            <div className={styles.notificationMessage}>{notification.message}</div>
+                            <div className={styles.notificationTime}>{notification.time}</div>
                           </div>
-                          {!notification.read && <div style={unreadDotStyle}></div>}
+                          {!notification.read && <div className={styles.unreadDot}></div>}
                         </div>
                       ))
                     )}
                   </div>
 
-                  <div style={notificationFooterStyle}>
-                    <Link href="/notifications" style={viewAllLinkStyle}>
+                  <div className={styles.notificationFooter}>
+                    <Link href="/notifications" className={styles.viewAllLink}>
                       View All Notifications →
                     </Link>
                   </div>
@@ -150,7 +151,7 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 
             {/* Cart Icon */}
             <button
-              style={cartBtnStyle}
+              className={styles.iconBtn}
               onClick={() => {
                 if (!user) {
                   router.push(`/auth/login?redirect=${encodeURIComponent('/cart')}`)
@@ -163,25 +164,25 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
             >
               🛒
               {cartCount > 0 && (
-                <span style={cartBadgeStyle}>{cartCount > 9 ? '9+' : cartCount}</span>
+                <span className={styles.badge}>{cartCount > 9 ? '9+' : cartCount}</span>
               )}
             </button>
 
-            {/* Emergency Button */}
-            <Link href="/emergency" style={emergencyBtnStyle} title="Emergency Services">
-              🚨
-            </Link>
+            {/* Profile Icon */}
+            <button className={styles.iconBtn} title="Profile" aria-label="Profile">
+              👤
+            </button>
 
             {/* Auth Links */}
-            <div style={authLinksStyle}>
-              <Link href="/auth/login" style={loginBtnStyle}>Log In</Link>
-              <Link href="/auth/register" style={signUpBtnStyle}>Sign Up</Link>
+            <div className={styles.authLinksContainer}>
+              <Link href="/auth/login" className={styles.loginBtn}>Log In</Link>
+              <Link href="/auth/register" className={styles.signUpBtn}>Sign Up</Link>
             </div>
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button 
-            style={mobileMenuBtnStyle}
+          <button
+            className={styles.mobileMenuBtn}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -191,17 +192,18 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div style={mobileMenuStyle}>
-            <Link href="/" style={mobileNavLinkStyle}>Home</Link>
-            <Link href="/services" style={mobileNavLinkStyle}>Services</Link>
-            <Link href="/providers" style={mobileNavLinkStyle}>Providers</Link>
-            <Link href="/about" style={mobileNavLinkStyle}>About</Link>
-            <Link href="/contact" style={mobileNavLinkStyle}>Contact</Link>
-            <div style={mobileDividerStyle}></div>
-            <Link href="/emergency" style={mobileNavLinkStyle}>🚨 Emergency Services</Link>
-            <div style={mobileDividerStyle}></div>
-            <Link href="/auth/login" style={mobileNavLinkStyle}>Log In</Link>
-            <Link href="/auth/register" style={mobileSignUpStyle}>Sign Up</Link>
+          <div className={styles.mobileMenu}>
+            <Link href="/" className={styles.mobileNavLink}>Home</Link>
+            <Link href="/services" className={styles.mobileNavLink}>Services</Link>
+            <Link href="/providers" className={styles.mobileNavLink}>Providers</Link>
+            <Link href="/about" className={styles.mobileNavLink}>About</Link>
+            <Link href="/contact" className={styles.mobileNavLink}>Contact</Link>
+            <div className={styles.mobileDivider}></div>
+            <button className={`${styles.mobileNavLink} ${styles.iconBtn}`} title="Notifications">🔔 Notifications</button>
+            <button className={`${styles.mobileNavLink} ${styles.iconBtn}`} title="Cart">🛒 Cart</button>
+            <div className={styles.mobileDivider}></div>
+            <Link href="/auth/login" className={styles.mobileNavLink}>Log In</Link>
+            <Link href="/auth/register" className={styles.mobileSignUp}>Sign Up</Link>
           </div>
         )}
       </header>
@@ -267,370 +269,6 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
   )
 }
 
-/* ==================== NAVBAR STYLES ==================== */
-const headerStyle = {
-  background: 'linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)',
-  borderBottom: '1px solid #E8EAED',
-  position: 'sticky',
-  top: 0,
-  zIndex: 1000,
-  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
-  backdropFilter: 'blur(10px)',
-  backgroundColor: 'rgba(255, 255, 255, 0.95)'
-}
-
-const navContainerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '12px 0',
-  minHeight: '56px',
-  gap: '20px'
-}
-
-const logoStyle = {
-  fontSize: '22px',
-  fontWeight: '800',
-  color: '#0A66FF',
-  textDecoration: 'none',
-  padding: '8px 16px',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  whiteSpace: 'nowrap',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
-  color: 'white',
-  borderRadius: '10px',
-  boxShadow: '0 4px 15px rgba(10, 102, 255, 0.3)'
-}
-
-const logoStyle_hover = {
-  transform: 'scale(1.05)',
-  boxShadow: '0 6px 20px rgba(10, 102, 255, 0.4)'
-}
-
-const desktopMenuStyle = {
-  display: 'flex',
-  gap: '8px',
-  alignItems: 'center',
-  flex: 1,
-  justifyContent: 'center'
-}
-
-const navLinkStyle = {
-  color: '#555555',
-  textDecoration: 'none',
-  fontWeight: '600',
-  fontSize: '14px',
-  padding: '8px 14px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
-  position: 'relative',
-  whiteSpace: 'nowrap'
-}
-
-const rightSectionStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  marginLeft: 'auto'
-}
-
-const notificationContainerStyle = {
-  position: 'relative'
-}
-
-const notificationBtnStyle = {
-  background: 'transparent',
-  border: 'none',
-  fontSize: '18px',
-  cursor: 'pointer',
-  padding: '6px 8px',
-  position: 'relative',
-  transition: 'all 0.2s ease',
-  borderRadius: '6px'
-}
-
-const notificationBadgeStyle = {
-  position: 'absolute',
-  top: '-6px',
-  right: '-6px',
-  background: 'linear-gradient(135deg, #DC3545 0%, #C82333 100%)',
-  color: 'white',
-  borderRadius: '50%',
-  width: '20px',
-  height: '20px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '10px',
-  fontWeight: '700',
-  border: '2px solid white',
-  boxShadow: '0 2px 6px rgba(220, 53, 69, 0.3)'
-}
-
-const notificationDropdownStyle = {
-  position: 'absolute',
-  top: '100%',
-  right: '0',
-  width: '360px',
-  maxHeight: '420px',
-  background: 'white',
-  borderRadius: '12px',
-  border: '1px solid #E8EAED',
-  boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)',
-  marginTop: '8px',
-  overflow: 'hidden',
-  zIndex: 1000
-}
-
-const notificationHeaderStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  padding: '16px 20px',
-  borderBottom: '1px solid #E8EAED'
-}
-
-const notificationTitleStyle = {
-  margin: 0,
-  fontSize: '16px',
-  fontWeight: '700',
-  color: '#111111'
-}
-
-const markAllReadBtnStyle = {
-  background: 'none',
-  border: 'none',
-  color: '#0A66FF',
-  fontSize: '12px',
-  fontWeight: '600',
-  cursor: 'pointer',
-  padding: '4px 8px',
-  borderRadius: '4px',
-  transition: 'background 0.2s ease'
-}
-
-const notificationListStyle = {
-  maxHeight: '280px',
-  overflowY: 'auto'
-}
-
-const emptyNotificationsStyle = {
-  padding: '40px 20px',
-  textAlign: 'center',
-  color: '#888888'
-}
-
-const emptyIconStyle = {
-  fontSize: '32px',
-  marginBottom: '12px',
-  display: 'block',
-  opacity: '0.5'
-}
-
-const notificationItemStyle = {
-  display: 'flex',
-  gap: '12px',
-  padding: '14px 16px',
-  cursor: 'pointer',
-  transition: 'background 0.2s ease',
-  borderBottom: '1px solid #F7F9FC',
-  position: 'relative'
-}
-
-const unreadNotificationStyle = {
-  background: '#E8F3FF'
-}
-
-const notificationAvatarStyle = {
-  width: '40px',
-  height: '40px',
-  borderRadius: '50%',
-  background: '#F7F9FC',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '18px',
-  flexShrink: 0
-}
-
-const notificationContentStyle = {
-  flex: 1,
-  minWidth: 0
-}
-
-const notificationItemTitleStyle = {
-  fontWeight: '600',
-  fontSize: '13px',
-  color: '#111111',
-  marginBottom: '2px'
-}
-
-const notificationMessageStyle = {
-  fontSize: '12px',
-  color: '#555555',
-  lineHeight: '1.4',
-  marginBottom: '4px'
-}
-
-const notificationTimeStyle = {
-  fontSize: '11px',
-  color: '#888888'
-}
-
-const unreadDotStyle = {
-  width: '8px',
-  height: '8px',
-  borderRadius: '50%',
-  background: '#0A66FF',
-  flexShrink: 0,
-  marginTop: '6px'
-}
-
-const notificationFooterStyle = {
-  padding: '12px 16px',
-  borderTop: '1px solid #E8EAED',
-  textAlign: 'center',
-  background: '#F7F9FC'
-}
-
-const viewAllLinkStyle = {
-  color: '#0A66FF',
-  textDecoration: 'none',
-  fontSize: '13px',
-  fontWeight: '600',
-  transition: 'color 0.2s ease'
-}
-
-const cartBtnStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '40px',
-  height: '40px',
-  background: 'transparent',
-  border: 'none',
-  borderRadius: '50%',
-  fontSize: '18px',
-  cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  position: 'relative',
-  padding: '0'
-}
-
-const cartBadgeStyle = {
-  position: 'absolute',
-  top: '-4px',
-  right: '-4px',
-  background: '#DC3545',
-  color: 'white',
-  borderRadius: '50%',
-  width: '22px',
-  height: '22px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '11px',
-  fontWeight: '700',
-  minWidth: '22px'
-}
-
-const emergencyBtnStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '40px',
-  height: '40px',
-  background: 'rgba(220, 53, 69, 0.1)',
-  border: 'none',
-  borderRadius: '50%',
-  fontSize: '16px',
-  textDecoration: 'none',
-  cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  animation: 'pulse 2s infinite'
-}
-
-const authLinksStyle = {
-  display: 'flex',
-  gap: '8px',
-  alignItems: 'center',
-  paddingLeft: '8px',
-  borderLeft: '1px solid #E8EAED'
-}
-
-const loginBtnStyle = {
-  color: '#0A66FF',
-  textDecoration: 'none',
-  fontWeight: '600',
-  fontSize: '13px',
-  padding: '8px 14px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
-  whiteSpace: 'nowrap',
-  border: '1px solid transparent'
-}
-
-const signUpBtnStyle = {
-  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
-  color: 'white',
-  textDecoration: 'none',
-  fontWeight: '600',
-  fontSize: '13px',
-  padding: '8px 16px',
-  borderRadius: '6px',
-  transition: 'all 0.2s ease',
-  display: 'inline-block',
-  whiteSpace: 'nowrap',
-  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.2)'
-}
-
-const mobileMenuBtnStyle = {
-  display: 'none',
-  background: 'none',
-  border: 'none',
-  fontSize: '22px',
-  cursor: 'pointer',
-  color: '#555555',
-  padding: '6px 8px',
-  transition: 'color 0.2s ease'
-}
-
-const mobileMenuStyle = {
-  display: 'none',
-  flexDirection: 'column',
-  background: 'white',
-  padding: '16px 20px',
-  borderTop: '1px solid #E8EAED'
-}
-
-const mobileNavLinkStyle = {
-  padding: '12px 0',
-  textDecoration: 'none',
-  color: '#555555',
-  fontWeight: '500',
-  fontSize: '15px',
-  transition: 'color 0.2s ease',
-  display: 'block'
-}
-
-const mobileSignUpStyle = {
-  padding: '12px 0',
-  textDecoration: 'none',
-  color: '#0A66FF',
-  fontWeight: '600',
-  fontSize: '15px',
-  transition: 'color 0.2s ease',
-  display: 'block'
-}
-
-const mobileDividerStyle = {
-  height: '1px',
-  background: '#E8EAED',
-  margin: '12px 0'
-}
 
 const mainStyle = {
   minHeight: 'calc(100vh - 300px)'
@@ -711,16 +349,4 @@ const footerBottomStyle = {
   textAlign: 'center',
   color: '#888888',
   fontSize: '13px'
-}
-
-/* Mobile Menu Styles */
-if (typeof window !== 'undefined') {
-  const style = document.createElement('style')
-  style.textContent = `
-    @media (max-width: 768px) {
-      ${desktopMenuStyle}::style {
-        display: none !important;
-      }
-    }
-  `
 }

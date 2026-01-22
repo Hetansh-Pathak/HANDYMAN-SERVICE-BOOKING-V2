@@ -239,17 +239,33 @@ export default function Home() {
                 <div style={trustItemStyle}>🛡️ Safe & Secure</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Hero Stats */}
-            <div style={heroStatsGridStyle}>
-              {stats.map((stat, index) => (
-                <div key={index} style={statCardStyle} className="animate-on-scroll">
-                  <div style={statIconStyle}>{stat.icon}</div>
-                  <div style={statValueStyle}>{stat.value}</div>
-                  <div style={statLabelStyle}>{stat.label}</div>
-                </div>
-              ))}
-            </div>
+      {/* Statistics Section - Appears After Scrolling */}
+      <section style={statsStyle}>
+        <div className="container">
+          <div style={sectionHeaderStyle} className="animate-on-scroll">
+            <h2 style={sectionTitleStyle}>Trusted by Thousands</h2>
+            <p style={sectionSubtitleStyle}>Join our growing community of satisfied customers</p>
+          </div>
+
+          <div style={statsGridStyle}>
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                style={{
+                  ...statCardStyle,
+                  animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
+                }}
+                className="animate-on-scroll"
+              >
+                <div style={statIconStyle}>{stat.icon}</div>
+                <div style={statValueStyle}>{stat.value}</div>
+                <div style={statLabelStyle}>{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -520,64 +536,110 @@ export default function Home() {
 
 /* ==================== STYLES ==================== */
 
-// Hero Section
+// Hero Section - Enhanced with Advanced CSS
 const heroStyle = {
-  background: '#FFFFFF',
-  padding: '80px 0 60px',
-  borderBottom: '1px solid #E8EAED'
-}
-
-const heroContentStyle = {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  gap: '60px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  padding: '100px 0 80px',
+  borderBottom: '1px solid #E8EAED',
+  position: 'relative',
+  overflow: 'hidden',
+  minHeight: '80vh',
+  display: 'flex',
   alignItems: 'center'
 }
 
+// Decorative background elements using CSS patterns
+const heroBackgroundPattern = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  opacity: 0.08,
+  pointerEvents: 'none',
+  backgroundImage: `
+    repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(10, 102, 255, 0.1) 35px, rgba(10, 102, 255, 0.1) 70px),
+    repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255, 159, 64, 0.1) 35px, rgba(255, 159, 64, 0.1) 70px)
+  `,
+  backgroundSize: '500px 500px'
+}
+
+const heroContentStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  maxWidth: '900px',
+  margin: '0 auto',
+  position: 'relative',
+  zIndex: 2,
+  width: '100%'
+}
+
 const heroTextStyle = {
-  animation: 'fadeInUp 0.6s ease-out'
+  animation: 'fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  textAlign: 'center',
+  width: '100%'
 }
 
 const heroTaglineStyle = {
   display: 'inline-block',
-  background: '#E8F3FF',
+  background: 'linear-gradient(135deg, #E8F3FF 0%, #CCE5FF 100%)',
   color: '#0A66FF',
-  padding: '8px 16px',
-  borderRadius: '20px',
+  padding: '10px 20px',
+  borderRadius: '25px',
   fontSize: '13px',
-  fontWeight: '600',
-  marginBottom: '24px'
+  fontWeight: '700',
+  marginBottom: '24px',
+  textAlign: 'center',
+  border: '1px solid #B3D9FF',
+  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.15)',
+  animation: 'slideDown 0.6s ease-out',
+  letterSpacing: '0.5px'
 }
 
 const heroTitleStyle = {
-  fontSize: '48px',
-  fontWeight: '700',
+  fontSize: '56px',
+  fontWeight: '800',
   color: '#111111',
   marginBottom: '24px',
-  lineHeight: '1.2'
+  lineHeight: '1.15',
+  textAlign: 'center',
+  animation: 'slideDown 0.8s ease-out 0.1s both',
+  background: 'linear-gradient(135deg, #111111 0%, #0A66FF 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text'
 }
 
 const heroSubtitleStyle = {
   fontSize: '18px',
   color: '#555555',
   marginBottom: '40px',
-  lineHeight: '1.6',
-  maxWidth: '500px'
+  lineHeight: '1.8',
+  maxWidth: '600px',
+  margin: '0 auto 40px auto',
+  textAlign: 'center',
+  animation: 'slideDown 0.8s ease-out 0.2s both',
+  fontWeight: '500'
 }
 
 const searchBarContainerStyle = {
-  marginBottom: '40px'
+  marginBottom: '40px',
+  display: 'flex',
+  justifyContent: 'center'
 }
 
 const quickServicesStyle = {
-  marginBottom: '32px'
+  marginBottom: '32px',
+  textAlign: 'center'
 }
 
 const quickServicesLabelStyle = {
   fontSize: '14px',
   color: '#555555',
   marginBottom: '12px',
-  fontWeight: '500'
+  fontWeight: '500',
+  display: 'block'
 }
 
 const searchBarStyle = {
@@ -618,27 +680,40 @@ const searchBtnStyle = {
 
 const searchTagsStyle = {
   display: 'flex',
-  gap: '8px',
-  flexWrap: 'wrap'
+  gap: '12px',
+  flexWrap: 'wrap',
+  justifyContent: 'center'
 }
 
 const tagStyle = {
-  background: '#F7F9FC',
-  border: '1px solid #D2D3D5',
+  background: 'linear-gradient(135deg, #F7F9FC 0%, #FFFFFF 100%)',
+  border: '2px solid #E8EAED',
   color: '#555555',
-  padding: '8px 16px',
-  borderRadius: '20px',
-  fontSize: '13px',
-  fontWeight: '500',
+  padding: '10px 20px',
+  borderRadius: '24px',
+  fontSize: '14px',
+  fontWeight: '600',
   cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  whiteSpace: 'nowrap'
+  transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  whiteSpace: 'nowrap',
+  position: 'relative',
+  overflow: 'hidden',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+  ':hover': {
+    borderColor: '#0A66FF',
+    background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+    color: 'white',
+    transform: 'translateY(-2px)',
+    boxShadow: '0 8px 16px rgba(10, 102, 255, 0.25)'
+  }
 }
 
 const trustIndicatorsStyle = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px'
+  gap: '12px',
+  alignItems: 'center',
+  justifyContent: 'center'
 }
 
 const trustItemStyle = {
@@ -647,22 +722,47 @@ const trustItemStyle = {
   fontWeight: '500'
 }
 
+// Statistics Section - Below Hero
+const statsStyle = {
+  background: '#F7F9FC',
+  padding: '100px 0 80px',
+  borderTop: '1px solid #E8EAED'
+}
+
+const statsGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '24px',
+  maxWidth: '1000px',
+  margin: '0 auto'
+}
+
+const statCardStyle = {
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '40px 32px',
+  borderRadius: '16px',
+  border: '1px solid #E8EAED',
+  textAlign: 'center',
+  opacity: 0,
+  transform: 'translateY(30px)',
+  animation: 'fadeInUp 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  cursor: 'pointer',
+  position: 'relative',
+  overflow: 'hidden',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+  ':hover': {
+    transform: 'translateY(-8px)',
+    boxShadow: '0 12px 28px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
+}
+
 const heroStatsGridStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(2, 1fr)',
   gap: '20px',
   animation: 'fadeInUp 0.6s ease-out 0.2s both'
-}
-
-const statCardStyle = {
-  background: '#F7F9FC',
-  padding: '28px',
-  borderRadius: '14px',
-  border: '1px solid #E8EAED',
-  textAlign: 'center',
-  opacity: 0,
-  transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards'
 }
 
 const statIconStyle = {
@@ -687,28 +787,36 @@ const statLabelStyle = {
 
 // How It Works Section
 const howItWorksStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #F7F9FC 0%, #FFFFFF 100%)',
+  padding: '100px 0',
+  position: 'relative',
+  borderBottom: '1px solid #E8EAED'
 }
 
 const sectionHeaderStyle = {
   textAlign: 'center',
-  marginBottom: '60px',
-  animation: 'fadeInUp 0.6s ease-out'
+  marginBottom: '80px',
+  animation: 'fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
 }
 
 const sectionTitleStyle = {
-  fontSize: '40px',
-  fontWeight: '700',
+  fontSize: '44px',
+  fontWeight: '800',
   color: '#111111',
-  marginBottom: '12px'
+  marginBottom: '16px',
+  background: 'linear-gradient(135deg, #111111 0%, #0A66FF 100%)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  backgroundClip: 'text'
 }
 
 const sectionSubtitleStyle = {
-  fontSize: '16px',
-  color: '#555555',
+  fontSize: '17px',
+  color: '#666666',
   maxWidth: '600px',
-  margin: '0 auto'
+  margin: '0 auto',
+  fontWeight: '500',
+  lineHeight: '1.6'
 }
 
 const stepsGridStyle = {
@@ -718,113 +826,148 @@ const stepsGridStyle = {
 }
 
 const stepCardStyle = {
-  background: 'white',
-  padding: '40px 28px',
-  borderRadius: '16px',
-  border: '1px solid #E8EAED',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '48px 32px',
+  borderRadius: '18px',
+  border: '2px solid #E8EAED',
   textAlign: 'center',
   opacity: 0,
-  transform: 'translateY(20px)',
-  animation: 'fadeInUp 0.6s ease-out forwards',
-  position: 'relative'
+  transform: 'translateY(30px)',
+  animation: 'fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+  position: 'relative',
+  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+  ':hover': {
+    transform: 'translateY(-10px)',
+    boxShadow: '0 16px 32px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
 }
 
 const stepNumberStyle = {
   position: 'absolute',
-  top: '-16px',
+  top: '-20px',
   left: '50%',
   transform: 'translateX(-50%)',
-  width: '32px',
-  height: '32px',
-  background: '#0A66FF',
+  width: '44px',
+  height: '44px',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
   color: 'white',
   borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontWeight: '700',
-  fontSize: '14px'
+  fontWeight: '800',
+  fontSize: '18px',
+  boxShadow: '0 4px 16px rgba(10, 102, 255, 0.3)',
+  border: '4px solid white'
 }
 
 const stepEmojiStyle = {
-  fontSize: '40px',
-  marginBottom: '16px',
-  display: 'block'
+  fontSize: '48px',
+  marginBottom: '20px',
+  display: 'block',
+  animation: 'bounce 2s ease-in-out infinite'
 }
 
 const stepTitleStyle = {
-  fontSize: '20px',
-  fontWeight: '700',
+  fontSize: '22px',
+  fontWeight: '800',
   color: '#111111',
   marginBottom: '12px'
 }
 
 const stepDescStyle = {
-  color: '#555555',
-  fontSize: '14px'
+  color: '#666666',
+  fontSize: '15px',
+  lineHeight: '1.6'
 }
 
 // Services Section
 const servicesStyle = {
-  background: 'white',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #FFFFFF 0%, #F7F9FC 100%)',
+  padding: '100px 0',
+  borderTop: '1px solid #E8EAED'
 }
 
 const servicesGridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-  gap: '24px'
+  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+  gap: '28px'
 }
 
 const serviceCardStyle = {
-  background: 'white',
-  border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '28px 20px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '16px',
+  padding: '32px 24px',
   textAlign: 'center',
   cursor: 'pointer',
-  transition: 'all 0.3s ease',
+  transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
   position: 'relative',
   overflow: 'hidden',
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
   opacity: 0,
-  transform: 'translateY(20px)'
+  transform: 'translateY(30px)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+  ':hover': {
+    transform: 'translateY(-12px)',
+    boxShadow: '0 20px 40px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  },
+  ':before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '4px',
+    background: 'linear-gradient(90deg, #0A66FF, #FF9F40)',
+    transform: 'scaleX(0)',
+    transformOrigin: 'center',
+    transition: 'transform 0.45s ease'
+  }
 }
 
 const serviceIconStyle = {
-  fontSize: '48px',
-  marginBottom: '16px',
-  display: 'block'
+  fontSize: '56px',
+  marginBottom: '20px',
+  display: 'block',
+  transition: 'transform 0.4s ease',
+  animation: 'float 3s ease-in-out infinite'
 }
 
 const serviceNameStyle = {
-  fontSize: '18px',
-  fontWeight: '700',
+  fontSize: '20px',
+  fontWeight: '800',
   color: '#111111',
-  marginBottom: '8px'
+  marginBottom: '10px',
+  transition: 'color 0.3s ease'
 }
 
 const serviceDescStyle = {
-  color: '#555555',
-  fontSize: '13px',
-  marginBottom: '16px',
-  lineHeight: '1.5'
+  color: '#666666',
+  fontSize: '14px',
+  marginBottom: '18px',
+  lineHeight: '1.6',
+  fontWeight: '500'
 }
 
 const serviceMetricsStyle = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '6px',
-  marginBottom: '16px',
-  paddingBottom: '16px',
-  borderBottom: '1px solid #E8EAED'
+  gap: '8px',
+  marginBottom: '20px',
+  paddingBottom: '20px',
+  borderBottom: '2px solid #E8EAED'
 }
 
 const metricStyle = {
-  fontSize: '12px',
-  color: '#555555'
+  fontSize: '13px',
+  color: '#0A66FF',
+  fontWeight: '600'
 }
 
 const urgentBadgeStyle = {
@@ -847,26 +990,34 @@ const bookNowStyle = {
 
 // Providers Section
 const providersStyle = {
-  background: '#F7F9FC',
-  padding: '80px 0'
+  background: 'linear-gradient(180deg, #F7F9FC 0%, #FFFFFF 100%)',
+  padding: '100px 0',
+  borderTop: '1px solid #E8EAED'
 }
 
 const providersGridStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '24px'
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+  gap: '28px'
 }
 
 const providerCardStyle = {
-  background: 'white',
-  border: '1px solid #E8EAED',
-  borderRadius: '14px',
-  padding: '24px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '16px',
+  padding: '28px',
   opacity: 0,
-  transform: 'translateY(20px)',
+  transform: 'translateY(30px)',
   height: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
+  transition: 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
+  ':hover': {
+    transform: 'translateY(-12px)',
+    boxShadow: '0 20px 40px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
 }
 
 const providerHeaderStyle = {
@@ -877,33 +1028,36 @@ const providerHeaderStyle = {
 
 const providerImageStyle = {
   position: 'relative',
-  width: '60px',
-  height: '60px',
+  width: '68px',
+  height: '68px',
   borderRadius: '50%',
-  background: '#F7F9FC',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '24px',
-  border: '2px solid white',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
+  fontSize: '28px',
+  border: '3px solid white',
+  boxShadow: '0 4px 12px rgba(10, 102, 255, 0.2)',
+  flexShrink: 0,
+  transition: 'transform 0.3s ease'
 }
 
 const verifiedBadgeStyle = {
   position: 'absolute',
-  top: '-4px',
-  right: '-4px',
-  width: '20px',
-  height: '20px',
-  background: '#00B894',
+  top: '-6px',
+  right: '-6px',
+  width: '24px',
+  height: '24px',
+  background: 'linear-gradient(135deg, #00B894 0%, #009973 100%)',
   color: 'white',
   borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '11px',
-  fontWeight: '700',
-  border: '2px solid white'
+  fontSize: '12px',
+  fontWeight: '800',
+  border: '3px solid white',
+  boxShadow: '0 2px 8px rgba(0, 184, 148, 0.2)'
 }
 
 const statusDotStyle = {
@@ -917,16 +1071,17 @@ const statusDotStyle = {
 }
 
 const providerNameStyle = {
-  fontSize: '16px',
-  fontWeight: '700',
+  fontSize: '18px',
+  fontWeight: '800',
   color: '#111111',
   marginBottom: '4px'
 }
 
 const providerServiceStyle = {
   color: '#0A66FF',
-  fontWeight: '600',
-  fontSize: '12px'
+  fontWeight: '700',
+  fontSize: '13px',
+  letterSpacing: '0.5px'
 }
 
 const providerRatingStyle = {
