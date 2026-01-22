@@ -6,7 +6,7 @@ import SplashScreen from '../components/SplashScreen'
 import { useEffect, useState } from 'react'
 
 export default function App({ Component, pageProps }) {
-  const [showSplash, setShowSplash] = useState(false)
+  const [showSplash, setShowSplash] = useState(true)
 
   useEffect(() => {
     // Request notification permission on app load (client-side only)
