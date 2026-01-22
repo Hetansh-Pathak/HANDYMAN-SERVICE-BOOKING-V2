@@ -592,14 +592,16 @@ const searchBarContainerStyle = {
 }
 
 const quickServicesStyle = {
-  marginBottom: '32px'
+  marginBottom: '32px',
+  textAlign: 'center'
 }
 
 const quickServicesLabelStyle = {
   fontSize: '14px',
   color: '#555555',
   marginBottom: '12px',
-  fontWeight: '500'
+  fontWeight: '500',
+  display: 'block'
 }
 
 const searchBarStyle = {
