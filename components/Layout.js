@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext'
 import { useUser } from '../context/UserContext'
 import { useRouter } from 'next/router'
 import styles from '../styles/layout.module.css'
+import '../styles/globals.css'
 
 export default function Layout({ children, title = 'HandyFix - Find Trusted Service Providers' }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
