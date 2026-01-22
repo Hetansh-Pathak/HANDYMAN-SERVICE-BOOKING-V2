@@ -680,22 +680,32 @@ const searchBtnStyle = {
 
 const searchTagsStyle = {
   display: 'flex',
-  gap: '8px',
+  gap: '12px',
   flexWrap: 'wrap',
   justifyContent: 'center'
 }
 
 const tagStyle = {
-  background: '#F7F9FC',
-  border: '1px solid #D2D3D5',
+  background: 'linear-gradient(135deg, #F7F9FC 0%, #FFFFFF 100%)',
+  border: '2px solid #E8EAED',
   color: '#555555',
-  padding: '8px 16px',
-  borderRadius: '20px',
-  fontSize: '13px',
-  fontWeight: '500',
+  padding: '10px 20px',
+  borderRadius: '24px',
+  fontSize: '14px',
+  fontWeight: '600',
   cursor: 'pointer',
-  transition: 'all 0.2s ease',
-  whiteSpace: 'nowrap'
+  transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  whiteSpace: 'nowrap',
+  position: 'relative',
+  overflow: 'hidden',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+  ':hover': {
+    borderColor: '#0A66FF',
+    background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
+    color: 'white',
+    transform: 'translateY(-2px)',
+    boxShadow: '0 8px 16px rgba(10, 102, 255, 0.25)'
+  }
 }
 
 const trustIndicatorsStyle = {
