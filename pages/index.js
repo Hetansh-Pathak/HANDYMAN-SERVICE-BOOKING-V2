@@ -1028,33 +1028,36 @@ const providerHeaderStyle = {
 
 const providerImageStyle = {
   position: 'relative',
-  width: '60px',
-  height: '60px',
+  width: '68px',
+  height: '68px',
   borderRadius: '50%',
-  background: '#F7F9FC',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 100%)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '24px',
-  border: '2px solid white',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
+  fontSize: '28px',
+  border: '3px solid white',
+  boxShadow: '0 4px 12px rgba(10, 102, 255, 0.2)',
+  flexShrink: 0,
+  transition: 'transform 0.3s ease'
 }
 
 const verifiedBadgeStyle = {
   position: 'absolute',
-  top: '-4px',
-  right: '-4px',
-  width: '20px',
-  height: '20px',
-  background: '#00B894',
+  top: '-6px',
+  right: '-6px',
+  width: '24px',
+  height: '24px',
+  background: 'linear-gradient(135deg, #00B894 0%, #009973 100%)',
   color: 'white',
   borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '11px',
-  fontWeight: '700',
-  border: '2px solid white'
+  fontSize: '12px',
+  fontWeight: '800',
+  border: '3px solid white',
+  boxShadow: '0 2px 8px rgba(0, 184, 148, 0.2)'
 }
 
 const statusDotStyle = {
