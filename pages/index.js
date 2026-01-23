@@ -538,14 +538,15 @@ export default function Home() {
 
 // Hero Section - Enhanced with Advanced CSS
 const heroStyle = {
-  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 50%, #FF9F40 100%)',
   padding: '100px 0 80px',
   borderBottom: '1px solid #E8EAED',
   position: 'relative',
   overflow: 'hidden',
   minHeight: '80vh',
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  boxShadow: '0 20px 60px rgba(10, 102, 255, 0.2)'
 }
 
 // Decorative background elements using CSS patterns
