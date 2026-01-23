@@ -584,7 +584,7 @@ const heroTextStyle = {
 
 const heroTaglineStyle = {
   display: 'inline-block',
-  background: 'linear-gradient(135deg, #E8F3FF 0%, #CCE5FF 100%)',
+  background: 'rgba(255, 255, 255, 0.95)',
   color: '#0A66FF',
   padding: '10px 20px',
   borderRadius: '25px',
@@ -592,8 +592,8 @@ const heroTaglineStyle = {
   fontWeight: '700',
   marginBottom: '24px',
   textAlign: 'center',
-  border: '1px solid #B3D9FF',
-  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.15)',
+  border: '2px solid #FFFFFF',
+  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
   animation: 'slideDown 0.6s ease-out',
   letterSpacing: '0.5px'
 }
