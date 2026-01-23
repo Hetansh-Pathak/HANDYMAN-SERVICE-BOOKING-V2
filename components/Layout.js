@@ -264,8 +264,36 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
             <button className={`${styles.mobileNavLink} ${styles.iconBtn}`} title="Notifications">🔔 Notifications</button>
             <button className={`${styles.mobileNavLink} ${styles.iconBtn}`} title="Cart">🛒 Cart</button>
             <div className={styles.mobileDivider}></div>
-            <Link href="/auth/login" className={styles.mobileNavLink}>Log In</Link>
-            <Link href="/auth/register" className={styles.mobileSignUp}>Sign Up</Link>
+            {user ? (
+              <>
+                <div style={{ padding: '12px 16px', color: '#111111', fontWeight: '600' }}>
+                  {user.name || user.email}
+                </div>
+                {user.userType === 'customer' && (
+                  <Link href="/dashboard/user" className={styles.mobileNavLink}>📊 My Dashboard</Link>
+                )}
+                {user.userType === 'provider' && (
+                  <Link href="/dashboard/provider" className={styles.mobileNavLink}>📊 Provider Dashboard</Link>
+                )}
+                <Link href="/dashboard/user" className={styles.mobileNavLink}>⚙️ Account Settings</Link>
+                <button
+                  onClick={() => {
+                    logout()
+                    setIsMenuOpen(false)
+                    router.push('/')
+                  }}
+                  className={styles.mobileNavLink}
+                  style={{ color: '#DC3545' }}
+                >
+                  🚪 Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/auth/login" className={styles.mobileNavLink}>Log In</Link>
+                <Link href="/auth/register" className={styles.mobileSignUp}>Sign Up</Link>
+              </>
+            )}
           </div>
         )}
       </header>
