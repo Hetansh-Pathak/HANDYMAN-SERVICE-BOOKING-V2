@@ -700,3 +700,15 @@ const noResultsTextStyle = {
   color: '#555555',
   margin: '0 0 20px'
 }
+
+const filtersSectionWrapperStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+  gap: '24px',
+  marginBottom: '40px',
+  padding: '24px',
+  background: 'white',
+  borderRadius: '14px',
+  border: '1px solid #E8EAED',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
+}
