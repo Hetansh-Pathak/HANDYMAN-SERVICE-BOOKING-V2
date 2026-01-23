@@ -10,8 +10,9 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
   const { getCartCount } = useCart()
-  const { user } = useUser()
+  const { user, logout } = useUser()
   const router = useRouter()
   const cartCount = getCartCount()
 
