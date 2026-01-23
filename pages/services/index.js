@@ -361,7 +361,13 @@ export default function ServicesPage() {
                 minPrice: 0,
                 maxPrice: 5000,
                 rating: 0,
-                sortBy: 'rating'
+                sortBy: 'rating',
+                pincode: filters.pincode,
+                city: filters.city,
+                availability: 'all',
+                minExperience: 0,
+                maxResponseTime: 60,
+                urgency: 'all'
               })}
             >
               Reset Filters
@@ -454,7 +460,13 @@ export default function ServicesPage() {
                       minPrice: 0,
                       maxPrice: 5000,
                       rating: 0,
-                      sortBy: 'rating'
+                      sortBy: 'rating',
+                      pincode: filters.pincode,
+                      city: filters.city,
+                      availability: 'all',
+                      minExperience: 0,
+                      maxResponseTime: 60,
+                      urgency: 'all'
                     })}
                   >
                     Clear Filters
