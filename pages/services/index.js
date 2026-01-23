@@ -627,8 +627,14 @@ const providerCardStyle = {
   padding: '24px',
   border: '1px solid #E8EAED',
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  cursor: 'pointer',
+  animation: 'fadeInUp 0.6s ease-out',
+  ':hover': {
+    transform: 'translateY(-8px)',
+    boxShadow: '0 20px 40px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
 }
 
 const cardHeaderStyle = {
