@@ -150,6 +150,25 @@ export default function ServicesPage() {
         return false
       }
 
+      // Availability filter
+      if (filters.availability === 'available' && !provider.available) {
+        return false
+      }
+      if (filters.availability === 'unavailable' && provider.available) {
+        return false
+      }
+
+      // Experience filter
+      if (provider.experience < filters.minExperience) {
+        return false
+      }
+
+      // Response time filter (simulate based on provider responseTime string)
+      const providerResponseMinutes = parseInt(provider.responseTime) || 60
+      if (providerResponseMinutes > filters.maxResponseTime) {
+        return false
+      }
+
       return true
     })
 
