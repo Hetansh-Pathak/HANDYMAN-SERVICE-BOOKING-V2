@@ -193,21 +193,66 @@ export default function CustomerDashboard() {
                 <p style={subtitleStyle}>Here's your dashboard overview</p>
               </div>
 
-              <div className="grid grid-3" style={{ marginTop: '40px' }}>
+              {/* Stats Cards */}
+              <div style={statsGridStyle}>
                 <div style={statCardStyle}>
                   <div style={statIconStyle}>📅</div>
                   <h3 style={statLabelStyle}>Total Bookings</h3>
                   <p style={statValueStyle}>12</p>
+                  <p style={statSubtextStyle}>Across all services</p>
                 </div>
                 <div style={statCardStyle}>
                   <div style={statIconStyle}>✅</div>
                   <h3 style={statLabelStyle}>Completed</h3>
                   <p style={statValueStyle}>10</p>
+                  <p style={statSubtextStyle}>Successfully completed</p>
+                </div>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>⭐</div>
+                  <h3 style={statLabelStyle}>Avg Rating</h3>
+                  <p style={statValueStyle}>4.8</p>
+                  <p style={statSubtextStyle}>From providers</p>
                 </div>
                 <div style={statCardStyle}>
                   <div style={statIconStyle}>💰</div>
                   <h3 style={statLabelStyle}>Total Spent</h3>
                   <p style={statValueStyle}>₹8,500</p>
+                  <p style={statSubtextStyle}>On services</p>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div style={quickActionsStyle}>
+                <h2 style={sectionTitleStyle}>Quick Actions</h2>
+                <div style={quickActionBtnsStyle}>
+                  <Link href="/services" style={quickActionBtnStyle}>
+                    <span style={quickActionIconStyle}>🔍</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>Find Service</div>
+                      <div style={quickActionDescStyle}>Browse providers</div>
+                    </div>
+                  </Link>
+                  <button style={quickActionBtnStyle} onClick={() => setActiveTab('bookings')}>
+                    <span style={quickActionIconStyle}>📅</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>My Bookings</div>
+                      <div style={quickActionDescStyle}>View all bookings</div>
+                    </div>
+                  </button>
+                  <button style={quickActionBtnStyle} onClick={() => setActiveTab('saved')}>
+                    <span style={quickActionIconStyle}>❤️</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>Saved</div>
+                      <div style={quickActionDescStyle}>Favorite providers</div>
+                    </div>
+                  </button>
+                  <button style={quickActionBtnStyle} onClick={() => setActiveTab('profile')}>
+                    <span style={quickActionIconStyle}>⚙️</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>Settings</div>
+                      <div style={quickActionDescStyle}>Account settings</div>
+                    </div>
+                  </button>
                 </div>
               </div>
 
@@ -896,4 +941,65 @@ const emptyMessageStyle = {
   fontSize: '14px',
   color: '#555555',
   margin: '0'
+}
+
+// New stats grid style
+const statsGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: '20px',
+  marginTop: '40px',
+  marginBottom: '40px'
+}
+
+const statSubtextStyle = {
+  fontSize: '12px',
+  color: '#888888',
+  margin: '4px 0 0',
+  fontWeight: '500'
+}
+
+// Quick actions styles
+const quickActionsStyle = {
+  marginTop: '60px',
+  marginBottom: '40px'
+}
+
+const quickActionBtnsStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '16px'
+}
+
+const quickActionBtnStyle = {
+  padding: '20px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '12px',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
+  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  textDecoration: 'none'
+}
+
+const quickActionIconStyle = {
+  fontSize: '32px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+}
+
+const quickActionLabelStyle = {
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#111111',
+  margin: '0'
+}
+
+const quickActionDescStyle = {
+  fontSize: '12px',
+  color: '#888888',
+  margin: '4px 0 0'
 }

@@ -18,7 +18,11 @@ export default function ServicesPage() {
     rating: 0,
     sortBy: 'rating',
     pincode: pincode || '',
-    city: city || ''
+    city: city || '',
+    availability: 'all', // all, available, unavailable
+    minExperience: 0,
+    maxResponseTime: 60, // in minutes
+    urgency: 'all' // all, emergency, same-day, scheduled
   })
   const [providers, setProviders] = useState([])
   const [filteredProviders, setFilteredProviders] = useState([])
@@ -146,6 +150,25 @@ export default function ServicesPage() {
         return false
       }
 
+      // Availability filter
+      if (filters.availability === 'available' && !provider.available) {
+        return false
+      }
+      if (filters.availability === 'unavailable' && provider.available) {
+        return false
+      }
+
+      // Experience filter
+      if (provider.experience < filters.minExperience) {
+        return false
+      }
+
+      // Response time filter (simulate based on provider responseTime string)
+      const providerResponseMinutes = parseInt(provider.responseTime) || 60
+      if (providerResponseMinutes > filters.maxResponseTime) {
+        return false
+      }
+
       return true
     })
 
@@ -201,9 +224,36 @@ export default function ServicesPage() {
           />
         </div>
 
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '40px', marginTop: '40px' }}>
-          {/* Filters Sidebar */}
-          <div style={sidebarStyle}>
+        <div className="container" style={{ marginTop: '40px' }}>
+          {/* Service Category Quick Filters */}
+          <div style={serviceCategoryWrapperStyle}>
+            <h3 style={serviceCategoryTitleStyle}>Browse by Service</h3>
+            <div style={serviceCategoryGridStyle}>
+              {['All', ...services].map(service => (
+                <button
+                  key={service}
+                  style={{
+                    ...serviceCategoryBtnStyle,
+                    background: filters.service === service || (service === 'All' && !filters.service) ? '#0A66FF' : '#FFFFFF',
+                    color: filters.service === service || (service === 'All' && !filters.service) ? '#FFFFFF' : '#555555',
+                    borderColor: filters.service === service || (service === 'All' && !filters.service) ? '#0A66FF' : '#E8EAED'
+                  }}
+                  onClick={() => {
+                    if (service === 'All') {
+                      setFilters({ ...filters, service: '' })
+                    } else {
+                      setFilters({ ...filters, service })
+                    }
+                  }}
+                >
+                  {service === 'Plumbing' && '🔧'} {service === 'Electrical' && '⚡'} {service === 'Cleaning' && '🧽'} {service === 'Carpentry' && '🔨'} {service === 'AC Repair' && '❄️'} {service === 'Painting' && '🎨'} {service}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Filters Section */}
+          <div style={filtersSectionWrapperStyle}>
             <h3 style={filterTitleStyle}>Filters</h3>
 
             {/* Search */}
@@ -270,6 +320,50 @@ export default function ServicesPage() {
               </select>
             </div>
 
+            {/* Availability Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Availability</label>
+              <select
+                className="form-input"
+                value={filters.availability}
+                onChange={(e) => setFilters({ ...filters, availability: e.target.value })}
+              >
+                <option value="all">All Providers</option>
+                <option value="available">Available Now</option>
+                <option value="unavailable">Not Available</option>
+              </select>
+            </div>
+
+            {/* Experience Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Min Experience</label>
+              <select
+                className="form-input"
+                value={filters.minExperience}
+                onChange={(e) => setFilters({ ...filters, minExperience: Number(e.target.value) })}
+              >
+                <option value={0}>All Levels</option>
+                <option value={2}>2+ Years</option>
+                <option value={5}>5+ Years</option>
+                <option value={10}>10+ Years</option>
+              </select>
+            </div>
+
+            {/* Response Time Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Response Time</label>
+              <select
+                className="form-input"
+                value={filters.maxResponseTime}
+                onChange={(e) => setFilters({ ...filters, maxResponseTime: Number(e.target.value) })}
+              >
+                <option value={60}>Up to 1 hour</option>
+                <option value={30}>Up to 30 min</option>
+                <option value={20}>Up to 20 min</option>
+                <option value={15}>Up to 15 min</option>
+              </select>
+            </div>
+
             {/* Sort By */}
             <div style={filterGroupStyle}>
               <label style={filterLabelStyle}>Sort By</label>
@@ -294,7 +388,13 @@ export default function ServicesPage() {
                 minPrice: 0,
                 maxPrice: 5000,
                 rating: 0,
-                sortBy: 'rating'
+                sortBy: 'rating',
+                pincode: filters.pincode,
+                city: filters.city,
+                availability: 'all',
+                minExperience: 0,
+                maxResponseTime: 60,
+                urgency: 'all'
               })}
             >
               Reset Filters
@@ -387,7 +487,13 @@ export default function ServicesPage() {
                       minPrice: 0,
                       maxPrice: 5000,
                       rating: 0,
-                      sortBy: 'rating'
+                      sortBy: 'rating',
+                      pincode: filters.pincode,
+                      city: filters.city,
+                      availability: 'all',
+                      minExperience: 0,
+                      maxResponseTime: 60,
+                      urgency: 'all'
                     })}
                   >
                     Clear Filters
@@ -521,8 +627,14 @@ const providerCardStyle = {
   padding: '24px',
   border: '1px solid #E8EAED',
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
-  transition: 'all 0.3s ease',
-  cursor: 'pointer'
+  transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  cursor: 'pointer',
+  animation: 'fadeInUp 0.6s ease-out',
+  ':hover': {
+    transform: 'translateY(-8px)',
+    boxShadow: '0 20px 40px rgba(10, 102, 255, 0.15)',
+    borderColor: '#0A66FF'
+  }
 }
 
 const cardHeaderStyle = {
@@ -699,4 +811,51 @@ const noResultsTextStyle = {
   fontSize: '16px',
   color: '#555555',
   margin: '0 0 20px'
+}
+
+const serviceCategoryWrapperStyle = {
+  marginBottom: '40px',
+  padding: '24px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  borderRadius: '14px',
+  border: '1px solid #E8EAED',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+}
+
+const serviceCategoryTitleStyle = {
+  fontSize: '18px',
+  fontWeight: '700',
+  color: '#111111',
+  marginBottom: '16px'
+}
+
+const serviceCategoryGridStyle = {
+  display: 'flex',
+  gap: '12px',
+  flexWrap: 'wrap'
+}
+
+const serviceCategoryBtnStyle = {
+  padding: '10px 16px',
+  border: '2px solid #E8EAED',
+  borderRadius: '24px',
+  background: '#FFFFFF',
+  color: '#555555',
+  fontWeight: '600',
+  fontSize: '14px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  whiteSpace: 'nowrap'
+}
+
+const filtersSectionWrapperStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+  gap: '24px',
+  marginBottom: '40px',
+  padding: '24px',
+  background: 'white',
+  borderRadius: '14px',
+  border: '1px solid #E8EAED',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
 }

@@ -538,14 +538,15 @@ export default function Home() {
 
 // Hero Section - Enhanced with Advanced CSS
 const heroStyle = {
-  background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F7FF 100%)',
+  background: 'linear-gradient(135deg, #0A66FF 0%, #0052CC 50%, #FF9F40 100%)',
   padding: '100px 0 80px',
   borderBottom: '1px solid #E8EAED',
   position: 'relative',
   overflow: 'hidden',
   minHeight: '80vh',
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
+  boxShadow: '0 20px 60px rgba(10, 102, 255, 0.2)'
 }
 
 // Decorative background elements using CSS patterns
@@ -583,7 +584,7 @@ const heroTextStyle = {
 
 const heroTaglineStyle = {
   display: 'inline-block',
-  background: 'linear-gradient(135deg, #E8F3FF 0%, #CCE5FF 100%)',
+  background: 'rgba(255, 255, 255, 0.95)',
   color: '#0A66FF',
   padding: '10px 20px',
   borderRadius: '25px',
@@ -591,8 +592,8 @@ const heroTaglineStyle = {
   fontWeight: '700',
   marginBottom: '24px',
   textAlign: 'center',
-  border: '1px solid #B3D9FF',
-  boxShadow: '0 2px 8px rgba(10, 102, 255, 0.15)',
+  border: '2px solid #FFFFFF',
+  boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
   animation: 'slideDown 0.6s ease-out',
   letterSpacing: '0.5px'
 }
@@ -600,27 +601,25 @@ const heroTaglineStyle = {
 const heroTitleStyle = {
   fontSize: '56px',
   fontWeight: '800',
-  color: '#111111',
   marginBottom: '24px',
   lineHeight: '1.15',
   textAlign: 'center',
   animation: 'slideDown 0.8s ease-out 0.1s both',
-  background: 'linear-gradient(135deg, #111111 0%, #0A66FF 100%)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text'
+  color: '#FFFFFF',
+  textShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
 }
 
 const heroSubtitleStyle = {
   fontSize: '18px',
-  color: '#555555',
+  color: '#FFFFFF',
   marginBottom: '40px',
   lineHeight: '1.8',
   maxWidth: '600px',
   margin: '0 auto 40px auto',
   textAlign: 'center',
   animation: 'slideDown 0.8s ease-out 0.2s both',
-  fontWeight: '500'
+  fontWeight: '500',
+  opacity: 0.95
 }
 
 const searchBarContainerStyle = {
@@ -717,9 +716,15 @@ const trustIndicatorsStyle = {
 }
 
 const trustItemStyle = {
-  color: '#555555',
+  color: '#FFFFFF',
   fontSize: '14px',
-  fontWeight: '500'
+  fontWeight: '600',
+  background: 'rgba(255, 255, 255, 0.15)',
+  padding: '10px 20px',
+  borderRadius: '20px',
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.3s ease'
 }
 
 // Statistics Section - Below Hero
