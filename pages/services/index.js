@@ -201,9 +201,10 @@ export default function ServicesPage() {
           />
         </div>
 
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '40px', marginTop: '40px' }}>
-          {/* Filters Sidebar */}
-          <div style={sidebarStyle}>
+        {/* Filters Section - Below Check Availability */}
+        <div className="container" style={{ marginTop: '40px' }}>
+          {/* Filters */}
+          <div style={filtersSectionStyle}>
             <h3 style={filterTitleStyle}>Filters</h3>
 
             {/* Search */}
