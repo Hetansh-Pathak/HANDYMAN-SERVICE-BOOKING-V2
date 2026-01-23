@@ -601,15 +601,12 @@ const heroTaglineStyle = {
 const heroTitleStyle = {
   fontSize: '56px',
   fontWeight: '800',
-  color: '#111111',
   marginBottom: '24px',
   lineHeight: '1.15',
   textAlign: 'center',
   animation: 'slideDown 0.8s ease-out 0.1s both',
-  background: 'linear-gradient(135deg, #111111 0%, #0A66FF 100%)',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
-  backgroundClip: 'text'
+  color: '#FFFFFF',
+  textShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
 }
 
 const heroSubtitleStyle = {
