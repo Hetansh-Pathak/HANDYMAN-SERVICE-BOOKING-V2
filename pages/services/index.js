@@ -201,10 +201,9 @@ export default function ServicesPage() {
           />
         </div>
 
-        {/* Filters Section - Below Check Availability */}
         <div className="container" style={{ marginTop: '40px' }}>
-          {/* Filters */}
-          <div style={filtersSectionStyle}>
+          {/* Filters Section */}
+          <div style={filtersSectionWrapperStyle}>
             <h3 style={filterTitleStyle}>Filters</h3>
 
             {/* Search */}
