@@ -942,3 +942,64 @@ const emptyMessageStyle = {
   color: '#555555',
   margin: '0'
 }
+
+// New stats grid style
+const statsGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+  gap: '20px',
+  marginTop: '40px',
+  marginBottom: '40px'
+}
+
+const statSubtextStyle = {
+  fontSize: '12px',
+  color: '#888888',
+  margin: '4px 0 0',
+  fontWeight: '500'
+}
+
+// Quick actions styles
+const quickActionsStyle = {
+  marginTop: '60px',
+  marginBottom: '40px'
+}
+
+const quickActionBtnsStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+  gap: '16px'
+}
+
+const quickActionBtnStyle = {
+  padding: '20px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  border: '2px solid #E8EAED',
+  borderRadius: '12px',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
+  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+  textDecoration: 'none'
+}
+
+const quickActionIconStyle = {
+  fontSize: '32px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+}
+
+const quickActionLabelStyle = {
+  fontSize: '16px',
+  fontWeight: '600',
+  color: '#111111',
+  margin: '0'
+}
+
+const quickActionDescStyle = {
+  fontSize: '12px',
+  color: '#888888',
+  margin: '4px 0 0'
+}
