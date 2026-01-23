@@ -18,7 +18,11 @@ export default function ServicesPage() {
     rating: 0,
     sortBy: 'rating',
     pincode: pincode || '',
-    city: city || ''
+    city: city || '',
+    availability: 'all', // all, available, unavailable
+    minExperience: 0,
+    maxResponseTime: 60, // in minutes
+    urgency: 'all' // all, emergency, same-day, scheduled
   })
   const [providers, setProviders] = useState([])
   const [filteredProviders, setFilteredProviders] = useState([])
