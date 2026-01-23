@@ -611,14 +611,15 @@ const heroTitleStyle = {
 
 const heroSubtitleStyle = {
   fontSize: '18px',
-  color: '#555555',
+  color: '#FFFFFF',
   marginBottom: '40px',
   lineHeight: '1.8',
   maxWidth: '600px',
   margin: '0 auto 40px auto',
   textAlign: 'center',
   animation: 'slideDown 0.8s ease-out 0.2s both',
-  fontWeight: '500'
+  fontWeight: '500',
+  opacity: 0.95
 }
 
 const searchBarContainerStyle = {
