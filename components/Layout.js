@@ -169,16 +169,77 @@ export default function Layout({ children, title = 'HandyFix - Find Trusted Serv
               )}
             </button>
 
-            {/* Profile Icon */}
-            <button className={styles.iconBtn} title="Profile" aria-label="Profile">
-              👤
-            </button>
+            {/* Profile Icon / User Menu */}
+            {user ? (
+              <div style={{ position: 'relative' }}>
+                <button
+                  className={styles.iconBtn}
+                  title="Profile"
+                  aria-label="Profile"
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  style={{ fontSize: '18px', fontWeight: 'bold' }}
+                >
+                  👤
+                </button>
 
-            {/* Auth Links */}
-            <div className={styles.authLinksContainer}>
-              <Link href="/auth/login" className={styles.loginBtn}>Log In</Link>
-              <Link href="/auth/register" className={styles.signUpBtn}>Sign Up</Link>
-            </div>
+                {isProfileOpen && (
+                  <div className={styles.notificationDropdown} style={{ width: '200px', right: 0 }}>
+                    <div className={styles.notificationHeader} style={{ borderBottom: 'none', paddingBottom: '12px' }}>
+                      <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#111111' }}>
+                        {user.name || user.email}
+                      </h3>
+                      <p style={{ fontSize: '12px', color: '#888888', margin: '4px 0 0 0' }}>
+                        {user.userType === 'provider' ? 'Service Provider' : 'Customer'}
+                      </p>
+                    </div>
+
+                    <div style={{ padding: '12px 0', borderTop: '1px solid #E8EAED' }}>
+                      {user.userType === 'customer' && (
+                        <Link href="/dashboard/user" className={styles.notificationItem} style={{ display: 'block', padding: '12px 16px', textDecoration: 'none', color: '#555555' }}>
+                          📊 My Dashboard
+                        </Link>
+                      )}
+                      {user.userType === 'provider' && (
+                        <Link href="/dashboard/provider" className={styles.notificationItem} style={{ display: 'block', padding: '12px 16px', textDecoration: 'none', color: '#555555' }}>
+                          📊 Provider Dashboard
+                        </Link>
+                      )}
+                      <Link href="/dashboard/user" className={styles.notificationItem} style={{ display: 'block', padding: '12px 16px', textDecoration: 'none', color: '#555555' }}>
+                        ⚙️ Account Settings
+                      </Link>
+                    </div>
+
+                    <div style={{ padding: '8px 0', borderTop: '1px solid #E8EAED' }}>
+                      <button
+                        onClick={() => {
+                          logout()
+                          setIsProfileOpen(false)
+                          router.push('/')
+                        }}
+                        style={{
+                          width: '100%',
+                          padding: '12px 16px',
+                          background: 'transparent',
+                          border: 'none',
+                          textAlign: 'left',
+                          color: '#DC3545',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        🚪 Log Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className={styles.authLinksContainer}>
+                <Link href="/auth/login" className={styles.loginBtn}>Log In</Link>
+                <Link href="/auth/register" className={styles.signUpBtn}>Sign Up</Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
