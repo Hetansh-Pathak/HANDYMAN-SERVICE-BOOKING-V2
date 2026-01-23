@@ -193,21 +193,66 @@ export default function CustomerDashboard() {
                 <p style={subtitleStyle}>Here's your dashboard overview</p>
               </div>
 
-              <div className="grid grid-3" style={{ marginTop: '40px' }}>
+              {/* Stats Cards */}
+              <div style={statsGridStyle}>
                 <div style={statCardStyle}>
                   <div style={statIconStyle}>📅</div>
                   <h3 style={statLabelStyle}>Total Bookings</h3>
                   <p style={statValueStyle}>12</p>
+                  <p style={statSubtextStyle}>Across all services</p>
                 </div>
                 <div style={statCardStyle}>
                   <div style={statIconStyle}>✅</div>
                   <h3 style={statLabelStyle}>Completed</h3>
                   <p style={statValueStyle}>10</p>
+                  <p style={statSubtextStyle}>Successfully completed</p>
+                </div>
+                <div style={statCardStyle}>
+                  <div style={statIconStyle}>⭐</div>
+                  <h3 style={statLabelStyle}>Avg Rating</h3>
+                  <p style={statValueStyle}>4.8</p>
+                  <p style={statSubtextStyle}>From providers</p>
                 </div>
                 <div style={statCardStyle}>
                   <div style={statIconStyle}>💰</div>
                   <h3 style={statLabelStyle}>Total Spent</h3>
                   <p style={statValueStyle}>₹8,500</p>
+                  <p style={statSubtextStyle}>On services</p>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div style={quickActionsStyle}>
+                <h2 style={sectionTitleStyle}>Quick Actions</h2>
+                <div style={quickActionBtnsStyle}>
+                  <Link href="/services" style={quickActionBtnStyle}>
+                    <span style={quickActionIconStyle}>🔍</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>Find Service</div>
+                      <div style={quickActionDescStyle}>Browse providers</div>
+                    </div>
+                  </Link>
+                  <button style={quickActionBtnStyle} onClick={() => setActiveTab('bookings')}>
+                    <span style={quickActionIconStyle}>📅</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>My Bookings</div>
+                      <div style={quickActionDescStyle}>View all bookings</div>
+                    </div>
+                  </button>
+                  <button style={quickActionBtnStyle} onClick={() => setActiveTab('saved')}>
+                    <span style={quickActionIconStyle}>❤️</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>Saved</div>
+                      <div style={quickActionDescStyle}>Favorite providers</div>
+                    </div>
+                  </button>
+                  <button style={quickActionBtnStyle} onClick={() => setActiveTab('profile')}>
+                    <span style={quickActionIconStyle}>⚙️</span>
+                    <div>
+                      <div style={quickActionLabelStyle}>Settings</div>
+                      <div style={quickActionDescStyle}>Account settings</div>
+                    </div>
+                  </button>
                 </div>
               </div>
 
