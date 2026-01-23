@@ -225,6 +225,33 @@ export default function ServicesPage() {
         </div>
 
         <div className="container" style={{ marginTop: '40px' }}>
+          {/* Service Category Quick Filters */}
+          <div style={serviceCategoryWrapperStyle}>
+            <h3 style={serviceCategoryTitleStyle}>Browse by Service</h3>
+            <div style={serviceCategoryGridStyle}>
+              {['All', ...services].map(service => (
+                <button
+                  key={service}
+                  style={{
+                    ...serviceCategoryBtnStyle,
+                    background: filters.service === service || (service === 'All' && !filters.service) ? '#0A66FF' : '#FFFFFF',
+                    color: filters.service === service || (service === 'All' && !filters.service) ? '#FFFFFF' : '#555555',
+                    borderColor: filters.service === service || (service === 'All' && !filters.service) ? '#0A66FF' : '#E8EAED'
+                  }}
+                  onClick={() => {
+                    if (service === 'All') {
+                      setFilters({ ...filters, service: '' })
+                    } else {
+                      setFilters({ ...filters, service })
+                    }
+                  }}
+                >
+                  {service === 'Plumbing' && '🔧'} {service === 'Electrical' && '⚡'} {service === 'Cleaning' && '🧽'} {service === 'Carpentry' && '🔨'} {service === 'AC Repair' && '❄️'} {service === 'Painting' && '🎨'} {service}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Filters Section */}
           <div style={filtersSectionWrapperStyle}>
             <h3 style={filterTitleStyle}>Filters</h3>
