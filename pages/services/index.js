@@ -293,6 +293,50 @@ export default function ServicesPage() {
               </select>
             </div>
 
+            {/* Availability Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Availability</label>
+              <select
+                className="form-input"
+                value={filters.availability}
+                onChange={(e) => setFilters({ ...filters, availability: e.target.value })}
+              >
+                <option value="all">All Providers</option>
+                <option value="available">Available Now</option>
+                <option value="unavailable">Not Available</option>
+              </select>
+            </div>
+
+            {/* Experience Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Min Experience</label>
+              <select
+                className="form-input"
+                value={filters.minExperience}
+                onChange={(e) => setFilters({ ...filters, minExperience: Number(e.target.value) })}
+              >
+                <option value={0}>All Levels</option>
+                <option value={2}>2+ Years</option>
+                <option value={5}>5+ Years</option>
+                <option value={10}>10+ Years</option>
+              </select>
+            </div>
+
+            {/* Response Time Filter */}
+            <div style={filterGroupStyle}>
+              <label style={filterLabelStyle}>Response Time</label>
+              <select
+                className="form-input"
+                value={filters.maxResponseTime}
+                onChange={(e) => setFilters({ ...filters, maxResponseTime: Number(e.target.value) })}
+              >
+                <option value={60}>Up to 1 hour</option>
+                <option value={30}>Up to 30 min</option>
+                <option value={20}>Up to 20 min</option>
+                <option value={15}>Up to 15 min</option>
+              </select>
+            </div>
+
             {/* Sort By */}
             <div style={filterGroupStyle}>
               <label style={filterLabelStyle}>Sort By</label>
