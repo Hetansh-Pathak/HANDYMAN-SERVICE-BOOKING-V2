@@ -716,9 +716,15 @@ const trustIndicatorsStyle = {
 }
 
 const trustItemStyle = {
-  color: '#555555',
+  color: '#FFFFFF',
   fontSize: '14px',
-  fontWeight: '500'
+  fontWeight: '600',
+  background: 'rgba(255, 255, 255, 0.15)',
+  padding: '10px 20px',
+  borderRadius: '20px',
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.3s ease'
 }
 
 // Statistics Section - Below Hero
