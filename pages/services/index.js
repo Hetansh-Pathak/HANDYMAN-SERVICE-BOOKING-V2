@@ -807,6 +807,41 @@ const noResultsTextStyle = {
   margin: '0 0 20px'
 }
 
+const serviceCategoryWrapperStyle = {
+  marginBottom: '40px',
+  padding: '24px',
+  background: 'linear-gradient(135deg, #FFFFFF 0%, #F7F9FC 100%)',
+  borderRadius: '14px',
+  border: '1px solid #E8EAED',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)'
+}
+
+const serviceCategoryTitleStyle = {
+  fontSize: '18px',
+  fontWeight: '700',
+  color: '#111111',
+  marginBottom: '16px'
+}
+
+const serviceCategoryGridStyle = {
+  display: 'flex',
+  gap: '12px',
+  flexWrap: 'wrap'
+}
+
+const serviceCategoryBtnStyle = {
+  padding: '10px 16px',
+  border: '2px solid #E8EAED',
+  borderRadius: '24px',
+  background: '#FFFFFF',
+  color: '#555555',
+  fontWeight: '600',
+  fontSize: '14px',
+  cursor: 'pointer',
+  transition: 'all 0.3s ease',
+  whiteSpace: 'nowrap'
+}
+
 const filtersSectionWrapperStyle = {
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
